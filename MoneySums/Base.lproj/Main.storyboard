@@ -87,7 +87,7 @@
     <resources>
         <image name="plus" catalog="system" width="128" height="113"/>
         <namedColor name="adaGrey">
-            <color red="0.91339737218576722" green="0.90898482449404849" blue="0.91780991987748584" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+            <color red="0.9411766529083252" green="0.94117671251296997" blue="0.94117671251296997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
         <namedColor name="adaTeal">
             <color red="0.38039215686274508" green="0.70588235294117652" blue="0.70588235294117652" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

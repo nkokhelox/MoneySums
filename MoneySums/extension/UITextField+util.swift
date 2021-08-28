@@ -49,10 +49,9 @@ extension UITextField {
   }
   
   // MARK: Private functions
-  @objc private func numberEntryDone() {
+  @objc private func numberEntryDone(nextSelector: Selector) {
     self.resignFirstResponder()
-    let t = (self.next as? UITextField)
-    self.next?.becomeFirstResponder()
+    next?.becomeFirstResponder()
   }
   
   @objc private func append00() {

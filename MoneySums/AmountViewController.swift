@@ -10,65 +10,57 @@ import UIKit
 class AmountViewController: UITableViewController {
   
   var amounts: [Amount] = Amount.randomData()
+  var amountTextField: UITextField? = nil
+  var noteTextField: UITextField? = nil
   
   override func viewDidLoad() {
     super.viewDidLoad()
     // Do any additional setup after loading the view.
   }
   @IBAction func addAmount(_ sender: UIBarButtonItem) {
-    
-    navigationController?.navigationBar.shake()
-    
     let alert = UIAlertController(
       title: "Add Money Record",
       message: "Negative amount if you owe them.",
       preferredStyle: .alert
     )
     
-    let saveAction = UIAlertAction(
-      title: "Save",
-      style: .default,
-      handler: { action in
-        print("save pressed")
-        guard let amount = Int64((alert.textFields?.first?.text!)!) else {
-          return
-        }
-        
-        self.amounts.append(
-          Amount(
-            value: amount,
-            note: alert.textFields?.last?.text ?? "unspecified",
-            paid: false
-        )
-        )
-        
-        self.tableView.reloadData()
-        
-      })
+    alert.addTextField(configurationHandler: self.amountTextField)
+    alert.addTextField(configurationHandler: self.noteTextField)
     
-    //    saveAction.isEnabled = false
-    
-    alert.addTextField(configurationHandler: { amountField in
-      amountField.keyboardType = .decimalPad
-      amountField.returnKeyType = .next
-      amountField.placeholder = "0.00"
-      amountField.addNumericAccessory(addPlusMinus: true)
-      amountField.addNumberEntryControl()
-    })
-    
-    alert.addTextField(configurationHandler: { noteField in
-      noteField.placeholder = "add some note about this amount"
-      noteField.autocapitalizationType = .sentences
-    })
-    
-    alert.addAction(saveAction)
-    
-    alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { action in
-      print("cancel pressed")
-    }))
+    alert.addAction(UIAlertAction(title: "Save", style: .default, handler: self.saveAmount))
+    alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
     
     alert.tagTextFields()
     self.present(alert, animated: true)
+  }
+  // MARK: Alert methods
+  
+  func amountTextField(textField: UITextField){
+    amountTextField = textField
+    textField.keyboardType = .decimalPad
+    textField.returnKeyType = .next
+    textField.placeholder = Amount.moneyFormat(0.0)
+    textField.addNumericAccessory(addPlusMinus: true)
+    textField.addNumberEntryControl()
+  }
+  
+  func noteTextField(textField: UITextField){
+    noteTextField = textField
+    textField.placeholder = "add some note about this amount"
+    textField.autocapitalizationType = .sentences
+  }
+  
+  func saveAmount(action: UIAlertAction){
+    self.amounts.append(
+      Amount(
+        value: Amount.doubleFromString(amountTextField!.text!)!,
+        note: noteTextField!.text!,
+        paid: false
+      )
+    )
+    
+    self.tableView.reloadData()
+    
   }
   
   // MARK: TableView DataSource methods
@@ -78,7 +70,8 @@ class AmountViewController: UITableViewController {
   
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let row = tableView.dequeueReusableCell(withIdentifier: "amountRow", for: indexPath)
-    row.textLabel?.text = amounts[indexPath.row].value.description
+    
+    row.textLabel?.text = amounts[indexPath.row].moneyValue
     row.detailTextLabel?.text = amounts[indexPath.row].note
     
     row.accessoryType = amounts[indexPath.row].paid ? .checkmark: .none
@@ -88,7 +81,10 @@ class AmountViewController: UITableViewController {
   
   override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     // show more details slide up modal.
+    let amount = amounts[indexPath.row]
+    amounts[indexPath.row] = Amount(value: amount.value, note: amount.note, paid: !amount.paid)
     tableView.deselectRow(at: indexPath, animated: true)
+    tableView.reloadData()
   }
   
 }

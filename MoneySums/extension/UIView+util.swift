@@ -6,24 +6,24 @@
 //
 
 import UIKit
+import AudioToolbox
 
 extension UIView {
-    func shake(for duration: TimeInterval = 2, withTranslation translation: CGFloat = 10) {
-        let propertyAnimator = UIViewPropertyAnimator(duration: duration, dampingRatio: 0.5) {
-            self.transform = CGAffineTransform(translationX: translation, y: 0)
-        }
-
-        propertyAnimator.addAnimations({
-            self.transform = CGAffineTransform(translationX: 0, y: 0)
-        }, delayFactor: 0.3)
-
-        propertyAnimator.startAnimation()
+  func shake(for duration: TimeInterval = 0.5, withTranslation translation: CGFloat = 10) {
+    func slideRightAnimation() {
+      self.transform = CGAffineTransform(translationX: translation, y: 0)
     }
-  
-  
-  
-  //  func beep() {
-  //      let systemSoundID : SystemSoundID = 1015     // Great one ; 1016 is bip-bip
-  //      AudioServicesPlayAlertSound(systemSoundID)
-  //  }
+    
+    func restoreOrigin() {
+      self.transform = CGAffineTransform(translationX: 0, y: 0)
+    }
+    
+    let propertyAnimator = UIViewPropertyAnimator(duration: duration, dampingRatio: 0.5, animations: slideRightAnimation)
+    
+    propertyAnimator.addAnimations(restoreOrigin, delayFactor: 0.3)
+    propertyAnimator.addAnimations(slideRightAnimation, delayFactor: 0.5)
+    propertyAnimator.addAnimations(restoreOrigin, delayFactor: 0.8)
+    
+    propertyAnimator.startAnimation()
+  }
 }
