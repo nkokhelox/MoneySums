@@ -132,9 +132,9 @@
 		ACE2B85D26C061B900755CF2 /* MoneySums */ = {
 			isa = PBXGroup;
 			children = (
-				AC98631F26EDAB28008C8DA4 /* model */,
 				AC98630D26EDAAF6008C8DA4 /* controller */,
 				AC98631426EDAB1A008C8DA4 /* extension */,
+				AC98631F26EDAB28008C8DA4 /* model */,
 				ACE2B85E26C061B900755CF2 /* AppDelegate.swift */,
 				ACE2B86026C061B900755CF2 /* SceneDelegate.swift */,
 				ACE2B86426C061B900755CF2 /* Main.storyboard */,

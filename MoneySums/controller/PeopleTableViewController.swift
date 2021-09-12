@@ -80,7 +80,7 @@ class PeopleTableViewController: UITableViewController {
     row.accessoryType = .disclosureIndicator
     row.textLabel?.font = UIFont.boldSystemFont(ofSize: 16.0)
     row.textLabel?.text = people?[indexPath.row].name.capitalized
-    row.detailTextLabel?.text = people?[indexPath.row].total.moneyFormattedString()
+    row.detailTextLabel?.text = people?[indexPath.row].totalUnpaid.moneyFormattedString()
     return row
   }
   
@@ -98,7 +98,7 @@ class PeopleTableViewController: UITableViewController {
   
   override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
     let deletionAction = UIContextualAction(style: .destructive, title: "delete") { _, _, isActionSuccessful in
-      if self.people?[indexPath.row].total != 0 {
+      if self.people?[indexPath.row].totalUnpaid != 0 {
         isActionSuccessful(false)
         tableView.cellForRow(at: indexPath)?.shake()
         self.showToast(title: nil, message: "Balance must be zero before deleting the person")

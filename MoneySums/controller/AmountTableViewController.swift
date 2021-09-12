@@ -21,7 +21,7 @@ class AmountTableViewController: UITableViewController {
   
   var selectedPerson: PersonModel? {
     didSet {
-      self.title = selectedPerson?.name.truncate(maxLength: 15, withEllipsis: true)
+      self.title = selectedPerson?.name.truncate(maxLength: 15, withEllipsis: true).capitalized
       self.loadAmounts()
     }
   }
@@ -188,9 +188,7 @@ extension AmountTableViewController {
 // MARK: Tableview row swipe action methods
 extension AmountTableViewController {
   override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-    let amounts = (indexPath.section == 0 ? unpaidAmounts : paidAmounts)
-    if let amount = amounts?[indexPath.row] {
-      
+    let amount = (indexPath.section == 0 ? unpaidAmounts : paidAmounts)![indexPath.row]
       let paidToggleAction = UIContextualAction(style: .normal, title: amount.paid ? "unpaid" : "paid") { _, _, isActionSuccessful in
         isActionSuccessful(true)
         do {
@@ -208,48 +206,40 @@ extension AmountTableViewController {
       paidToggleAction.image = UIImage(systemName: amount.paid ? "xmark" : "checkmark")
       paidToggleAction.backgroundColor = UIColor(named: amount.paid ? "adaOrange" : "adaTeal")
       
-      var trailingActions = [paidToggleAction]
-      
-      if amount.paid {
-        let deletionAction = UIContextualAction(style: .destructive, title: "delete") { _, _, isActionSuccessful in
-          if amount.paid == true {
-            isActionSuccessful(true)
-            do {
-              try self.realm.write{
-                self.realm.delete(amount.interests)
-                self.realm.delete(amount)
-              }
-              tableView.deleteRows(at: [indexPath], with: .automatic)
-              tableView.endUpdates()
-              tableView.reloadData()
-            } catch {
-              tableView.cellForRow(at: indexPath)?.shake()
-              self.showToast(title: "⚠ ERROR", message: "⚠ Failed to delete \(amount.moneyValue)")
-              print("Error deleting amount at row: \(indexPath.row), error: \(error)")
-            }
-          } else {
-            isActionSuccessful(false)
-            tableView.cellForRow(at: indexPath)?.shake()
-            self.showToast(title: nil, message: "Can only delete the PAID amount")
-          }
-        }
-        
-        deletionAction.image = UIImage(systemName: "trash.fill")
-        trailingActions.append(deletionAction)
-      }
-      
-      let config = UISwipeActionsConfiguration(actions: trailingActions)
+      let config = UISwipeActionsConfiguration(actions: [paidToggleAction])
       config.performsFirstActionWithFullSwipe = false
+    
       return config
-    }
-    else {
-      return nil
-    }
   }
   
   override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-    let amounts = (indexPath.section == 0 ? unpaidAmounts : paidAmounts)
-    if amounts?[indexPath.row].paid == false {
+    let amount = (indexPath.section == 0 ? unpaidAmounts : paidAmounts)![indexPath.row]
+    
+    if amount.paid {
+      let deletionAction = UIContextualAction(style: .destructive, title: "delete") { _, _, isActionSuccessful in
+          isActionSuccessful(true)
+          do {
+            try self.realm.write{
+              self.realm.delete(amount.interests)
+              self.realm.delete(amount)
+            }
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+            tableView.endUpdates()
+            tableView.reloadData()
+          } catch {
+            tableView.cellForRow(at: indexPath)?.shake()
+            self.showToast(title: "⚠ ERROR", message: "⚠ Failed to delete \(amount.moneyValue)")
+            print("Error deleting amount at row: \(indexPath.row), error: \(error)")
+          }
+      }
+      
+      deletionAction.image = UIImage(systemName: "trash.fill")
+      
+      let config = UISwipeActionsConfiguration(actions: [deletionAction])
+      config.performsFirstActionWithFullSwipe = false
+      
+      return config
+    } else {
       let addInterestAction = UIContextualAction(style: .normal, title: "interest") {_, _, isActionSuccessful in
         self.selectedAmountIndexPath = indexPath
         isActionSuccessful(true)
@@ -263,8 +253,6 @@ extension AmountTableViewController {
       config.performsFirstActionWithFullSwipe = false
       
       return config
-    } else {
-      return nil
     }
   }
 }
