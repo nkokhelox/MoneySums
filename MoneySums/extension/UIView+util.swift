@@ -9,21 +9,22 @@ import UIKit
 import AudioToolbox
 
 extension UIView {
-  func shake(for duration: TimeInterval = 0.5, withTranslation translation: CGFloat = 10) {
+  func shake() {
     func slideRightAnimation() {
-      self.transform = CGAffineTransform(translationX: translation, y: 0)
+      self.transform = CGAffineTransform(translationX: 30, y: 0)
     }
     
     func restoreOrigin() {
       self.transform = CGAffineTransform(translationX: 0, y: 0)
     }
     
-    let propertyAnimator = UIViewPropertyAnimator(duration: duration, dampingRatio: 0.5, animations: slideRightAnimation)
-    
-    propertyAnimator.addAnimations(restoreOrigin, delayFactor: 0.3)
-    propertyAnimator.addAnimations(slideRightAnimation, delayFactor: 0.5)
-    propertyAnimator.addAnimations(restoreOrigin, delayFactor: 0.8)
-    
+    func slideLeftAnimation() {
+      self.transform = CGAffineTransform(translationX: -30, y: 0)
+    }
+        
+    let propertyAnimator = UIViewPropertyAnimator(duration: 0.5, dampingRatio: 0.5, animations: slideRightAnimation)
+    propertyAnimator.addAnimations(slideLeftAnimation, delayFactor: 0.3)
+    propertyAnimator.addAnimations(restoreOrigin, delayFactor: 0.6)
     propertyAnimator.startAnimation()
   }
 }

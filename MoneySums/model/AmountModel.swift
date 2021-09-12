@@ -6,34 +6,30 @@
 //
 
 import Foundation
+import RealmSwift
 
-struct Amount {
-  let value:Double
-  let note: String
-  let paid: Bool
+class AmountModel: Object {
+  @objc dynamic var value: Double = 0.0
+  @objc dynamic var note: String = ""
+  @objc dynamic var paid: Bool = false
+  let interests = List<InterestModel>()
   var moneyValue: String {
-    return Amount.moneyFormat(value)
+    return value.moneyFormattedString()
+  }
+  var totalInterest: Double {
+    interests.sum(ofProperty: "value")
   }
   
-  static func doubleFromString(_ value: String)->Double? {
-    let formatter = NumberFormatter()
-    return formatter.number(from: value)?.doubleValue
+  var detailText: String {
+    note.isEmpty ? "Interest: \(totalInterest.moneyFormattedString())" : note
   }
   
-  static func moneyFormat(_ value: Double)->String {
-    let formatter = NumberFormatter()
-    formatter.numberStyle = .currency
-    return formatter.string(from: value as NSNumber) ?? value.description
-  }
+  var person = LinkingObjects(fromType: PersonModel.self, property: "amounts")
   
-  static func randomData() -> [Amount] {
-    return Array(0...10).map {
-      Amount(
-        value: Double($0),
-        note: ($0 % 2 == 0) ? "even even even even even even even even even even even even even even even even even even even even even even even even even even even even even even even even even even even even even even even even even even even even even even even even even even even even even even even even even even even even even even even even even even" : "odd odd odd odd odd odd odd odd odd odd odd odd odd odd odd odd odd odd odd odd odd odd odd odd odd odd odd odd odd odd odd odd odd odd odd odd odd odd odd odd odd odd odd odd odd odd odd odd odd odd odd odd odd odd odd odd odd odd odd odd odd odd odd odd odd",
-        paid: [true, false].shuffled().first ?? true
-      )
-    }
+  convenience init(value: Double, note: String, paid: Bool) {
+    self.init()
+    self.value = value
+    self.note = note
+    self.paid = paid
   }
 }
-

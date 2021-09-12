@@ -6,5 +6,6 @@ target 'MoneySums' do
   use_frameworks!
 
   # Pods for MoneySums
+  pod 'RealmSwift'
 
 end
