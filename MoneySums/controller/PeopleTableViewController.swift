@@ -10,7 +10,7 @@ import RealmSwift
 
 class PeopleTableViewController: UITableViewController {
   let realm = try! Realm()
-  var people: Results<PersonModel>?
+  var people: Results<Person>?
   var nameTextField: UITextField? = nil
   
   override func viewDidLoad() {
@@ -25,20 +25,20 @@ class PeopleTableViewController: UITableViewController {
   
   @IBAction func addPerson(_ sender: UIBarButtonItem) {
     let alert = UIAlertController(
-      title: "Add a Person",
-      message: "Person you have money relationship with.",
+      title: "add a person",
+      message: "person you have money relationship with.",
       preferredStyle: .alert
     )
     
     alert.addTextField(configurationHandler: self.nameTextField)
-    alert.addAction(UIAlertAction(title: "Save", style: .default, handler: self.savePerson))
-    alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+    alert.addAction(UIAlertAction(title: "save", style: .default, handler: self.savePerson))
+    alert.addAction(UIAlertAction(title: "cancel", style: .cancel, handler: nil))
     
     self.present(alert, animated: true)
   }
   
   func savePerson(_ uiAlertAction: UIAlertAction) {
-    let person  = PersonModel()
+    let person  = Person()
     person.name = self.nameTextField!.text!
     
     do {
@@ -46,26 +46,29 @@ class PeopleTableViewController: UITableViewController {
         realm.add(person)
       }
     } catch {
-      print("Failed to save Person: \(error)")
+      print("failed to save a person: \(error)")
     }
     tableView.reloadData()
   }
   
   func nameTextField(_ textField: UITextField) {
+    textField.autocapitalizationType = .words
+    textField.autocorrectionType = .default
+    textField.textContentType = .givenName
     nameTextField = textField
   }
   
   func loadPeople() {
-    people = realm.objects(PersonModel.self).sorted(byKeyPath: "name", ascending: true)
+    people = realm.objects(Person.self).sorted(byKeyPath: "name", ascending: true)
     tableView.reloadData()
   }
   
   // MARK: - Table view data source
   override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
     let total = people?.reduce(0.0) {
-      $0 + $1.total
+      $0 + $1.totalUnpaid
     }
-    return "Total: \((total ?? 0.0).moneyFormattedString())"
+    return "total: \((total ?? 0.0).moneyFormattedString())"
   }
 
   override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
@@ -101,7 +104,7 @@ class PeopleTableViewController: UITableViewController {
       if self.people?[indexPath.row].totalUnpaid != 0 {
         isActionSuccessful(false)
         tableView.cellForRow(at: indexPath)?.shake()
-        self.showToast(title: nil, message: "Balance must be zero before deleting the person")
+        self.showToast(title: nil, message: "balance must be zero before deleting the person")
       } else {
         isActionSuccessful(true)
         do {
@@ -113,8 +116,8 @@ class PeopleTableViewController: UITableViewController {
           tableView.endUpdates()
           tableView.reloadData()
         } catch {
-          self.showToast(title: "⚠ ERROR", message: "⚠ Failed to delete \(self.people?[indexPath.row].name)")
-          print("Error deleting person at row: \(indexPath.row), error: \(error)")
+          self.showToast(title: "⚠ ERROR", message: "⚠ failed to delete \((self.people?[indexPath.row].name)!)")
+          print("error deleting person at row: \(indexPath.row), error: \(error)")
         }
       }
       
@@ -123,7 +126,7 @@ class PeopleTableViewController: UITableViewController {
     deletionAction.image = UIImage(systemName: "trash")
     let config = UISwipeActionsConfiguration(actions: [deletionAction])
     
-    config.performsFirstActionWithFullSwipe = people?[indexPath.row].total == 0
+    config.performsFirstActionWithFullSwipe = people?[indexPath.row].totalUnpaid == 0
     return config
   }
   

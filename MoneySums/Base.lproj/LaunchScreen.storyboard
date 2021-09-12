@@ -24,18 +24,26 @@
                                 <color key="textColor" name="adaTeal"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="by Nkokhelo" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Skx-Is-zj0">
+                                <rect key="frame" x="183" y="468" width="49" height="10"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="8"/>
+                                <color key="textColor" systemColor="tertiaryLabelColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="Skx-Is-zj0" firstAttribute="centerX" secondItem="HVF-cu-wPO" secondAttribute="centerX" id="7Lb-TS-xBh"/>
                             <constraint firstItem="HVF-cu-wPO" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="NPb-IG-Uz5"/>
+                            <constraint firstItem="Skx-Is-zj0" firstAttribute="top" secondItem="HVF-cu-wPO" secondAttribute="bottom" constant="5" id="OAH-9z-Rje"/>
                             <constraint firstItem="HVF-cu-wPO" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="sVO-PJ-fJ9"/>
                         </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="53" y="375"/>
+            <point key="canvasLocation" x="52.173913043478265" y="375"/>
         </scene>
     </scenes>
     <resources>
@@ -44,6 +52,9 @@
         </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="tertiaryLabelColor">
+            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

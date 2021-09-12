@@ -11,15 +11,15 @@ import RealmSwift
 class AmountTableViewController: UITableViewController {
   let realm = try! Realm()
   
-  var paidAmounts: Results<AmountModel>?
-  var unpaidAmounts: Results<AmountModel>?
+  var paidAmounts: Results<Amount>?
+  var unpaidAmounts: Results<Amount>?
   
   var selectedAmountIndexPath: IndexPath? = nil
   var noteTextField: UITextField? = nil
   var amountTextField: UITextField? = nil
-  var interestTextField: UITextField? = nil
+  var paymentTextField: UITextField? = nil
   
-  var selectedPerson: PersonModel? {
+  var selectedPerson: Person? {
     didSet {
       self.title = selectedPerson?.name.truncate(maxLength: 15, withEllipsis: true).capitalized
       self.loadAmounts()
@@ -62,17 +62,18 @@ extension AmountTableViewController {
     textField.returnKeyType = .next
     textField.placeholder = (0.0).moneyFormattedString()
     textField.addNumericAccessory(addPlusMinus: true)
-    textField.addNumberEntryControl()
   }
   
   func noteTextField(textField: UITextField){
     noteTextField = textField
     textField.placeholder = "add some note about this amount"
     textField.autocapitalizationType = .sentences
+    textField.autocorrectionType = .default
+    textField.textContentType = .givenName
   }
   
   func saveAmount(action: UIAlertAction){
-    let amount = AmountModel(
+    let amount = Amount(
       value: amountTextField!.text!.trimmingCharacters(in: .whitespaces).toDoubleOption()!,
       note: noteTextField!.text!.trimmingCharacters(in: .whitespaces),
       paid: false
@@ -84,8 +85,8 @@ extension AmountTableViewController {
           person.amounts.append(amount)
         }
       } catch {
-        self.showToast(title: "⚠ ERROR", message: "Saving amount for \(person.name) failed")
-        print("Error saving the amount for \(person.name): \(error)")
+        self.showToast(title: "⚠ ERROR", message: "saving amount for \(person.name) failed")
+        print("error saving the amount for \(person.name): \(error)")
       }
     }
     
@@ -95,47 +96,46 @@ extension AmountTableViewController {
 
 // MARK: Add interest alert methods
 extension AmountTableViewController {
-  func addPaidInterest() {
+  func addPayment() {
     if let indexPath = selectedAmountIndexPath {
-      var amount: AmountModel {
+      var amount: Amount {
         (indexPath.section == 0 ? unpaidAmounts : paidAmounts)![indexPath.row]
       }
       
       let alert = UIAlertController(
-        title: "Add Interest for \(amount.moneyValue)",
+        title: "add payment for \(amount.moneyValue)",
         message: amount.note,
         preferredStyle: .alert
       )
       
-      alert.addTextField(configurationHandler: self.interestTextField)
+      alert.addTextField(configurationHandler: self.paymentTextField)
       
-      alert.addAction(UIAlertAction(title: "Save", style: .default, handler: self.saveInterest))
-      alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+      alert.addAction(UIAlertAction(title: "save", style: .default, handler: self.savePayment))
+      alert.addAction(UIAlertAction(title: "cancel", style: .cancel, handler: nil))
       
       self.present(alert, animated: true)
     }
   }
   
-  func interestTextField(textField: UITextField){
-    interestTextField = textField
+  func paymentTextField(textField: UITextField){
+    paymentTextField = textField
     textField.keyboardType = .decimalPad
     textField.returnKeyType = .done
     textField.placeholder = (0.0).moneyFormattedString()
     textField.addNumericAccessory(addPlusMinus: true)
-    textField.addNumberEntryControl()
   }
   
-  func saveInterest(action: UIAlertAction){
+  func savePayment(action: UIAlertAction){
     if let indexPath = selectedAmountIndexPath {
-      let interest = InterestModel(value: interestTextField!.text!.toDoubleOption()!)
+      let interest = Payment(value: paymentTextField!.text!.toDoubleOption()!)
       
       do {
         try realm.write{
-          (indexPath.section == 0 ? unpaidAmounts : paidAmounts)![indexPath.row].interests.append(interest)
+          (indexPath.section == 0 ? unpaidAmounts : paidAmounts)![indexPath.row].payments.append(interest)
         }
       } catch {
-        self.showToast(title: "⚠ ERROR", message: "Saving amount for \(selectedPerson!.name) failed")
-        print("Error saving the amount for \(selectedPerson!.name): \(error)")
+        self.showToast(title: "⚠ ERROR", message: "saving amount for \(selectedPerson!.name) failed")
+        print("error saving the amount for \(selectedPerson!.name): \(error)")
       }
       
       self.tableView.reloadData()
@@ -175,10 +175,10 @@ extension AmountTableViewController {
   
   private func  rowSelected(_ tableView: UITableView, _ indexPath: IndexPath) {
     let amounts = (indexPath.section == 0 ? unpaidAmounts : paidAmounts)
-    if amounts?[indexPath.row].interests.count == 0 {
+    if amounts?[indexPath.row].payments.count == 0 {
       tableView.cellForRow(at: indexPath)?.shake()
     } else {
-      self.performSegue(withIdentifier: "showAmountInterest", sender: self)
+      self.performSegue(withIdentifier: "showPayments", sender: self)
     }
     tableView.deselectRow(at: indexPath, animated: true)
     
@@ -189,15 +189,16 @@ extension AmountTableViewController {
 extension AmountTableViewController {
   override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
     let amount = (indexPath.section == 0 ? unpaidAmounts : paidAmounts)![indexPath.row]
-      let paidToggleAction = UIContextualAction(style: .normal, title: amount.paid ? "unpaid" : "paid") { _, _, isActionSuccessful in
+    let actionTitle = amount.paid ? "unpaid" : "paid"
+    let paidToggleAction = UIContextualAction(style: .normal, title: actionTitle) { _, _, isActionSuccessful in
         isActionSuccessful(true)
         do {
           try self.realm.write {
             amount.paid = !amount.paid
           }
         } catch {
-          self.showToast(title: "⚠ ERROR", message: "Toggling the paid status for \(amount.moneyValue) failed")
-          print("Error toggling the paid status for \(amount.moneyValue)")
+          self.showToast(title: "⚠ ERROR", message: "toggling the paid status for \(amount.moneyValue) failed")
+          print("error toggling the paid status for \(amount.moneyValue)")
         }
         
         tableView.reloadData()
@@ -220,7 +221,7 @@ extension AmountTableViewController {
           isActionSuccessful(true)
           do {
             try self.realm.write{
-              self.realm.delete(amount.interests)
+              self.realm.delete(amount.payments)
               self.realm.delete(amount)
             }
             tableView.deleteRows(at: [indexPath], with: .automatic)
@@ -228,8 +229,8 @@ extension AmountTableViewController {
             tableView.reloadData()
           } catch {
             tableView.cellForRow(at: indexPath)?.shake()
-            self.showToast(title: "⚠ ERROR", message: "⚠ Failed to delete \(amount.moneyValue)")
-            print("Error deleting amount at row: \(indexPath.row), error: \(error)")
+            self.showToast(title: "⚠ ERROR", message: "failed to delete \(amount.moneyValue)")
+            print("error deleting amount at row: \(indexPath.row), error: \(error)")
           }
       }
       
@@ -243,7 +244,7 @@ extension AmountTableViewController {
       let addInterestAction = UIContextualAction(style: .normal, title: "interest") {_, _, isActionSuccessful in
         self.selectedAmountIndexPath = indexPath
         isActionSuccessful(true)
-        self.addPaidInterest()
+        self.addPayment()
       }
       
       addInterestAction.image = UIImage(systemName: "calendar.badge.plus")
@@ -260,12 +261,12 @@ extension AmountTableViewController {
 // MARK: - Headers and Footers
 extension AmountTableViewController {
   override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-    return section == 0 ? "Unpaid" : "Paid"
+    return section == 0 ? "unpaid (\(unpaidAmounts?.count ?? 0))" : "paid (\(paidAmounts?.count ?? 0))"
   }
   
   override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
     let totalMoney = (section == 0 ? selectedPerson?.totalUnpaid : selectedPerson?.totalPaid) ?? 0.0
-    return "Total \(totalMoney.moneyFormattedString())"
+    return "total \(totalMoney.moneyFormattedString())"
   }
   
   override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
@@ -285,7 +286,7 @@ extension AmountTableViewController {
   // In a storyboard-based application, you will often want to do a little preparation before navigation
   override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
     if let indexPath = tableView.indexPathForSelectedRow {
-      let destinationViewController = segue.destination as! InterestTableViewController
+      let destinationViewController = segue.destination as! PaymentTableViewController
       let amounts = (indexPath.section == 0 ? unpaidAmounts : paidAmounts)
       
       destinationViewController.selectedAmount = amounts![indexPath.row]

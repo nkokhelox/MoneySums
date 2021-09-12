@@ -1,5 +1,5 @@
 //
-//  AmountModel.swift
+//  Amount.swift
 //  MoneySums
 //
 //  Created by Nkokhelo Mhlongo on 2021/08/27.
@@ -8,23 +8,28 @@
 import Foundation
 import RealmSwift
 
-class AmountModel: Object {
+class Amount: Object {
   @objc dynamic var value: Double = 0.0
   @objc dynamic var note: String = ""
   @objc dynamic var paid: Bool = false
-  let interests = List<InterestModel>()
+  let payments = List<Payment>()
   var moneyValue: String {
     return value.moneyFormattedString()
   }
-  var totalInterest: Double {
-    interests.sum(ofProperty: "value")
+  var paymentsTotal: Double {
+    payments.sum(ofProperty: "value")
   }
   
   var detailText: String {
-    note.isEmpty ? "Interest: \(totalInterest.moneyFormattedString())" : note
+    note.isEmpty ? paymentsDetailText : note
   }
   
-  var person = LinkingObjects(fromType: PersonModel.self, property: "amounts")
+  var paymentsDetailText: String {
+    let diff = paymentsTotal - value
+    return (diff < 0 ? "deficit: \((-diff).moneyFormattedString())" : "profit: \(diff.moneyFormattedString())").uppercased()
+  }
+  
+  var person = LinkingObjects(fromType: Person.self, property: "amounts")
   
   convenience init(value: Double, note: String, paid: Bool) {
     self.init()

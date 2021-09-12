@@ -1,5 +1,5 @@
 //
-//  InterestTableTableViewController.swift
+//  PaymentTableViewController.swift
 //  MoneySums
 //
 //  Created by Nkokhelo Mhlongo on 2021/09/11.
@@ -8,20 +8,26 @@
 import UIKit
 import RealmSwift
 
-class InterestTableViewController: UITableViewController {
+class PaymentTableViewController: UITableViewController {
   let realm = try! Realm()
+ 
   var onDismiss: (() -> Void)? = nil
+  
+  @IBOutlet weak var footNote: UILabel!
   @IBOutlet weak var dragPill: UIImageView!
-  var interests: Results<InterestModel>?
-  var selectedAmount: AmountModel? {
+  
+  var payments: Results<Payment>?
+  
+  var selectedAmount: Amount? {
     didSet{
-      loadInterests()
+      loadPayments()
     }
   }
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     view.layer.cornerRadius = 25
-    dragPill.layoutMargins = UIEdgeInsets(top: 80, left: 8, bottom: 8, right: 8)
+    footNote.text = selectedAmount?.paymentsDetailText
     tableView.separatorInset = UIEdgeInsets.zero
   }
   
@@ -29,23 +35,23 @@ class InterestTableViewController: UITableViewController {
     onDismiss?()
   }
   
-  func loadInterests() {
-    self.interests = selectedAmount?.interests.sorted(byKeyPath: "paidDate", ascending: true)
+  func loadPayments() {
+    self.payments = selectedAmount?.payments.sorted(byKeyPath: "paidDate", ascending: false)
     tableView.reloadData()
   }
   
   // MARK: - Table view data source
   
   override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return selectedAmount?.interests.count ?? 0
+    return selectedAmount?.payments.count ?? 0
   }
   
   
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let row = tableView.dequeueReusableCell(withIdentifier: "interestRow", for: indexPath)
     row.textLabel?.font = UIFont.boldSystemFont(ofSize: 16.0)
-    row.textLabel?.text = selectedAmount?.interests[indexPath.row].moneyValue
-    row.detailTextLabel?.text = selectedAmount?.interests[indexPath.row].formattedPaidDate
+    row.textLabel?.text = selectedAmount?.payments[indexPath.row].moneyValue
+    row.detailTextLabel?.text = selectedAmount?.payments[indexPath.row].formattedPaidDate
     return row
   }
   
@@ -54,11 +60,13 @@ class InterestTableViewController: UITableViewController {
   }
   
   override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-    return "Interest for \(selectedAmount!.moneyValue)"
+    let count = payments?.count ?? 0
+    let prefix = count > 1 ? "\(count) payments" : "payment"
+    return "\(prefix) for \(selectedAmount!.moneyValue)"
   }
   
   override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-    return "Total \(selectedAmount!.totalInterest.moneyFormattedString())"
+    return "total \(selectedAmount!.paymentsTotal.moneyFormattedString())"
   }
   
   override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
@@ -73,7 +81,7 @@ class InterestTableViewController: UITableViewController {
   }
   
   override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-    if let interest = interests?[indexPath.row] {
+    if let interest = payments?[indexPath.row] {
       let deletionAction = UIContextualAction(style: .destructive, title: "delete") { _, _, isActionSuccessful in
         isActionSuccessful(true)
         do {
@@ -84,8 +92,8 @@ class InterestTableViewController: UITableViewController {
           tableView.endUpdates()
         } catch {
           tableView.cellForRow(at: indexPath)?.shake()
-          self.showToast(title: "⚠ ERROR", message: "⚠ Failed to delete \(interest.moneyValue)")
-          print("Error deleting amount at row: \(indexPath.row), error: \(error)")
+          self.showToast(title: "⚠ ERROR", message: "⚠ failed to delete \(interest.moneyValue)")
+          print("error deleting amount at row: \(indexPath.row), error: \(error)")
         }
         tableView.reloadData()
       }

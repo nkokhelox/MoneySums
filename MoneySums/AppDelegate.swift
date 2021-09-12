@@ -15,7 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // Override point for customization after application launch.
     UIView.appearance(whenContainedInInstancesOf: [UIAlertController.self]).tintColor = UIColor(named: "AccentColor")
     
-        print(Realm.Configuration.defaultConfiguration.fileURL)
+    print(Realm.Configuration.defaultConfiguration.fileURL)
     
     do{
       let _ = try Realm()

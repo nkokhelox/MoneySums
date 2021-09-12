@@ -44,10 +44,6 @@ extension UITextField {
     inputAccessoryView = numberToolbar
   }
   
-  func addNumberEntryControl() {
-// validate the provided amount
-  }
-  
   // MARK: Private functions
   @objc private func numberEntryDone(nextSelector: Selector) {
     self.resignFirstResponder()

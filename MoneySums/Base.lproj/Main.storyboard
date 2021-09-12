@@ -68,7 +68,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <segue destination="DP9-iY-r7q" kind="presentation" identifier="showAmountInterest" modalPresentationStyle="pageSheet" modalTransitionStyle="coverVertical" id="CCB-ea-Gbg"/>
+                        <segue destination="DP9-iY-r7q" kind="presentation" identifier="showPayments" modalPresentationStyle="pageSheet" modalTransitionStyle="coverVertical" id="CCB-ea-Gbg"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ldW-ZN-2jG" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -78,7 +78,7 @@
         <!--Interest-->
         <scene sceneID="pUW-47-asx">
             <objects>
-                <tableViewController title="Interest" modalPresentationStyle="pageSheet" id="DP9-iY-r7q" customClass="InterestTableViewController" customModule="MoneySums" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController title="Interest" modalPresentationStyle="pageSheet" id="DP9-iY-r7q" customClass="PaymentTableViewController" customModule="MoneySums" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="bottom" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="prototypes" style="insetGrouped" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="h5E-Bd-BSU">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -90,6 +90,13 @@
                             <imageReference key="image" image="minus" catalog="system" symbolScale="large"/>
                             <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="50" scale="large" weight="regular"/>
                         </imageView>
+                        <label key="tableFooterView" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="difference" textAlignment="center" lineBreakMode="characterWrap" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="8" id="98d-dD-Ksl">
+                            <rect key="frame" x="0.0" y="122" width="414" height="44"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
+                            <color key="textColor" systemColor="tertiaryLabelColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="interestRow" textLabel="u4o-Ec-oUV" detailTextLabel="x4w-N8-y9i" style="IBUITableViewCellStyleSubtitle" id="ZMB-eT-2jQ">
                                 <rect key="frame" x="20" y="60.5" width="374" height="43.5"/>
@@ -126,6 +133,7 @@
                     <navigationItem key="navigationItem" id="yy2-ts-MIw"/>
                     <connections>
                         <outlet property="dragPill" destination="wRO-rz-PAa" id="fsw-jS-6Qi"/>
+                        <outlet property="footNote" destination="98d-dD-Ksl" id="fY7-nu-O3R"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="w4Y-HU-V6y" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -237,6 +245,9 @@
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="tertiaryLabelColor">
+            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
