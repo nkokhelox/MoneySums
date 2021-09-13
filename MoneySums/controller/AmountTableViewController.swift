@@ -166,14 +166,6 @@ extension AmountTableViewController {
   }
   
   override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    self.rowSelected(tableView, indexPath)
-  }
-  
-  override func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
-    self.rowSelected(tableView, indexPath)
-  }
-  
-  private func  rowSelected(_ tableView: UITableView, _ indexPath: IndexPath) {
     let amounts = (indexPath.section == 0 ? unpaidAmounts : paidAmounts)
     if amounts?[indexPath.row].payments.count == 0 {
       tableView.cellForRow(at: indexPath)?.shake()
@@ -181,7 +173,19 @@ extension AmountTableViewController {
       self.performSegue(withIdentifier: "showPayments", sender: self)
     }
     tableView.deselectRow(at: indexPath, animated: true)
+  }
+  
+  override func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
+    let amount = (indexPath.section == 0 ? unpaidAmounts : paidAmounts)![indexPath.row]
+    let alert = UIAlertController(
+      title: amount.value.moneyFormattedString(),
+      message: amount.detailText,
+      preferredStyle: .alert
+    )
     
+    alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+    
+    self.present(alert, animated: true)
   }
 }
 
@@ -247,7 +251,7 @@ extension AmountTableViewController {
         self.addPayment()
       }
       
-      addInterestAction.image = UIImage(systemName: "calendar.badge.plus")
+      addInterestAction.image = UIImage(systemName: "text.badge.plus")
       addInterestAction.backgroundColor = UIColor(named: "adaTeal")
       
       let config = UISwipeActionsConfiguration(actions: [addInterestAction])

@@ -26,7 +26,6 @@ class PaymentTableViewController: UITableViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    view.layer.cornerRadius = 25
     footNote.text = selectedAmount?.paymentsDetailText
     tableView.separatorInset = UIEdgeInsets.zero
   }
