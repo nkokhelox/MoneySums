@@ -94,7 +94,7 @@ extension AmountTableViewController {
   }
 }
 
-// MARK: Add interest alert methods
+// MARK: Add payment alert methods
 extension AmountTableViewController {
   func addPayment() {
     if let indexPath = selectedAmountIndexPath {
@@ -104,7 +104,7 @@ extension AmountTableViewController {
       
       let alert = UIAlertController(
         title: "add payment for \(amount.moneyValue)",
-        message: amount.note,
+        message: amount.note.truncate(maxLength: 200, withEllipsis: true),
         preferredStyle: .alert
       )
       
@@ -156,7 +156,7 @@ extension AmountTableViewController {
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let row = tableView.dequeueReusableCell(withIdentifier: "amountRow", for: indexPath)
     let amount = (indexPath.section == 0 ? unpaidAmounts : paidAmounts)?[indexPath.row]
-
+    
     row.accessoryType = amount?.paid == true ? .checkmark : .detailButton
     row.textLabel?.font = UIFont.boldSystemFont(ofSize: 16.0)
     row.detailTextLabel?.text = amount?.detailText
@@ -168,7 +168,7 @@ extension AmountTableViewController {
   override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     let amounts = (indexPath.section == 0 ? unpaidAmounts : paidAmounts)
     if amounts?[indexPath.row].payments.count == 0 {
-      tableView.cellForRow(at: indexPath)?.shake()
+      showAmountInfo(indexPath)
     } else {
       self.performSegue(withIdentifier: "showPayments", sender: self)
     }
@@ -176,6 +176,10 @@ extension AmountTableViewController {
   }
   
   override func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
+    showAmountInfo(indexPath)
+  }
+  
+  func showAmountInfo(_ indexPath: IndexPath){
     let amount = (indexPath.section == 0 ? unpaidAmounts : paidAmounts)![indexPath.row]
     let alert = UIAlertController(
       title: amount.value.moneyFormattedString(),
@@ -195,26 +199,26 @@ extension AmountTableViewController {
     let amount = (indexPath.section == 0 ? unpaidAmounts : paidAmounts)![indexPath.row]
     let actionTitle = amount.paid ? "unpaid" : "paid"
     let paidToggleAction = UIContextualAction(style: .normal, title: actionTitle) { _, _, isActionSuccessful in
-        isActionSuccessful(true)
-        do {
-          try self.realm.write {
-            amount.paid = !amount.paid
-          }
-        } catch {
-          self.showToast(title: "⚠ ERROR", message: "toggling the paid status for \(amount.moneyValue) failed")
-          print("error toggling the paid status for \(amount.moneyValue)")
+      isActionSuccessful(true)
+      do {
+        try self.realm.write {
+          amount.paid = !amount.paid
         }
-        
-        tableView.reloadData()
+      } catch {
+        self.showToast(title: "⚠ ERROR", message: "toggling the paid status for \(amount.moneyValue) failed")
+        print("error toggling the paid status for \(amount.moneyValue)")
       }
       
-      paidToggleAction.image = UIImage(systemName: amount.paid ? "xmark" : "checkmark")
-      paidToggleAction.backgroundColor = UIColor(named: amount.paid ? "adaOrange" : "adaTeal")
-      
-      let config = UISwipeActionsConfiguration(actions: [paidToggleAction])
-      config.performsFirstActionWithFullSwipe = false
+      tableView.reloadData()
+    }
     
-      return config
+    paidToggleAction.image = UIImage(systemName: amount.paid ? "xmark" : "checkmark")
+    paidToggleAction.backgroundColor = UIColor(named: amount.paid ? "adaOrange" : "adaTeal")
+    
+    let config = UISwipeActionsConfiguration(actions: [paidToggleAction])
+    config.performsFirstActionWithFullSwipe = false
+    
+    return config
   }
   
   override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
@@ -222,20 +226,20 @@ extension AmountTableViewController {
     
     if amount.paid {
       let deletionAction = UIContextualAction(style: .destructive, title: "delete") { _, _, isActionSuccessful in
-          isActionSuccessful(true)
-          do {
-            try self.realm.write{
-              self.realm.delete(amount.payments)
-              self.realm.delete(amount)
-            }
-            tableView.deleteRows(at: [indexPath], with: .automatic)
-            tableView.endUpdates()
-            tableView.reloadData()
-          } catch {
-            tableView.cellForRow(at: indexPath)?.shake()
-            self.showToast(title: "⚠ ERROR", message: "failed to delete \(amount.moneyValue)")
-            print("error deleting amount at row: \(indexPath.row), error: \(error)")
+        isActionSuccessful(true)
+        do {
+          try self.realm.write{
+            self.realm.delete(amount.payments)
+            self.realm.delete(amount)
           }
+          tableView.deleteRows(at: [indexPath], with: .automatic)
+          tableView.endUpdates()
+          tableView.reloadData()
+        } catch {
+          tableView.cellForRow(at: indexPath)?.shake()
+          self.showToast(title: "⚠ ERROR", message: "failed to delete \(amount.moneyValue)")
+          print("error deleting amount at row: \(indexPath.row), error: \(error)")
+        }
       }
       
       deletionAction.image = UIImage(systemName: "trash.fill")
