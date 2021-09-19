@@ -25,8 +25,12 @@ class Amount: Object {
   }
   
   var paymentsDetailText: String {
-    let diff = paymentsTotal - value
-    return (diff < 0 ? "deficit: \((-diff).moneyFormattedString())" : "profit: \(diff.moneyFormattedString())").uppercased()
+    let diff = paymentsDifference
+    return String(format: diff < 0 ? "deficit: %@" : diff > 0 ? "profit: %@" : "Balance: %@", diff.moneyFormattedString()).uppercased()
+  }
+  
+  var paymentsDifference: Double {
+     paymentsTotal - value
   }
   
   var person = LinkingObjects(fromType: Person.self, property: "amounts")

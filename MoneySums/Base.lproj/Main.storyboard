@@ -18,7 +18,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="separatorColor" name="adaTeal"/>
-                        <searchBar key="tableHeaderView" contentMode="redraw" id="DhF-qS-Cpc">
+                        <searchBar key="tableHeaderView" contentMode="redraw" searchBarStyle="minimal" id="DhF-qS-Cpc">
                             <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             <textInputTraits key="textInputTraits"/>
@@ -86,6 +86,7 @@
                         <imageView key="tableHeaderView" clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.5" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="wRO-rz-PAa">
                             <rect key="frame" x="0.0" y="0.0" width="414" height="11"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" name="adaTeal"/>
                             <color key="tintColor" name="AccentColor"/>
                             <imageReference key="image" image="minus" catalog="system" symbolScale="large"/>
                             <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="50" scale="large" weight="regular"/>
@@ -166,10 +167,10 @@
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="cHh-1f-jrA">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="separatorColor" name="adaTeal"/>
-                        <searchBar key="tableHeaderView" contentMode="redraw" id="fI6-SF-c3f">
-                            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                        <searchBar key="tableHeaderView" contentMode="redraw" searchBarStyle="minimal" id="fI6-SF-c3f">
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="51"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             <textInputTraits key="textInputTraits"/>
                             <connections>
@@ -178,7 +179,7 @@
                         </searchBar>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="personRow" textLabel="sPl-Q1-fYL" detailTextLabel="twp-wb-k6E" style="IBUITableViewCellStyleSubtitle" id="f44-kL-cma">
-                                <rect key="frame" x="0.0" y="93.5" width="414" height="43.5"/>
+                                <rect key="frame" x="0.0" y="100.5" width="414" height="43.5"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="f44-kL-cma" id="Nzb-VW-Pb6">
                                     <rect key="frame" x="0.0" y="0.0" width="384.5" height="43.5"/>
@@ -242,9 +243,6 @@
         </namedColor>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="tertiaryLabelColor">
             <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="sRGB"/>

@@ -16,7 +16,7 @@ class PeopleTableViewController: UITableViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     tableView.separatorInset = UIEdgeInsets.zero
-    UITableViewHeaderFooterView.appearance().tintColor = UIColor(named: "adaTeal")
+    UITableViewHeaderFooterView.appearance().tintColor = UIColor.adaTeal
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -26,7 +26,7 @@ class PeopleTableViewController: UITableViewController {
   @IBAction func addPerson(_ sender: UIBarButtonItem) {
     let alert = UIAlertController(
       title: "add a person",
-      message: "person you have money relationship with.",
+      message: "someone you have money relationship with.",
       preferredStyle: .alert
     )
     
@@ -79,11 +79,15 @@ class PeopleTableViewController: UITableViewController {
   
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let row = tableView.dequeueReusableCell(withIdentifier: "personRow", for: indexPath)
+    let person = people?[indexPath.row]
     
     row.accessoryType = .disclosureIndicator
+    row.textLabel?.text = person?.name.capitalized
     row.textLabel?.font = UIFont.boldSystemFont(ofSize: 16.0)
-    row.textLabel?.text = people?[indexPath.row].name.capitalized
-    row.detailTextLabel?.text = people?[indexPath.row].totalUnpaid.moneyFormattedString()
+    
+    row.detailTextLabel?.text = person?.totalUnpaid.moneyFormattedString()
+    row.detailTextLabel?.textColor = (person?.totalUnpaid ?? 0) == 0 ? UIColor.adaAccentColor : (person?.totalUnpaid ?? 0 > 0) ? UIColor.adaTeal : UIColor.adaOrange
+    
     return row
   }
   

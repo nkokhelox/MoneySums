@@ -27,6 +27,9 @@ class PaymentTableViewController: UITableViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     footNote.text = selectedAmount?.paymentsDetailText
+    footNote.alpha = (selectedAmount?.paymentsDifference ?? 0) == 0 ? 0.3 : 0.5
+    footNote.textColor = (selectedAmount?.paymentsDifference ?? 0) == 0 ? UIColor.adaAccentColor : (selectedAmount?.paymentsTotal ?? 0 > 0) ? UIColor.adaOrange : UIColor.adaTeal
+    
     tableView.separatorInset = UIEdgeInsets.zero
   }
   

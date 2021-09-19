@@ -156,11 +156,16 @@ extension AmountTableViewController {
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let row = tableView.dequeueReusableCell(withIdentifier: "amountRow", for: indexPath)
     let amount = (indexPath.section == 0 ? unpaidAmounts : paidAmounts)?[indexPath.row]
-    
+    let diff = amount!.paymentsTotal - amount!.value
+
     row.accessoryType = amount?.paid == true ? .checkmark : .detailButton
+    row.accessoryView?.backgroundColor = .red
+    
     row.textLabel?.font = UIFont.boldSystemFont(ofSize: 16.0)
-    row.detailTextLabel?.text = amount?.detailText
     row.textLabel?.text = amount?.moneyValue
+    
+    row.detailTextLabel?.textColor = diff == 0 ? UIColor.adaAccentColor : diff > 0 ? UIColor.adaTeal : UIColor.adaOrange
+    row.detailTextLabel?.text = amount?.detailText
     
     return row
   }
