@@ -12,6 +12,7 @@ class Amount: Object {
   @objc dynamic var value: Double = 0.0
   @objc dynamic var note: String = ""
   @objc dynamic var paid: Bool = false
+  @objc dynamic var dateCreated: Date = Date()
   let payments = List<Payment>()
   var moneyValue: String {
     return value.moneyFormattedString()
@@ -26,7 +27,7 @@ class Amount: Object {
   
   var paymentsDetailText: String {
     let diff = paymentsDifference
-    return String(format: diff < 0 ? "deficit: %@" : diff > 0 ? "profit: %@" : "Balance: %@", diff.moneyFormattedString()).uppercased()
+    return String(format: diff < 0 ? "deficit: %@" : diff > 0 ? "profit: %@" : "balance: %@", diff.moneyFormattedString()).uppercased()
   }
   
   var paymentsDifference: Double {
