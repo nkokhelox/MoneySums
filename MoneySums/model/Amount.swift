@@ -13,21 +13,26 @@ class Amount: Object {
   @objc dynamic var note: String = ""
   @objc dynamic var paid: Bool = false
   @objc dynamic var dateCreated: Date = Date()
+  
   let payments = List<Payment>()
+  
   var moneyValue: String {
     return value.moneyFormattedString()
   }
+  
   var paymentsTotal: Double {
     payments.sum(ofProperty: "value")
   }
   
   var detailText: String {
-    note.isEmpty ? paymentsDetailText : note
+    let detail = note.isEmpty ? paymentsDetailText : note
+    let dateCreated = dateCreated.niceDescription()
+    return String(format: "%@ - %@", dateCreated, detail)
   }
   
   var paymentsDetailText: String {
     let diff = paymentsDifference
-    return String(format: diff < 0 ? "deficit: %@" : diff > 0 ? "profit: %@" : "balance: %@", diff.moneyFormattedString()).uppercased()
+    return String(format: diff < 0 ? "deficit: %@" : diff > 0 ? "profit: %@" : "squince", abs(diff).moneyFormattedString()).capitalized
   }
   
   var paymentsDifference: Double {

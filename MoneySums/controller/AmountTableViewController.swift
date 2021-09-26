@@ -9,7 +9,7 @@ import UIKit
 import RealmSwift
 
 class AmountTableViewController: UITableViewController {
-  let realm = try! Realm()
+  let realm = try! Realm(configuration: Realm.Configuration(schemaVersion: 2))
   
   var paidAmounts: Results<Amount>?
   var unpaidAmounts: Results<Amount>?
@@ -94,7 +94,7 @@ extension AmountTableViewController {
   }
 }
 
-// MARK: Add payment alert methods
+// MARK: Payment alert methods
 extension AmountTableViewController {
   func addPayment() {
     if let indexPath = selectedAmountIndexPath {
@@ -141,6 +141,19 @@ extension AmountTableViewController {
       self.tableView.reloadData()
     }
   }
+  
+  func showAmountInfo(_ indexPath: IndexPath){
+    let amount = (indexPath.section == 0 ? unpaidAmounts : paidAmounts)![indexPath.row]
+    let alert = UIAlertController(
+      title: amount.value.moneyFormattedString(),
+      message: amount.detailText,
+      preferredStyle: .alert
+    )
+    
+    alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: {_ in self.tableView.reloadData()}))
+    
+    self.present(alert, animated: true)
+  }
 }
 
 // MARK: TableView DataSource methods
@@ -164,7 +177,7 @@ extension AmountTableViewController {
     row.textLabel?.font = UIFont.boldSystemFont(ofSize: 16.0)
     row.textLabel?.text = amount?.moneyValue
     
-    row.detailTextLabel?.textColor = diff == 0 ? UIColor.adaAccentColor : diff > 0 ? UIColor.adaTeal : UIColor.adaOrange
+    row.detailTextLabel?.textColor = diff == 0 ? UIColor.secondaryLabel : diff > 0 ? UIColor.adaTeal : UIColor.adaOrange
     row.detailTextLabel?.text = amount?.detailText
     
     return row
@@ -182,19 +195,6 @@ extension AmountTableViewController {
   
   override func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
     showAmountInfo(indexPath)
-  }
-  
-  func showAmountInfo(_ indexPath: IndexPath){
-    let amount = (indexPath.section == 0 ? unpaidAmounts : paidAmounts)![indexPath.row]
-    let alert = UIAlertController(
-      title: amount.value.moneyFormattedString(),
-      message: amount.detailText,
-      preferredStyle: .alert
-    )
-    
-    alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
-    
-    self.present(alert, animated: true)
   }
 }
 

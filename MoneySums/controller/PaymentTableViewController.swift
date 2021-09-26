@@ -9,7 +9,7 @@ import UIKit
 import RealmSwift
 
 class PaymentTableViewController: UITableViewController {
-  let realm = try! Realm()
+  let realm = try! Realm(configuration: Realm.Configuration(schemaVersion: 2))
  
   var onDismiss: (() -> Void)? = nil
   
@@ -26,7 +26,7 @@ class PaymentTableViewController: UITableViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    footNote.text = selectedAmount?.paymentsDetailText
+    footNote.text = selectedAmount?.paymentsDetailText.uppercased()
     footNote.alpha = (selectedAmount?.paymentsDifference ?? 0) == 0 ? 0.3 : 0.5
     footNote.textColor = (selectedAmount?.paymentsDifference ?? 0) == 0 ? UIColor.adaAccentColor : (selectedAmount?.paymentsTotal ?? 0 > 0) ? UIColor.adaOrange : UIColor.adaTeal
     
@@ -53,7 +53,7 @@ class PaymentTableViewController: UITableViewController {
     let row = tableView.dequeueReusableCell(withIdentifier: "interestRow", for: indexPath)
     row.textLabel?.font = UIFont.boldSystemFont(ofSize: 16.0)
     row.textLabel?.text = selectedAmount?.payments[indexPath.row].moneyValue
-    row.detailTextLabel?.text = selectedAmount?.payments[indexPath.row].formattedPaidDate
+    row.detailTextLabel?.text = selectedAmount?.payments[indexPath.row].paidDate.niceDescription()
     return row
   }
   

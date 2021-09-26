@@ -9,7 +9,7 @@ import UIKit
 import RealmSwift
 
 class PeopleTableViewController: UITableViewController {
-  let realm = try! Realm()
+  let realm = try! Realm(configuration: Realm.Configuration(schemaVersion: 2))
   var people: Results<Person>?
   var nameTextField: UITextField? = nil
   
