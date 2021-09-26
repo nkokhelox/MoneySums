@@ -16,8 +16,12 @@ class PeopleTableViewController: UITableViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    
     tableView.separatorInset = UIEdgeInsets.zero
     UITableViewHeaderFooterView.appearance().tintColor = UIColor.adaTeal
+    
+    refreshControl = UIRefreshControl()
+    refreshControl?.addTarget(self, action: #selector(self.loadPeople), for: .valueChanged)
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -26,6 +30,7 @@ class PeopleTableViewController: UITableViewController {
   
   func updateLoadTime() {
     lastDataLoadTime.text = "Last load @ \(Date().hms())"
+    self.refreshControl?.endRefreshing()
   }
   
   @IBAction func addPerson(_ sender: UIBarButtonItem) {
@@ -63,7 +68,7 @@ class PeopleTableViewController: UITableViewController {
     nameTextField = textField
   }
   
-  func loadPeople() {
+  @objc func loadPeople() {
     people = realm.objects(Person.self).sorted(byKeyPath: "name", ascending: true)
     tableView.reloadData(completion: self.updateLoadTime)
   }

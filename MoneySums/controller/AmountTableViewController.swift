@@ -30,6 +30,9 @@ class AmountTableViewController: UITableViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     tableView.separatorInset = UIEdgeInsets.zero
+    
+    refreshControl = UIRefreshControl()
+    refreshControl?.addTarget(self, action: #selector(self.loadAmounts), for: .valueChanged)
   }
   
   @IBAction func addAmount(_ sender: UIBarButtonItem) {
@@ -48,7 +51,7 @@ class AmountTableViewController: UITableViewController {
     self.present(alert, animated: true)
   }
   
-  func loadAmounts() {
+  @objc func loadAmounts() {
     self.paidAmounts = selectedPerson?.amounts.sorted(byKeyPath: "value", ascending: false).filter("paid == %@", true)
     self.unpaidAmounts = selectedPerson?.amounts.sorted(byKeyPath: "value", ascending: false).filter("paid == %@", false)
     tableView.reloadData(completion: self.updateLoadTime)
@@ -56,6 +59,7 @@ class AmountTableViewController: UITableViewController {
   
   func updateLoadTime() {
     lastDataLoadTime.text = "Last load @ \(Date().hms())"
+    self.refreshControl?.endRefreshing()
   }
 }
 
