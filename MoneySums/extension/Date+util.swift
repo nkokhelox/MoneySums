@@ -8,6 +8,13 @@
 import Foundation
 
 extension Date {
+  func hms() -> String {
+    let dateFormatter = DateFormatter()
+    dateFormatter.locale = NSLocale.current
+    dateFormatter.dateFormat = "HH:mm:ss"
+    return dateFormatter.string(from: self)
+  }
+  
   func niceDescription() -> String {
     let secondsAgo = Int(Date().timeIntervalSince(self))
     let minute = 60

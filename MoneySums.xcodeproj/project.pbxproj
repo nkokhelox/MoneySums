@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		6C560AEA47F11B37B91072D2 /* Pods_MoneySums.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73AC4140A0767481DA214FE5 /* Pods_MoneySums.framework */; };
 		AC05AD0827000BCF006CAEBB /* Date+util.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC05AD0727000BCF006CAEBB /* Date+util.swift */; };
+		AC05AD0B27003DDF006CAEBB /* UITableView+util.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC05AD0A27003DDF006CAEBB /* UITableView+util.swift */; };
 		AC6F1A3126F68DA1003EE04E /* UIColor+util.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC6F1A3026F68DA1003EE04E /* UIColor+util.swift */; };
 		AC98631126EDAAF6008C8DA4 /* AmountTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC98630E26EDAAF6008C8DA4 /* AmountTableViewController.swift */; };
 		AC98631226EDAAF6008C8DA4 /* PeopleTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC98630F26EDAAF6008C8DA4 /* PeopleTableViewController.swift */; };
@@ -32,6 +33,7 @@
 		0817054EE101C7FD45A277DD /* Pods-MoneySums.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MoneySums.debug.xcconfig"; path = "Target Support Files/Pods-MoneySums/Pods-MoneySums.debug.xcconfig"; sourceTree = "<group>"; };
 		73AC4140A0767481DA214FE5 /* Pods_MoneySums.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MoneySums.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AC05AD0727000BCF006CAEBB /* Date+util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+util.swift"; sourceTree = "<group>"; };
+		AC05AD0A27003DDF006CAEBB /* UITableView+util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+util.swift"; sourceTree = "<group>"; };
 		AC6F1A3026F68DA1003EE04E /* UIColor+util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+util.swift"; sourceTree = "<group>"; };
 		AC98630E26EDAAF6008C8DA4 /* AmountTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AmountTableViewController.swift; sourceTree = "<group>"; };
 		AC98630F26EDAAF6008C8DA4 /* PeopleTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeopleTableViewController.swift; sourceTree = "<group>"; };
@@ -113,6 +115,7 @@
 				AC98631926EDAB1A008C8DA4 /* UIView+util.swift */,
 				AC6F1A3026F68DA1003EE04E /* UIColor+util.swift */,
 				AC05AD0727000BCF006CAEBB /* Date+util.swift */,
+				AC05AD0A27003DDF006CAEBB /* UITableView+util.swift */,
 			);
 			path = extension;
 			sourceTree = "<group>";
@@ -148,14 +151,14 @@
 		ACE2B85D26C061B900755CF2 /* MoneySums */ = {
 			isa = PBXGroup;
 			children = (
-				AC05AD0927003981006CAEBB /* storyboards */,
-				ACE0953626F134F6008A67D1 /* MoneySums.entitlements */,
 				AC98630D26EDAAF6008C8DA4 /* controller */,
 				AC98631426EDAB1A008C8DA4 /* extension */,
 				AC98631F26EDAB28008C8DA4 /* model */,
+				AC05AD0927003981006CAEBB /* storyboards */,
+				ACE2B86726C061BA00755CF2 /* Assets.xcassets */,
 				ACE2B85E26C061B900755CF2 /* AppDelegate.swift */,
 				ACE2B86026C061B900755CF2 /* SceneDelegate.swift */,
-				ACE2B86726C061BA00755CF2 /* Assets.xcassets */,
+				ACE0953626F134F6008A67D1 /* MoneySums.entitlements */,
 				ACE2B86C26C061BA00755CF2 /* Info.plist */,
 			);
 			path = MoneySums;
@@ -286,6 +289,7 @@
 				AC6F1A3126F68DA1003EE04E /* UIColor+util.swift in Sources */,
 				AC98631326EDAAF6008C8DA4 /* PaymentTableViewController.swift in Sources */,
 				ACE2B85F26C061B900755CF2 /* AppDelegate.swift in Sources */,
+				AC05AD0B27003DDF006CAEBB /* UITableView+util.swift in Sources */,
 				AC98631226EDAAF6008C8DA4 /* PeopleTableViewController.swift in Sources */,
 				AC98631D26EDAB1A008C8DA4 /* Double+util.swift in Sources */,
 				AC98631A26EDAB1A008C8DA4 /* UIViewController+util.swift in Sources */,

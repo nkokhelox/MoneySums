@@ -18,6 +18,7 @@ class AmountTableViewController: UITableViewController {
   var noteTextField: UITextField? = nil
   var amountTextField: UITextField? = nil
   var paymentTextField: UITextField? = nil
+  @IBOutlet weak var lastDataLoadTime: UILabel!
   
   var selectedPerson: Person? {
     didSet {
@@ -50,7 +51,11 @@ class AmountTableViewController: UITableViewController {
   func loadAmounts() {
     self.paidAmounts = selectedPerson?.amounts.sorted(byKeyPath: "value", ascending: false).filter("paid == %@", true)
     self.unpaidAmounts = selectedPerson?.amounts.sorted(byKeyPath: "value", ascending: false).filter("paid == %@", false)
-    tableView.reloadData()
+    tableView.reloadData(completion: self.updateLoadTime)
+  }
+  
+  func updateLoadTime() {
+    lastDataLoadTime.text = "Last load @ \(Date().hms())"
   }
 }
 
@@ -90,7 +95,7 @@ extension AmountTableViewController {
       }
     }
     
-    self.tableView.reloadData()
+    self.tableView.reloadData(completion: self.updateLoadTime)
   }
 }
 
@@ -138,7 +143,7 @@ extension AmountTableViewController {
         print("error saving the amount for \(selectedPerson!.name): \(error)")
       }
       
-      self.tableView.reloadData()
+      self.tableView.reloadData(completion: self.updateLoadTime)
     }
   }
   
@@ -150,7 +155,7 @@ extension AmountTableViewController {
       preferredStyle: .alert
     )
     
-    alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: {_ in self.tableView.reloadData()}))
+    alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: {_ in self.tableView.reloadData(completion: self.updateLoadTime)}))
     
     self.present(alert, animated: true)
   }
@@ -214,7 +219,7 @@ extension AmountTableViewController {
         print("error toggling the paid status for \(amount.moneyValue)")
       }
       
-      tableView.reloadData()
+      tableView.reloadData(completion: self.updateLoadTime)
     }
     
     paidToggleAction.image = UIImage(systemName: amount.paid ? "xmark" : "checkmark")
@@ -303,7 +308,7 @@ extension AmountTableViewController {
       let amounts = (indexPath.section == 0 ? unpaidAmounts : paidAmounts)
       
       destinationViewController.selectedAmount = amounts![indexPath.row]
-      destinationViewController.onDismiss = {[weak self] in self?.tableView.reloadData()}
+      destinationViewController.onDismiss = {[weak self] in self?.tableView.reloadData(completion: self!.updateLoadTime)}
       tableView.deselectRow(at: indexPath, animated: true)
     }
   }
@@ -328,7 +333,7 @@ extension AmountTableViewController : UISearchBarDelegate {
       } else {
         paidAmounts = paidAmounts?.filter("note CONTAINS[cd] %@", searchText).sorted(byKeyPath: "value", ascending: false)
         unpaidAmounts = unpaidAmounts?.filter("note CONTAINS[cd] %@", searchText).sorted(byKeyPath: "value", ascending: false)
-        tableView.reloadData()
+        tableView.reloadData(completion: self.updateLoadTime)
       }
     }
   }

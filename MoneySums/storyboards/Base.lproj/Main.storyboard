@@ -15,7 +15,7 @@
             <objects>
                 <tableViewController title="Amounts" id="Zo5-hB-ygb" customClass="AmountTableViewController" customModule="MoneySums" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="prototypes" style="insetGrouped" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="bSj-VS-sFH">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="808"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="separatorColor" name="adaTeal"/>
                         <searchBar key="tableHeaderView" contentMode="redraw" searchBarStyle="minimal" id="DhF-qS-Cpc">
@@ -26,6 +26,13 @@
                                 <outlet property="delegate" destination="Zo5-hB-ygb" id="VxT-EW-a6B"/>
                             </connections>
                         </searchBar>
+                        <label key="tableFooterView" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="last data load time" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="zx7-K3-3me">
+                            <rect key="frame" x="0.0" y="757" width="414" height="44"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="8"/>
+                            <color key="textColor" systemColor="tertiaryLabelColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="amountRow" textLabel="e3O-U4-E2K" detailTextLabel="u30-cC-GY2" style="IBUITableViewCellStyleSubtitle" id="ieW-yO-gcP">
                                 <rect key="frame" x="20" y="93.5" width="374" height="43.5"/>
@@ -68,6 +75,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="lastDataLoadTime" destination="zx7-K3-3me" id="w4H-tb-zwc"/>
                         <segue destination="DP9-iY-r7q" kind="presentation" identifier="showPayments" modalPresentationStyle="pageSheet" modalTransitionStyle="coverVertical" id="CCB-ea-Gbg"/>
                     </connections>
                 </tableViewController>
@@ -80,7 +88,7 @@
             <objects>
                 <tableViewController title="Interest" modalPresentationStyle="pageSheet" id="DP9-iY-r7q" customClass="PaymentTableViewController" customModule="MoneySums" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="bottom" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="prototypes" style="insetGrouped" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="h5E-Bd-BSU">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="separatorColor" name="adaTeal"/>
                         <imageView key="tableHeaderView" clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.5" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="wRO-rz-PAa">
@@ -165,7 +173,7 @@
             <objects>
                 <tableViewController id="Vzt-Ja-SBP" customClass="PeopleTableViewController" customModule="MoneySums" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="cHh-1f-jrA">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="808"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="separatorColor" name="adaTeal"/>
@@ -177,6 +185,13 @@
                                 <outlet property="delegate" destination="Vzt-Ja-SBP" id="ran-4H-oOd"/>
                             </connections>
                         </searchBar>
+                        <label key="tableFooterView" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="last data load time" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Ln8-S9-DCa">
+                            <rect key="frame" x="0.0" y="764" width="414" height="44"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="8"/>
+                            <color key="textColor" systemColor="tertiaryLabelColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="personRow" textLabel="sPl-Q1-fYL" detailTextLabel="twp-wb-k6E" style="IBUITableViewCellStyleSubtitle" id="f44-kL-cma">
                                 <rect key="frame" x="0.0" y="100.5" width="414" height="43.5"/>
@@ -221,6 +236,7 @@
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="lastDataLoadTime" destination="Ln8-S9-DCa" id="rUo-rv-swm"/>
                         <segue destination="Zo5-hB-ygb" kind="show" identifier="showAmounts" id="ixp-tA-7aj"/>
                     </connections>
                 </tableViewController>

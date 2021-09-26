@@ -12,6 +12,7 @@ class PeopleTableViewController: UITableViewController {
   let realm = try! Realm(configuration: Realm.Configuration(schemaVersion: 2))
   var people: Results<Person>?
   var nameTextField: UITextField? = nil
+  @IBOutlet weak var lastDataLoadTime: UILabel!
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -21,6 +22,10 @@ class PeopleTableViewController: UITableViewController {
   
   override func viewWillAppear(_ animated: Bool) {
     loadPeople()
+  }
+  
+  func updateLoadTime() {
+    lastDataLoadTime.text = "Last load @ \(Date().hms())"
   }
   
   @IBAction func addPerson(_ sender: UIBarButtonItem) {
@@ -48,7 +53,7 @@ class PeopleTableViewController: UITableViewController {
     } catch {
       print("failed to save a person: \(error)")
     }
-    tableView.reloadData()
+    tableView.reloadData(completion: self.updateLoadTime)
   }
   
   func nameTextField(_ textField: UITextField) {
@@ -60,7 +65,7 @@ class PeopleTableViewController: UITableViewController {
   
   func loadPeople() {
     people = realm.objects(Person.self).sorted(byKeyPath: "name", ascending: true)
-    tableView.reloadData()
+    tableView.reloadData(completion: self.updateLoadTime)
   }
   
   // MARK: - Table view data source
@@ -118,7 +123,7 @@ class PeopleTableViewController: UITableViewController {
           }
           tableView.deleteRows(at: [indexPath], with: .automatic)
           tableView.endUpdates()
-          tableView.reloadData()
+          tableView.reloadData(completion: self.updateLoadTime)
         } catch {
           self.showToast(title: "⚠ ERROR", message: "⚠ failed to delete \((self.people?[indexPath.row].name)!)")
           print("error deleting person at row: \(indexPath.row), error: \(error)")
@@ -166,7 +171,7 @@ extension PeopleTableViewController : UISearchBarDelegate {
         self.loadPeople()
       } else {
         people = people?.filter("name CONTAINS[cd] %@", searchText).sorted(byKeyPath: "name", ascending: true)
-        tableView.reloadData()
+        tableView.reloadData(completion: self.updateLoadTime)
       }
     }
   }
