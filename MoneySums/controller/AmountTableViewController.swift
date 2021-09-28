@@ -311,8 +311,17 @@ extension AmountTableViewController {
       let destinationViewController = segue.destination as! PaymentTableViewController
       let amounts = (indexPath.section == 0 ? unpaidAmounts : paidAmounts)
       
-      destinationViewController.selectedAmount = amounts![indexPath.row]
       destinationViewController.onDismiss = {[weak self] in self?.tableView.reloadData(completion: self!.updateLoadTime)}
+      destinationViewController.selectedAmount = amounts![indexPath.row]
+      if #available(iOS 15.0, *) {
+        if let sheet = destinationViewController.sheetPresentationController {
+          sheet.detents = [.medium(), .large()]
+          sheet.largestUndimmedDetentIdentifier = .large
+          sheet.prefersEdgeAttachedInCompactHeight = true
+          sheet.prefersScrollingExpandsWhenScrolledToEdge = true
+          sheet.widthFollowsPreferredContentSizeWhenEdgeAttached = true
+        }
+      }
       tableView.deselectRow(at: indexPath, animated: true)
     }
   }
