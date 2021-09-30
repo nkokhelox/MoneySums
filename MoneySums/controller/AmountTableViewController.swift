@@ -52,8 +52,8 @@ class AmountTableViewController: UITableViewController {
   }
   
   @objc func loadAmounts() {
-    self.paidAmounts = selectedPerson?.amounts.sorted(byKeyPath: "value", ascending: false).filter("paid == %@", true)
-    self.unpaidAmounts = selectedPerson?.amounts.sorted(byKeyPath: "value", ascending: false).filter("paid == %@", false)
+    self.paidAmounts = selectedPerson?.amounts.sorted(byKeyPath: "dateCreated", ascending: true).sorted(byKeyPath: "value", ascending: true).filter("paid == %@", true)
+    self.unpaidAmounts = selectedPerson?.amounts.filter("paid == %@", false)
     tableView.reloadData(completion: self.updateLoadTime)
   }
   
@@ -344,8 +344,8 @@ extension AmountTableViewController : UISearchBarDelegate {
       if(searchText.isEmpty) {
         self.loadAmounts()
       } else {
-        paidAmounts = paidAmounts?.filter("note CONTAINS[cd] %@", searchText).sorted(byKeyPath: "value", ascending: false)
-        unpaidAmounts = unpaidAmounts?.filter("note CONTAINS[cd] %@", searchText).sorted(byKeyPath: "value", ascending: false)
+        paidAmounts = paidAmounts?.filter("note CONTAINS[cd] %@", searchText).sorted(byKeyPath: "dateCreated", ascending: false)
+        unpaidAmounts = unpaidAmounts?.filter("note CONTAINS[cd] %@", searchText)
         tableView.reloadData(completion: self.updateLoadTime)
       }
     }
