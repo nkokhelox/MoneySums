@@ -6,10 +6,8 @@
 //
 
 import UIKit
+import Charts
 import RealmSwift
-//import Charts
-import PieCharts
-//import ChartLegends
 
 class PeopleTableViewController: UITableViewController {
   let realm = try! Realm(configuration: Realm.Configuration(schemaVersion: 2))
@@ -78,7 +76,7 @@ class PeopleTableViewController: UITableViewController {
   
   // MARK: - Table view data source
   override func numberOfSections(in tableView: UITableView) -> Int {
-    return 2
+    return people?.isEmpty ?? true ? 0 : 2
   }
   
   override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
@@ -116,11 +114,9 @@ class PeopleTableViewController: UITableViewController {
       return row
     } else {
       let row = tableView.dequeueReusableCell(withIdentifier: "chartRow", for: indexPath)
-      row.contentView.subviews.first?.bounds = row.bounds
-      customizeChart(
-        chartView: row.contentView.subviews.first as! PieChart
-      )
-      row.contentView.sizeToFit()
+      let chartView = row.contentView.subviews.first
+      chartView?.bounds = row.bounds
+      customizeChart(chartView: chartView as! PieChartView)
       return row
     }
   }
@@ -175,34 +171,44 @@ class PeopleTableViewController: UITableViewController {
   
   
   // MARK: - Chart datasource
-  func customizeChart(chartView: PieChart) {
-    var pieSliceModels: [PieSliceModel] = []
-    var pieSliceLegends: [(String, UIColor)] = []
+  func customizeChart(chartView: PieChartView) {
     
-    for person in people! {
-      let sliceColor = UIColor.randomColor()
-      pieSliceModels.append(PieSliceModel(value: abs(person.totalUnpaid), color: sliceColor))
-      pieSliceLegends.append((person.firstName, sliceColor))
+    if let persons = people {
+    // 1. Set ChartDataEntry
+    var dataEntries: [ChartDataEntry] = []
+    for person in persons {
+      dataEntries.append(PieChartDataEntry(value: abs(person.totalUnpaid), label: person.firstName))
     }
+
+    // 2. Set ChartDataSet
+    let pieChartDataSet = PieChartDataSet(entries: dataEntries, label: nil)
+      pieChartDataSet.sliceSpace = 1
+      pieChartDataSet.useValueColorForLine = true
+    pieChartDataSet.colors = UIColor.chartColors
+      pieChartDataSet.valueTextColor = UIColor.label
+//      pieChartDataSet.drawValuesEnabled = false
+      pieChartDataSet.yValuePosition = .insideSlice
+      pieChartDataSet.xValuePosition = .outsideSlice
+      pieChartDataSet.valueLinePart1Length = 0.4
+      pieChartDataSet.valueLinePart2Length = 0.1
+      
+    // 3. Set ChartData
+    let pieChartData = PieChartData(dataSet: pieChartDataSet)
+    let format = NumberFormatter()
+    format.numberStyle = .percent
+      format.maximumFractionDigits = 1
+      format.multiplier = 1.0
+    let formatter = DefaultValueFormatter(formatter: format)
+    pieChartData.setValueFormatter(formatter)
     
-    //    legendView.setLegends(pieSliceLegends)
-    chartView.models = pieSliceModels
-    
-    var outerTextCfg = PieLineTextLayerSettings()
-    outerTextCfg.label.font = UIFont.systemFont(ofSize: 10)
-    outerTextCfg.lineColor = UIColor.adaAccentColor ?? UIColor.label
-    outerTextCfg.label.textColor = UIColor.adaAccentColor ?? UIColor.label
-    
-    let formatter = NumberFormatter()
-    formatter.maximumFractionDigits = 1
-    outerTextCfg.label.textGenerator = {slice in
-      return formatter.string(from: slice.data.percentage * 100 as NSNumber).map{"\($0)%"} ?? ""
-    }
-    
-    let outerText = PieLineTextLayer()
-    outerText.settings = outerTextCfg
-    
-    chartView.layers = [outerText]
+    // 4. Assign it to the chart’s data
+    chartView.data = pieChartData
+      chartView.usePercentValuesEnabled = true
+      chartView.holeColor = UIColor.clear
+//      chartView.drawEntryLabelsEnabled = false
+      chartView.rotationAngle = 269.6
+//      chartView.legend.enabled = false
+  }
   }
   
   

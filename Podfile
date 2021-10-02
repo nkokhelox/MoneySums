@@ -7,7 +7,5 @@ target 'MoneySums' do
   
   # Pods for MoneySums
   pod 'RealmSwift'
-  pod 'PieCharts'
-  #pod 'ChartLegends'
-  #pod 'Charts'
+  pod 'Charts'
 end
