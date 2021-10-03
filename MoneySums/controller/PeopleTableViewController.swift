@@ -212,22 +212,24 @@ extension PeopleTableViewController : UISearchBarDelegate {
         $0 + abs($1.totalUnpaid)
       }
       
-      var dataEntries: [DVPieSliceModel] = []
-      for person in people {
+      var dataEntries1: [DVPieSliceModel] = []
+      var dataEntries2: [DVPieSliceModel] = []
+      for (index, person) in people.enumerated() {
         let m = DVPieSliceModel()
         m.name = person.firstName
         m.rate = abs(person.totalUnpaid) / amountsSum
-        dataEntries.append(m)
+        if(index % 2 == 0) {
+          dataEntries1.append(m)
+        } else {
+          dataEntries2.append(m)
+        }
       }
       
-      dataEntries.sort { $0.rate < $1.rate}
+      dataEntries1.sort { $0.rate > $1.rate}
+      dataEntries2.sort { $0.rate < $1.rate}
+      let dataEntries = zipMerge(dataEntries1, dataEntries2)
       
-      let half = (dataEntries.count % 2 == 0 ? dataEntries.count  : dataEntries.count+1) / 2
-      let leftSplit = Array(dataEntries[0 ..< half].shuffled())
-      let rightSplit = Array(dataEntries.dropFirst(half).reversed())
-      let merged = Array(zip(leftSplit, rightSplit).flatMap{[$0, $1]}.reversed())
-      
-      chartView.dataArray = merged
+      chartView.dataArray = dataEntries
       chartView.sliceNameColor = UIColor.adaAccentColor
       chartView.title = "μ"
       chartView.pieCenterCirclePercentage = 1.2
@@ -236,7 +238,23 @@ extension PeopleTableViewController : UISearchBarDelegate {
       chartView.draw()
       
     }
+  }
+  
+  private func zipMerge(_ array1: Array<DVPieSliceModel>, _ array2: Array<DVPieSliceModel>) -> Array<DVPieSliceModel> {
+    if array1.count == array2.count {
+      return Array(zip(array1, array2).flatMap({[$0, $1]}))
+    }
     
+    if array1.count > array2.count {
+      var joined = Array(zip(array1[0...array2.count], array2).flatMap({[$0, $1]}))
+      
+      joined.append(contentsOf: array1[array2.count..<array1.count])
+      return joined
+    }
+    
+    var joined = zip(array2[0...array1.count], array1).flatMap({[$0, $1]})
+    joined.append(contentsOf: array2[array1.count..<array2.count])
+    return joined
   }
   
 }
