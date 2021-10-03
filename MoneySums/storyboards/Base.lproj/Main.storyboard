@@ -187,7 +187,7 @@
                             </connections>
                         </searchBar>
                         <label key="tableFooterView" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="last data load time" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Ln8-S9-DCa">
-                            <rect key="frame" x="0.0" y="766.5" width="414" height="44"/>
+                            <rect key="frame" x="0.0" y="1109" width="414" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="8"/>
                             <color key="textColor" systemColor="tertiaryLabelColor"/>
@@ -226,32 +226,17 @@
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="387"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Plu-rG-paQ">
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vbJ-wj-MFP" customClass="DVPieChart">
                                             <rect key="frame" x="20" y="11" width="374" height="365"/>
-                                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" secondItem="Plu-rG-paQ" secondAttribute="height" multiplier="15:8" id="YNr-HM-qWY"/>
-                                            </constraints>
-                                            <userDefinedRuntimeAttributes>
-                                                <userDefinedRuntimeAttribute type="number" keyPath="innerRadius">
-                                                    <real key="value" value="40"/>
-                                                </userDefinedRuntimeAttribute>
-                                                <userDefinedRuntimeAttribute type="number" keyPath="strokeWidth">
-                                                    <real key="value" value="2"/>
-                                                </userDefinedRuntimeAttribute>
-                                                <userDefinedRuntimeAttribute type="color" keyPath="strokeColor">
-                                                    <color key="value" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                </userDefinedRuntimeAttribute>
-                                            </userDefinedRuntimeAttributes>
+                                            <color key="backgroundColor" name="adaGrey"/>
                                         </view>
                                     </subviews>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
-                                        <constraint firstItem="Plu-rG-paQ" firstAttribute="leading" secondItem="dNx-Xl-KTm" secondAttribute="leadingMargin" id="I59-qL-H9f"/>
-                                        <constraint firstAttribute="trailingMargin" secondItem="Plu-rG-paQ" secondAttribute="trailing" id="Ruf-bW-xC4"/>
-                                        <constraint firstItem="Plu-rG-paQ" firstAttribute="centerY" secondItem="dNx-Xl-KTm" secondAttribute="centerY" id="cwy-ug-UZg"/>
-                                        <constraint firstAttribute="bottomMargin" secondItem="Plu-rG-paQ" secondAttribute="bottom" id="g3U-Wv-C0B"/>
-                                        <constraint firstItem="Plu-rG-paQ" firstAttribute="centerX" secondItem="dNx-Xl-KTm" secondAttribute="centerX" id="h5d-T3-e8c"/>
-                                        <constraint firstItem="Plu-rG-paQ" firstAttribute="top" secondItem="dNx-Xl-KTm" secondAttribute="topMargin" id="xlI-fi-iMo"/>
+                                        <constraint firstItem="vbJ-wj-MFP" firstAttribute="trailing" secondItem="dNx-Xl-KTm" secondAttribute="trailingMargin" id="3cS-7k-ueg"/>
+                                        <constraint firstItem="vbJ-wj-MFP" firstAttribute="top" secondItem="dNx-Xl-KTm" secondAttribute="topMargin" id="NdQ-4Y-Zqi"/>
+                                        <constraint firstItem="vbJ-wj-MFP" firstAttribute="bottom" secondItem="dNx-Xl-KTm" secondAttribute="bottomMargin" id="h1n-l3-ClD"/>
+                                        <constraint firstItem="vbJ-wj-MFP" firstAttribute="leading" secondItem="dNx-Xl-KTm" secondAttribute="leadingMargin" id="oaX-9u-I0k"/>
                                     </constraints>
                                     <userDefinedRuntimeAttributes>
                                         <userDefinedRuntimeAttribute type="number" keyPath="animDuration">
@@ -262,6 +247,7 @@
                                         </userDefinedRuntimeAttribute>
                                     </userDefinedRuntimeAttributes>
                                 </tableViewCellContentView>
+                                <color key="backgroundColor" name="adaGrey"/>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -304,9 +290,6 @@
         </namedColor>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="tertiaryLabelColor">
             <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="sRGB"/>

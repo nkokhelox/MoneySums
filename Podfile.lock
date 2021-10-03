@@ -2,6 +2,7 @@ PODS:
   - Charts (3.6.0):
     - Charts/Core (= 3.6.0)
   - Charts/Core (3.6.0)
+  - DVPieChart (0.1.0)
   - Realm (10.15.0):
     - Realm/Headers (= 10.15.0)
   - Realm/Headers (10.15.0)
@@ -10,6 +11,7 @@ PODS:
 
 DEPENDENCIES:
   - Charts
+  - DVPieChart (from `../DVPieChart/`)
   - RealmSwift
 
 SPEC REPOS:
@@ -18,11 +20,16 @@ SPEC REPOS:
     - Realm
     - RealmSwift
 
+EXTERNAL SOURCES:
+  DVPieChart:
+    :path: "../DVPieChart/"
+
 SPEC CHECKSUMS:
   Charts: b1e3a1f5a1c9ba5394438ca3b91bd8c9076310af
+  DVPieChart: 3887c21da461a8077c0d2933160255b8595a4bbc
   Realm: 13e805eb23d3eb8d8bb700d9cf9761f4b625b389
   RealmSwift: 51b29bb4e19fe7322c8a599cf3494b8a08888ef1
 
-PODFILE CHECKSUM: 860dfc0c9c0dc0fdd37811bff8bb7c73a7002e5e
+PODFILE CHECKSUM: da913137bc0a62a133e975514cb05ccf1af8e614
 
 COCOAPODS: 1.10.1

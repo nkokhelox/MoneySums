@@ -8,6 +8,7 @@
 import UIKit
 import Charts
 import RealmSwift
+import DVPieChart
 
 class PeopleTableViewController: UITableViewController {
   let realm = try! Realm(configuration: Realm.Configuration(schemaVersion: 2))
@@ -114,9 +115,8 @@ class PeopleTableViewController: UITableViewController {
       return row
     } else {
       let row = tableView.dequeueReusableCell(withIdentifier: "chartRow", for: indexPath)
-      let chartView = row.contentView.subviews.first
-      chartView?.bounds = row.bounds
-      customizeChart(chartView: chartView as! PieChartView)
+      let chartView = row.contentView.subviews.first as! DVPieChart
+      customizeChart(chartView: chartView)
       return row
     }
   }
@@ -169,49 +169,6 @@ class PeopleTableViewController: UITableViewController {
     return nil
   }
   
-  
-  // MARK: - Chart datasource
-  func customizeChart(chartView: PieChartView) {
-    
-    if let persons = people {
-    // 1. Set ChartDataEntry
-    var dataEntries: [ChartDataEntry] = []
-    for person in persons {
-      dataEntries.append(PieChartDataEntry(value: abs(person.totalUnpaid), label: person.firstName))
-    }
-
-    // 2. Set ChartDataSet
-    let pieChartDataSet = PieChartDataSet(entries: dataEntries, label: nil)
-      pieChartDataSet.sliceSpace = 1
-      pieChartDataSet.useValueColorForLine = true
-    pieChartDataSet.colors = UIColor.chartColors
-      pieChartDataSet.valueTextColor = UIColor.label
-//      pieChartDataSet.drawValuesEnabled = false
-      pieChartDataSet.yValuePosition = .insideSlice
-      pieChartDataSet.xValuePosition = .outsideSlice
-      pieChartDataSet.valueLinePart1Length = 0.4
-      pieChartDataSet.valueLinePart2Length = 0.1
-      
-    // 3. Set ChartData
-    let pieChartData = PieChartData(dataSet: pieChartDataSet)
-    let format = NumberFormatter()
-    format.numberStyle = .percent
-      format.maximumFractionDigits = 1
-      format.multiplier = 1.0
-    let formatter = DefaultValueFormatter(formatter: format)
-    pieChartData.setValueFormatter(formatter)
-    
-    // 4. Assign it to the chart’s data
-    chartView.data = pieChartData
-      chartView.usePercentValuesEnabled = true
-      chartView.holeColor = UIColor.clear
-//      chartView.drawEntryLabelsEnabled = false
-      chartView.rotationAngle = 269.6
-//      chartView.legend.enabled = false
-  }
-  }
-  
-  
   // MARK: - Navigation
   
   // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -245,6 +202,41 @@ extension PeopleTableViewController : UISearchBarDelegate {
       }
     }
   }
+  
+  
+  // MARK: - Chart datasource
+  func customizeChart(chartView: DVPieChart) {
+    if let people = people?.filter({$0.totalUnpaid != 0.0}) {
+      
+      let amountsSum = people.reduce(0.0) {
+        $0 + abs($1.totalUnpaid)
+      }
+      
+      var dataEntries: [DVPieSliceModel] = []
+      for person in people {
+        let m = DVPieSliceModel()
+        m.name = person.firstName
+        m.rate = abs(person.totalUnpaid) / amountsSum
+        dataEntries.append(m)
+      }
+      
+      dataEntries.sort { $0.rate < $1.rate}
+      
+      let half = (dataEntries.count % 2 == 0 ? dataEntries.count  : dataEntries.count+1) / 2
+      let leftSplit = Array(dataEntries[0 ..< half].shuffled())
+      let rightSplit = Array(dataEntries.dropFirst(half).reversed())
+      let merged = Array(zip(leftSplit, rightSplit).flatMap{[$0, $1]}.reversed())
+      
+      chartView.dataArray = merged
+      chartView.sliceNameColor = UIColor.adaAccentColor
+      chartView.title = "μ"
+      chartView.pieCenterCirclePercentage = 1.2
+      chartView.sizeToFit()
+      chartView.clipsToBounds = true
+      chartView.draw()
+      
+    }
+    
+  }
+  
 }
-
-
