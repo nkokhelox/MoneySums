@@ -35,6 +35,9 @@ class PeopleTableViewController: UITableViewController {
     self.refreshControl?.endRefreshing()
   }
   
+  @IBAction func showAppInfoPressed(_ sender: UIBarButtonItem) {
+    showAppInfo()
+  }
   @IBAction func addPerson(_ sender: UIBarButtonItem) {
     let alert = UIAlertController(
       title: "add a person",
@@ -218,7 +221,7 @@ extension PeopleTableViewController : UISearchBarDelegate {
         let m = DVPieSliceModel()
         m.name = person.firstName
         m.rate = abs(person.totalUnpaid) / amountsSum
-        if(index % 2 == 0) {
+        if index < (people.count/2) {
           dataEntries1.append(m)
         } else {
           dataEntries2.append(m)
@@ -229,12 +232,12 @@ extension PeopleTableViewController : UISearchBarDelegate {
       dataEntries2.sort { $0.rate < $1.rate}
       let dataEntries = zipMerge(dataEntries1, dataEntries2)
       
-      chartView.dataArray = dataEntries
       chartView.sliceNameColor = UIColor.adaAccentColor
-      chartView.title = "μ"
       chartView.pieCenterCirclePercentage = 1.2
-      chartView.sizeToFit()
+      chartView.dataArray = dataEntries
       chartView.clipsToBounds = true
+      chartView.sizeToFit()
+      chartView.title = "μ°"
       chartView.draw()
       
     }
@@ -247,7 +250,6 @@ extension PeopleTableViewController : UISearchBarDelegate {
     
     if array1.count > array2.count {
       var joined = Array(zip(array1[0...array2.count], array2).flatMap({[$0, $1]}))
-      
       joined.append(contentsOf: array1[array2.count..<array1.count])
       return joined
     }
@@ -256,5 +258,20 @@ extension PeopleTableViewController : UISearchBarDelegate {
     joined.append(contentsOf: array2[array1.count..<array2.count])
     return joined
   }
+  
+  
+  // MARK: - App info
+  func showAppInfo() {
+    let alert = UIAlertController(
+      title: "\(Bundle.main.appName)",
+      message: "Version \(Bundle.main.appVersion) (\(Bundle.main.appBuild))\nUsed frameworks\n\u{2022}DVPieChart",
+      preferredStyle: .alert
+    )
+    
+    alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+    
+    self.present(alert, animated: true)
+  }
+  
   
 }

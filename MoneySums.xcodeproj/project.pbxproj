@@ -23,6 +23,7 @@
 		AC98632326EDAB28008C8DA4 /* Amount.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC98632026EDAB28008C8DA4 /* Amount.swift */; };
 		AC98632426EDAB28008C8DA4 /* Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC98632126EDAB28008C8DA4 /* Person.swift */; };
 		AC98632526EDAB28008C8DA4 /* Payment.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC98632226EDAB28008C8DA4 /* Payment.swift */; };
+		AC9B5A74270ABEE700860429 /* Bundle+util.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC9B5A73270ABEE700860429 /* Bundle+util.swift */; };
 		ACE2B85F26C061B900755CF2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACE2B85E26C061B900755CF2 /* AppDelegate.swift */; };
 		ACE2B86126C061B900755CF2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACE2B86026C061B900755CF2 /* SceneDelegate.swift */; };
 		ACE2B86626C061B900755CF2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ACE2B86426C061B900755CF2 /* Main.storyboard */; };
@@ -48,6 +49,7 @@
 		AC98632026EDAB28008C8DA4 /* Amount.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Amount.swift; sourceTree = "<group>"; };
 		AC98632126EDAB28008C8DA4 /* Person.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Person.swift; sourceTree = "<group>"; };
 		AC98632226EDAB28008C8DA4 /* Payment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Payment.swift; sourceTree = "<group>"; };
+		AC9B5A73270ABEE700860429 /* Bundle+util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+util.swift"; sourceTree = "<group>"; };
 		ACE0953626F134F6008A67D1 /* MoneySums.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MoneySums.entitlements; sourceTree = "<group>"; };
 		ACE2B85B26C061B900755CF2 /* MoneySums.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MoneySums.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ACE2B85E26C061B900755CF2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -119,6 +121,7 @@
 				AC6F1A3026F68DA1003EE04E /* UIColor+util.swift */,
 				AC05AD0727000BCF006CAEBB /* Date+util.swift */,
 				AC05AD0A27003DDF006CAEBB /* UITableView+util.swift */,
+				AC9B5A73270ABEE700860429 /* Bundle+util.swift */,
 			);
 			path = extension;
 			sourceTree = "<group>";
@@ -296,6 +299,7 @@
 				AC05AD0B27003DDF006CAEBB /* UITableView+util.swift in Sources */,
 				AC98631226EDAAF6008C8DA4 /* PeopleTableViewController.swift in Sources */,
 				AC98631D26EDAB1A008C8DA4 /* Double+util.swift in Sources */,
+				AC9B5A74270ABEE700860429 /* Bundle+util.swift in Sources */,
 				AC98631A26EDAB1A008C8DA4 /* UIViewController+util.swift in Sources */,
 				ACE2B86126C061B900755CF2 /* SceneDelegate.swift in Sources */,
 			);

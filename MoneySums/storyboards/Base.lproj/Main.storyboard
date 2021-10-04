@@ -27,7 +27,7 @@
                             </connections>
                         </searchBar>
                         <label key="tableFooterView" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="last data load time" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="zx7-K3-3me">
-                            <rect key="frame" x="0.0" y="757.5" width="414" height="44"/>
+                            <rect key="frame" x="0.0" y="757" width="414" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="8"/>
                             <color key="textColor" systemColor="tertiaryLabelColor"/>
@@ -257,6 +257,12 @@
                     </tableView>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="People" id="M9P-GS-7BJ">
+                        <barButtonItem key="leftBarButtonItem" title="about" style="plain" id="kFR-QU-khl">
+                            <imageReference key="image" image="info.circle" catalog="system" symbolScale="default"/>
+                            <connections>
+                                <action selector="showAppInfoPressed:" destination="Vzt-Ja-SBP" id="wg5-IA-fZM"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="add a person" id="8BQ-rq-Agq">
                             <imageReference key="image" image="plus" catalog="system" symbolScale="large"/>
                             <color key="tintColor" systemColor="labelColor"/>
@@ -277,6 +283,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="info.circle" catalog="system" width="128" height="121"/>
         <image name="minus" catalog="system" width="128" height="24"/>
         <image name="plus" catalog="system" width="128" height="113"/>
         <namedColor name="AccentColor">
