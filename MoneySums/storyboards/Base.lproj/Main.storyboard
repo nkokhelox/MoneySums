@@ -27,7 +27,7 @@
                             </connections>
                         </searchBar>
                         <label key="tableFooterView" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="last data load time" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="zx7-K3-3me">
-                            <rect key="frame" x="0.0" y="757" width="414" height="44"/>
+                            <rect key="frame" x="0.0" y="757.5" width="414" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="8"/>
                             <color key="textColor" systemColor="tertiaryLabelColor"/>
@@ -187,7 +187,7 @@
                             </connections>
                         </searchBar>
                         <label key="tableFooterView" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="last data load time" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Ln8-S9-DCa">
-                            <rect key="frame" x="0.0" y="1109" width="414" height="44"/>
+                            <rect key="frame" x="0.0" y="766.5" width="414" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="8"/>
                             <color key="textColor" systemColor="tertiaryLabelColor"/>
@@ -227,16 +227,16 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vbJ-wj-MFP" customClass="DVPieChart">
-                                            <rect key="frame" x="20" y="11" width="374" height="365"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="387"/>
                                             <color key="backgroundColor" name="adaGrey"/>
                                         </view>
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
-                                        <constraint firstItem="vbJ-wj-MFP" firstAttribute="trailing" secondItem="dNx-Xl-KTm" secondAttribute="trailingMargin" id="3cS-7k-ueg"/>
-                                        <constraint firstItem="vbJ-wj-MFP" firstAttribute="top" secondItem="dNx-Xl-KTm" secondAttribute="topMargin" id="NdQ-4Y-Zqi"/>
-                                        <constraint firstItem="vbJ-wj-MFP" firstAttribute="bottom" secondItem="dNx-Xl-KTm" secondAttribute="bottomMargin" id="h1n-l3-ClD"/>
-                                        <constraint firstItem="vbJ-wj-MFP" firstAttribute="leading" secondItem="dNx-Xl-KTm" secondAttribute="leadingMargin" id="oaX-9u-I0k"/>
+                                        <constraint firstItem="vbJ-wj-MFP" firstAttribute="top" secondItem="dNx-Xl-KTm" secondAttribute="topMargin" constant="-11" id="bAZ-6J-WnJ"/>
+                                        <constraint firstItem="vbJ-wj-MFP" firstAttribute="centerY" secondItem="dNx-Xl-KTm" secondAttribute="centerY" id="gw8-gc-sPy"/>
+                                        <constraint firstItem="vbJ-wj-MFP" firstAttribute="centerX" secondItem="dNx-Xl-KTm" secondAttribute="centerX" id="wIU-pY-vFu"/>
+                                        <constraint firstItem="vbJ-wj-MFP" firstAttribute="leading" secondItem="dNx-Xl-KTm" secondAttribute="leadingMargin" constant="-20" id="yqM-Vc-zI0"/>
                                     </constraints>
                                     <userDefinedRuntimeAttributes>
                                         <userDefinedRuntimeAttribute type="number" keyPath="animDuration">

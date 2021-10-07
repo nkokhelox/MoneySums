@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import Charts
 import RealmSwift
 import DVPieChart
 
@@ -24,6 +23,8 @@ class PeopleTableViewController: UITableViewController {
     
     refreshControl = UIRefreshControl()
     refreshControl?.addTarget(self, action: #selector(self.loadPeople), for: .valueChanged)
+    
+    AuthorizationOverlay.shared.showOverlay(isDarkModeEnabled: traitCollection.userInterfaceStyle == .dark)
   }
   
   override func viewWillAppear(_ animated: Bool) {

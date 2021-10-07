@@ -13,6 +13,7 @@ extension UIColor {
   static let adaOrange = UIColor(named: "adaOrange") ?? systemOrange
   static let blackOrWhite = UIColor(named: "blackOrWhite") ?? white
   static let adaAccentColor = UIColor(named: "accentColor") ?? label
+  static let adaTranslucent = UIColor(named: "adaTranslucent") ?? blackOrWhite
   
   static let chartColors = [systemRed, systemOrange, systemYellow, systemGreen, systemBlue, systemIndigo, systemPurple, systemIndigo]
   
