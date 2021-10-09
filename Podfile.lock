@@ -1,6 +1,5 @@
 PODS:
   - DVPieChart (0.1.0)
-  - OverlayContainer (3.5.1)
   - Realm (10.15.0):
     - Realm/Headers (= 10.15.0)
   - Realm/Headers (10.15.0)
@@ -9,12 +8,10 @@ PODS:
 
 DEPENDENCIES:
   - DVPieChart (from `../DVPieChart/`)
-  - OverlayContainer
   - RealmSwift
 
 SPEC REPOS:
   trunk:
-    - OverlayContainer
     - Realm
     - RealmSwift
 
@@ -24,10 +21,9 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   DVPieChart: 3887c21da461a8077c0d2933160255b8595a4bbc
-  OverlayContainer: a95f0f555fd0dd1addba3fc45370801e5fc16e68
   Realm: 13e805eb23d3eb8d8bb700d9cf9761f4b625b389
   RealmSwift: 51b29bb4e19fe7322c8a599cf3494b8a08888ef1
 
-PODFILE CHECKSUM: 94dce9b55c0e7f0a2cbc5dbd66b8b89515c5196d
+PODFILE CHECKSUM: 3d6f4c47b2c83f500fde1c4fb64e200298488536
 
 COCOAPODS: 1.10.1

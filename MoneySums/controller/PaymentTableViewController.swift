@@ -10,13 +10,13 @@ import RealmSwift
 
 class PaymentTableViewController: UITableViewController {
   let realm = try! Realm(configuration: Realm.Configuration(schemaVersion: 2))
- 
+  
   var onDismiss: (() -> Void)? = nil
   
   @IBOutlet weak var footNote: UILabel!
   @IBOutlet weak var dragPill: UIImageView!
   
-  var payments: Results<Payment>?
+  var payments: List<Payment>?
   
   var selectedAmount: Amount? {
     didSet{
@@ -40,7 +40,7 @@ class PaymentTableViewController: UITableViewController {
   }
   
   func loadPayments() {
-    self.payments = selectedAmount?.payments.sorted(byKeyPath: "paidDate", ascending: false)
+    self.payments = selectedAmount?.payments
     tableView.reloadData()
   }
   
@@ -85,21 +85,23 @@ class PaymentTableViewController: UITableViewController {
   }
   
   override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-    if let interest = payments?[indexPath.row] {
+    if let payment = payments?[indexPath.row] {
+      print(payment.value)
+      print(indexPath.row)
       let deletionAction = UIContextualAction(style: .destructive, title: "delete") { _, _, isActionSuccessful in
-        isActionSuccessful(true)
         do {
           try self.realm.write{
-            self.realm.delete(interest)
+            self.realm.delete(payment)
           }
           tableView.deleteRows(at: [indexPath], with: .automatic)
           tableView.endUpdates()
         } catch {
           tableView.cellForRow(at: indexPath)?.shake()
-          self.showToast(title: "⚠ ERROR", message: "⚠ failed to delete \(interest.moneyValue)")
+          self.showToast(title: "⚠ ERROR", message: "⚠ failed to delete \(payment.moneyValue)")
           print("error deleting amount at row: \(indexPath.row), error: \(error)")
         }
         tableView.reloadData()
+        isActionSuccessful(true)
       }
       
       deletionAction.image = UIImage(systemName: "trash.fill")
