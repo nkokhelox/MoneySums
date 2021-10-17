@@ -5,15 +5,18 @@ PODS:
   - Realm/Headers (10.15.0)
   - RealmSwift (10.15.0):
     - Realm (= 10.15.0)
+  - Toast (4.0.0)
 
 DEPENDENCIES:
   - DVPieChart (from `../DVPieChart/`)
   - RealmSwift
+  - Toast
 
 SPEC REPOS:
   trunk:
     - Realm
     - RealmSwift
+    - Toast
 
 EXTERNAL SOURCES:
   DVPieChart:
@@ -23,7 +26,8 @@ SPEC CHECKSUMS:
   DVPieChart: 3887c21da461a8077c0d2933160255b8595a4bbc
   Realm: 13e805eb23d3eb8d8bb700d9cf9761f4b625b389
   RealmSwift: 51b29bb4e19fe7322c8a599cf3494b8a08888ef1
+  Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
 
-PODFILE CHECKSUM: 3d6f4c47b2c83f500fde1c4fb64e200298488536
+PODFILE CHECKSUM: 42ebe105263238e2dd0dbb4ec1b331f2556703f8
 
 COCOAPODS: 1.10.1

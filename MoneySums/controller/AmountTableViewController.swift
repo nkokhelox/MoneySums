@@ -35,6 +35,11 @@ class AmountTableViewController: UITableViewController {
     refreshControl?.addTarget(self, action: #selector(self.loadAmounts), for: .valueChanged)
   }
   
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    self.view.hideAllToasts()
+  }
+  
   @IBAction func addAmount(_ sender: UIBarButtonItem) {
     let alert = UIAlertController(
       title: "Add Money Record",
@@ -94,7 +99,7 @@ extension AmountTableViewController {
           person.amounts.append(amount)
         }
       } catch {
-        self.showToast(title: "⚠ ERROR", message: "saving amount for \(person.name) failed")
+        self.showToast(message: "saving amount for \(person.name) failed")
         print("error saving the amount for \(person.name): \(error)")
       }
     }
@@ -143,7 +148,7 @@ extension AmountTableViewController {
           (indexPath.section == 0 ? unpaidAmounts : paidAmounts)![indexPath.row].payments.append(interest)
         }
       } catch {
-        self.showToast(title: "⚠ ERROR", message: "saving amount for \(selectedPerson!.name) failed")
+        self.showToast(message: "saving amount for \(selectedPerson!.name) failed")
         print("error saving the amount for \(selectedPerson!.name): \(error)")
       }
       
@@ -219,7 +224,7 @@ extension AmountTableViewController {
           amount.paid = !amount.paid
         }
       } catch {
-        self.showToast(title: "⚠ ERROR", message: "toggling the paid status for \(amount.moneyValue) failed")
+        self.showToast(message: "toggling the paid status for \(amount.moneyValue) failed")
         print("error toggling the paid status for \(amount.moneyValue)")
       }
       
@@ -251,7 +256,7 @@ extension AmountTableViewController {
           tableView.reloadData()
         } catch {
           tableView.cellForRow(at: indexPath)?.shake()
-          self.showToast(title: "⚠ ERROR", message: "failed to delete \(amount.moneyValue)")
+          self.showToast(message: "failed to delete \(amount.moneyValue)")
           print("error deleting amount at row: \(indexPath.row), error: \(error)")
         }
       }

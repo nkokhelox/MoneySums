@@ -36,6 +36,8 @@ class PaymentTableViewController: UITableViewController {
   }
   
   override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    self.view.hideAllToasts()
     onDismiss?()
   }
   
@@ -97,7 +99,7 @@ class PaymentTableViewController: UITableViewController {
           tableView.endUpdates()
         } catch {
           tableView.cellForRow(at: indexPath)?.shake()
-          self.showToast(title: "⚠ ERROR", message: "⚠ failed to delete \(payment.moneyValue)")
+          self.showToast(message: "⚠ failed to delete \(payment.moneyValue)")
           print("error deleting amount at row: \(indexPath.row), error: \(error)")
         }
         tableView.reloadData()

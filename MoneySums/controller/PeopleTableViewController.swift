@@ -31,6 +31,11 @@ class PeopleTableViewController: UITableViewController {
     loadPeople()
   }
   
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    self.view.hideAllToasts()
+  }
+  
   func updateLoadTime() {
     lastDataLoadTime.text = "Last load @ \(Date().hms())"
     self.refreshControl?.endRefreshing()
@@ -145,7 +150,7 @@ class PeopleTableViewController: UITableViewController {
         if self.people?[indexPath.row].totalUnpaid != 0 {
           isActionSuccessful(false)
           tableView.cellForRow(at: indexPath)?.shake()
-          self.showToast(title: nil, message: "balance must be zero before deleting the person")
+          self.showToast(message: "balance must be zero before deleting the person")
         } else {
           isActionSuccessful(true)
           do {
@@ -157,7 +162,7 @@ class PeopleTableViewController: UITableViewController {
             tableView.endUpdates()
             tableView.reloadData(completion: self.updateLoadTime)
           } catch {
-            self.showToast(title: "⚠ ERROR", message: "⚠ failed to delete \((self.people?[indexPath.row].name)!)")
+            self.showToast(message: "⚠ failed to delete \((self.people?[indexPath.row].name)!)")
             print("error deleting person at row: \(indexPath.row), error: \(error)")
           }
         }
@@ -229,7 +234,7 @@ extension PeopleTableViewController : UISearchBarDelegate {
         }
       }
       
-      dataEntries1.sort { $0.rate > $1.rate}
+      dataEntries1.shuffle()
       dataEntries2.sort { $0.rate < $1.rate}
       let dataEntries = zipMerge(dataEntries1, dataEntries2)
       
@@ -265,7 +270,7 @@ extension PeopleTableViewController : UISearchBarDelegate {
   func showAppInfo() {
     let alert = UIAlertController(
       title: "\(Bundle.main.appName)",
-      message: "Version \(Bundle.main.appVersion) (\(Bundle.main.appBuild))\nUsed frameworks\n\u{2022}DVPieChart",
+      message: "Version \(Bundle.main.appVersion) (\(Bundle.main.appBuild))\nUsed frameworks:\n\u{2022}DVPieChart\n\u{2022}Toast",
       preferredStyle: .alert
     )
     

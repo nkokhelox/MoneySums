@@ -8,5 +8,6 @@ target 'MoneySums' do
   # Pods for MoneySums
   pod 'RealmSwift'
   pod 'DVPieChart', :path => '../DVPieChart/'
+  pod 'Toast'
   
 end
