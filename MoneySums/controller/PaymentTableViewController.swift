@@ -7,6 +7,7 @@
 
 import UIKit
 import RealmSwift
+import LocalAuthentication
 
 class PaymentTableViewController: UITableViewController {
   let realm = try! Realm(configuration: Realm.Configuration(schemaVersion: 2))
@@ -92,18 +93,26 @@ class PaymentTableViewController: UITableViewController {
       print(indexPath.row)
       let deletionAction = UIContextualAction(style: .destructive, title: "delete") { _, _, isActionSuccessful in
         do {
-          try self.realm.write{
-            self.realm.delete(payment)
+          let localAuthenticationContext = LAContext()
+          localAuthenticationContext.localizedFallbackTitle = "Please use your Passcode"
+          
+          var authorizationError: NSError?
+          let reason = "Authentication required to delete this payment"
+          
+          if localAuthenticationContext.canEvaluatePolicy(.deviceOwnerAuthentication, error: &authorizationError) {
+            localAuthenticationContext.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: reason) { success, evaluateError in
+              if success {
+                DispatchQueue.main.async {
+                  isActionSuccessful(true)
+                  self.deletePayment(at: indexPath)
+                }
+              } else {
+                isActionSuccessful(false)
+              }
+            }
           }
-          tableView.deleteRows(at: [indexPath], with: .automatic)
-          tableView.endUpdates()
-        } catch {
-          tableView.cellForRow(at: indexPath)?.shake()
-          self.showToast(message: "⚠ failed to delete \(payment.moneyValue)")
-          print("error deleting amount at row: \(indexPath.row), error: \(error)")
         }
-        tableView.reloadData()
-        isActionSuccessful(true)
+        
       }
       
       deletionAction.image = UIImage(systemName: "trash.fill")
@@ -116,4 +125,21 @@ class PaymentTableViewController: UITableViewController {
     }
   }
   
+  func deletePayment(at indexPath: IndexPath){
+    if let payment = payments?[indexPath.row] {
+      do{
+      try self.realm.write{
+        self.realm.delete(payment)
+      }
+      self.tableView.deleteRows(at: [indexPath], with: .automatic)
+      self.tableView.endUpdates()
+    } catch {
+      self.tableView.cellForRow(at: indexPath)?.shake()
+      self.showToast(message: "⚠ failed to delete \(payment.moneyValue)")
+      print("error deleting amount at row: \(indexPath.row), error: \(error)")
+    }
+    self.tableView.reloadData()
+  }
+}
+
 }

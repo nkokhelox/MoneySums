@@ -8,6 +8,7 @@
 import UIKit
 import RealmSwift
 import DVPieChart
+import LocalAuthentication
 
 class PeopleTableViewController: UITableViewController {
   let realm = try! Realm(configuration: Realm.Configuration(schemaVersion: 2))
@@ -152,18 +153,24 @@ class PeopleTableViewController: UITableViewController {
           tableView.cellForRow(at: indexPath)?.shake()
           self.showToast(message: "balance must be zero before deleting the person")
         } else {
-          isActionSuccessful(true)
-          do {
-            try self.realm.write{
-              self.realm.delete(self.people![indexPath.row].amounts)
-              self.realm.delete(self.people![indexPath.row])
+          let localAuthenticationContext = LAContext()
+          localAuthenticationContext.localizedFallbackTitle = "Please use your Passcode"
+          
+          var authorizationError: NSError?
+          let reason = "Authentication required to delete \(self.people?[indexPath.row].name ?? "a person")"
+          
+          if localAuthenticationContext.canEvaluatePolicy(.deviceOwnerAuthentication, error: &authorizationError) {
+            localAuthenticationContext.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: reason) { success, evaluateError in
+              if success {
+                
+                DispatchQueue.main.async {
+                  isActionSuccessful(true)
+                  self.deletePerson(at: indexPath)
+                }
+              } else {
+                isActionSuccessful(false)
+              }
             }
-            tableView.deleteRows(at: [indexPath], with: .automatic)
-            tableView.endUpdates()
-            tableView.reloadData(completion: self.updateLoadTime)
-          } catch {
-            self.showToast(message: "⚠ failed to delete \((self.people?[indexPath.row].name)!)")
-            print("error deleting person at row: \(indexPath.row), error: \(error)")
           }
         }
         
@@ -176,6 +183,22 @@ class PeopleTableViewController: UITableViewController {
       return config
     }
     return nil
+  }
+  
+  func deletePerson(at indexPath: IndexPath) {
+    
+    do {
+      try self.realm.write{
+        self.realm.delete(self.people![indexPath.row].amounts)
+        self.realm.delete(self.people![indexPath.row])
+      }
+      self.tableView.deleteRows(at: [indexPath], with: .automatic)
+      self.tableView.endUpdates()
+      self.tableView.reloadData(completion: self.updateLoadTime)
+    } catch {
+      self.showToast(message: "⚠ failed to delete \((self.people?[indexPath.row].name)!)")
+      print("error deleting person at row: \(indexPath.row), error: \(error)")
+    }
   }
   
   // MARK: - Navigation

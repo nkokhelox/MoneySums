@@ -7,6 +7,7 @@
 
 import UIKit
 import RealmSwift
+import LocalAuthentication
 
 class AmountTableViewController: UITableViewController {
   let realm = try! Realm(configuration: Realm.Configuration(schemaVersion: 2))
@@ -58,7 +59,7 @@ class AmountTableViewController: UITableViewController {
   
   @objc func loadAmounts() {
     self.paidAmounts = selectedPerson?.amounts.sorted(byKeyPath: "dateCreated", ascending: true).sorted(byKeyPath: "value", ascending: true).filter("paid == %@", true)
-    self.unpaidAmounts = selectedPerson?.amounts.filter("paid == %@", false)
+    self.unpaidAmounts = selectedPerson?.amounts.filter("paid == %@", false) 
     tableView.reloadData(completion: self.updateLoadTime)
   }
   
@@ -184,7 +185,7 @@ extension AmountTableViewController {
     let row = tableView.dequeueReusableCell(withIdentifier: "amountRow", for: indexPath)
     let amount = (indexPath.section == 0 ? unpaidAmounts : paidAmounts)?[indexPath.row]
     let diff = amount!.paymentsTotal - amount!.value
-
+    
     row.accessoryType = amount?.paid == true ? .checkmark : .detailButton
     row.accessoryView?.backgroundColor = .red
     
@@ -245,19 +246,23 @@ extension AmountTableViewController {
     
     if amount.paid {
       let deletionAction = UIContextualAction(style: .destructive, title: "delete") { _, _, isActionSuccessful in
-        isActionSuccessful(true)
-        do {
-          try self.realm.write{
-            self.realm.delete(amount.payments)
-            self.realm.delete(amount)
+        let localAuthenticationContext = LAContext()
+        localAuthenticationContext.localizedFallbackTitle = "Please use your Passcode"
+        
+        var authorizationError: NSError?
+        let reason = "Authentication required to delete this amount."
+        
+        if localAuthenticationContext.canEvaluatePolicy(.deviceOwnerAuthentication, error: &authorizationError) {
+          localAuthenticationContext.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: reason) { success, evaluateError in
+            if success {
+              DispatchQueue.main.async {
+                isActionSuccessful(true)
+                self.deleteAmount(at: indexPath)
+              }
+            } else {
+              isActionSuccessful(false)
+            }
           }
-          tableView.deleteRows(at: [indexPath], with: .automatic)
-          tableView.endUpdates()
-          tableView.reloadData()
-        } catch {
-          tableView.cellForRow(at: indexPath)?.shake()
-          self.showToast(message: "failed to delete \(amount.moneyValue)")
-          print("error deleting amount at row: \(indexPath.row), error: \(error)")
         }
       }
       
@@ -281,6 +286,24 @@ extension AmountTableViewController {
       config.performsFirstActionWithFullSwipe = false
       
       return config
+    }
+  }
+  
+  func deleteAmount(at indexPath: IndexPath) {
+    let amount = (indexPath.section == 0 ? unpaidAmounts : paidAmounts)![indexPath.row]
+    
+    do {
+      try self.realm.write{
+        self.realm.delete(amount.payments)
+        self.realm.delete(amount)
+      }
+      self.tableView.deleteRows(at: [indexPath], with: .automatic)
+      self.tableView.endUpdates()
+      self.tableView.reloadData()
+    } catch {
+      self.tableView.cellForRow(at: indexPath)?.shake()
+      self.showToast(message: "failed to delete \(amount.moneyValue)")
+      print("error deleting amount at row: \(indexPath.row), error: \(error)")
     }
   }
 }
