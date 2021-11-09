@@ -212,11 +212,13 @@ extension AmountTableViewController {
   }
   
   override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    let amounts = (indexPath.section == 0 ? unpaidAmounts : paidAmounts)
-    if amounts?[indexPath.row].payments.count == 0 {
-      showAmountInfo(indexPath)
-    } else {
-      self.performSegue(withIdentifier: "showPayments", sender: self)
+    if indexPath.section < 2 {
+      let amounts = (indexPath.section == 0 ? unpaidAmounts : paidAmounts)
+      if amounts?[indexPath.row].payments.count == 0 {
+        showAmountInfo(indexPath)
+      } else {
+        self.performSegue(withIdentifier: "showPayments", sender: self)
+      }
     }
     tableView.deselectRow(at: indexPath, animated: true)
   }
@@ -362,15 +364,7 @@ extension AmountTableViewController {
       
       destinationViewController.onDismiss = {[weak self] in self?.tableView.reloadData(completion: self!.updateLoadTime)}
       destinationViewController.selectedAmount = amounts![indexPath.row]
-      if #available(iOS 15.0, *) {
-        if let sheet = destinationViewController.sheetPresentationController {
-          sheet.detents = [.medium(), .large()]
-          sheet.largestUndimmedDetentIdentifier = .large
-          sheet.prefersEdgeAttachedInCompactHeight = true
-          sheet.prefersScrollingExpandsWhenScrolledToEdge = true
-          sheet.widthFollowsPreferredContentSizeWhenEdgeAttached = true
-        }
-      }
+      
       tableView.deselectRow(at: indexPath, animated: true)
     }
   }
@@ -424,13 +418,13 @@ extension AmountTableViewController : UISearchBarDelegate {
       paidSlice.value = paidTotal
       paidSlice.rate = paidTotal/amountsTotal
       dataEntries.append(paidSlice)
-    
+      
       let iouSlice = DVPieSliceModel()
       iouSlice.name = "Unpaid (IOU)"
       iouSlice.value = iOweYouTotal
       iouSlice.rate = iOweYouTotal/amountsTotal
       dataEntries.append(iouSlice)
-    
+      
       let uomSlice = DVPieSliceModel()
       uomSlice.name = "Unpaid (YOMe)"
       uomSlice.value = youOweMeTotal
@@ -443,7 +437,7 @@ extension AmountTableViewController : UISearchBarDelegate {
     chartView.dataArray = dataEntries
     chartView.clipsToBounds = true
     chartView.sizeToFit()
-    chartView.title = dataEntries.count > 0 ? "μ°" : "press + to add an amount"
+    chartView.title = dataEntries.count > 0 ? "μ°" : "press + to add an amount for \(selectedPerson?.firstName ?? "a person")"
     chartView.draw()
     
   }
