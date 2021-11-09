@@ -156,25 +156,8 @@ class PeopleTableViewController: UITableViewController {
           tableView.cellForRow(at: indexPath)?.shake()
           self.showToast(message: "balance must be zero before deleting the person")
         } else {
-          let localAuthenticationContext = LAContext()
-          localAuthenticationContext.localizedFallbackTitle = "Please use your Passcode"
-          
-          var authorizationError: NSError?
-          let reason = "Authentication required to delete \(self.people?[indexPath.row].name ?? "a person")"
-          
-          if localAuthenticationContext.canEvaluatePolicy(.deviceOwnerAuthentication, error: &authorizationError) {
-            localAuthenticationContext.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: reason) { success, evaluateError in
-              if success {
-                
-                DispatchQueue.main.async {
-                  isActionSuccessful(true)
-                  self.deletePerson(at: indexPath)
-                }
-              } else {
-                isActionSuccessful(false)
-              }
-            }
-          }
+          isActionSuccessful(true)
+          self.deletePerson(at: indexPath)
         }
         
       }

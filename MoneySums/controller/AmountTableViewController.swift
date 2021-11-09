@@ -416,27 +416,34 @@ extension AmountTableViewController : UISearchBarDelegate {
     
     let amountsTotal = paidTotal + youOweMeTotal + iOweYouTotal
     
-    let paidSlice = DVPieSliceModel()
-    paidSlice.name = "Paid (All)"
-    paidSlice.value = paidTotal
-    paidSlice.rate = paidTotal/amountsTotal
+    var dataEntries: [DVPieSliceModel] = []
     
-    let iouSlice = DVPieSliceModel()
-    iouSlice.name = "Unpaid (IOU)"
-    iouSlice.value = iOweYouTotal
-    iouSlice.rate = iOweYouTotal/amountsTotal
+    if amountsTotal > 0 {
+      let paidSlice = DVPieSliceModel()
+      paidSlice.name = "Paid (All)"
+      paidSlice.value = paidTotal
+      paidSlice.rate = paidTotal/amountsTotal
+      dataEntries.append(paidSlice)
     
-    let uomSlice = DVPieSliceModel()
-    uomSlice.name = "Unpaid (YOMe)"
-    uomSlice.value = youOweMeTotal
-    uomSlice.rate = youOweMeTotal/amountsTotal
+      let iouSlice = DVPieSliceModel()
+      iouSlice.name = "Unpaid (IOU)"
+      iouSlice.value = iOweYouTotal
+      iouSlice.rate = iOweYouTotal/amountsTotal
+      dataEntries.append(iouSlice)
+    
+      let uomSlice = DVPieSliceModel()
+      uomSlice.name = "Unpaid (YOMe)"
+      uomSlice.value = youOweMeTotal
+      uomSlice.rate = youOweMeTotal/amountsTotal
+      dataEntries.append(uomSlice)
+    }
     
     chartView.sliceNameColor = UIColor.adaAccentColor
     chartView.pieCenterCirclePercentage = 1.2
-    chartView.dataArray = [paidSlice, iouSlice, uomSlice]
+    chartView.dataArray = dataEntries
     chartView.clipsToBounds = true
     chartView.sizeToFit()
-    chartView.title = amountsTotal > 0 ? "μ°" : "press + to add an amount"
+    chartView.title = dataEntries.count > 0 ? "μ°" : "press + to add an amount"
     chartView.draw()
     
   }
