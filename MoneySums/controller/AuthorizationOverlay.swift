@@ -8,7 +8,7 @@
 import UIKit
 import LocalAuthentication
 
-public class AuthorizationOverlay{
+public class AuthorizationOverlay {
   
   var overlayView = UIView()
   

@@ -24,6 +24,14 @@ class Amount: Object {
     payments.sum(ofProperty: "value")
   }
   
+  var latestPaymentDate: Date? {
+    latestPayment?.paidDate
+  }
+  
+  var latestPayment: Payment? {
+    payments.sorted(byKeyPath: "dateCreated", ascending: true).first
+  }
+  
   var detailText: String {
     let detail = note.isEmpty ? paymentsDetailText : note
     let dateCreated = dateCreated.niceDescription()

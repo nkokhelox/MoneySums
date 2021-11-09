@@ -59,6 +59,26 @@
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" name="adaGrey"/>
                             </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="chartRow" rowHeight="418" id="SDP-Gh-kon">
+                                <rect key="frame" x="20" y="137" width="374" height="418"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="SDP-Gh-kon" id="6Gu-MT-tMY">
+                                    <rect key="frame" x="0.0" y="0.0" width="374" height="418"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NbA-UB-91o" customClass="DVPieChart">
+                                            <rect key="frame" x="0.0" y="0.0" width="374" height="418"/>
+                                            <color key="backgroundColor" name="adaGrey"/>
+                                        </view>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="NbA-UB-91o" firstAttribute="centerY" secondItem="6Gu-MT-tMY" secondAttribute="centerY" id="Teh-Bc-nOB"/>
+                                        <constraint firstItem="NbA-UB-91o" firstAttribute="top" secondItem="6Gu-MT-tMY" secondAttribute="topMargin" constant="-11" id="hgt-BY-9Os"/>
+                                        <constraint firstItem="NbA-UB-91o" firstAttribute="centerX" secondItem="6Gu-MT-tMY" secondAttribute="centerX" id="nYS-va-6f1"/>
+                                        <constraint firstItem="NbA-UB-91o" firstAttribute="leading" secondItem="6Gu-MT-tMY" secondAttribute="leadingMargin" constant="-20" id="nxD-pN-E3F"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                            </tableViewCell>
                         </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="Zo5-hB-ygb" id="3cg-Ui-CAq"/>
@@ -81,7 +101,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ldW-ZN-2jG" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1991" y="66"/>
+            <point key="canvasLocation" x="1989.8550724637682" y="65.625"/>
         </scene>
         <!--Interest-->
         <scene sceneID="pUW-47-asx">
@@ -187,7 +207,7 @@
                             </connections>
                         </searchBar>
                         <label key="tableFooterView" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="last data load time" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Ln8-S9-DCa">
-                            <rect key="frame" x="0.0" y="766.5" width="414" height="44"/>
+                            <rect key="frame" x="0.0" y="1109" width="414" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="8"/>
                             <color key="textColor" systemColor="tertiaryLabelColor"/>

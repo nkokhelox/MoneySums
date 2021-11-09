@@ -7,6 +7,7 @@
 
 import UIKit
 import RealmSwift
+import DVPieChart
 import LocalAuthentication
 
 class AmountTableViewController: UITableViewController {
@@ -59,7 +60,7 @@ class AmountTableViewController: UITableViewController {
   
   @objc func loadAmounts() {
     self.paidAmounts = selectedPerson?.amounts.sorted(byKeyPath: "dateCreated", ascending: true).sorted(byKeyPath: "value", ascending: true).filter("paid == %@", true)
-    self.unpaidAmounts = selectedPerson?.amounts.filter("paid == %@", false) 
+    self.unpaidAmounts = selectedPerson?.amounts.filter("paid == %@", false)
     tableView.reloadData(completion: self.updateLoadTime)
   }
   
@@ -173,29 +174,41 @@ extension AmountTableViewController {
 
 // MARK: TableView DataSource methods
 extension AmountTableViewController {
+  override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    return indexPath.section == 2 ? CGFloat(UIScreen.main.bounds.width) : super.tableView(tableView, heightForRowAt: indexPath)
+  }
+  
   override func numberOfSections(in tableView: UITableView) -> Int {
-    return 2
+    return 3
   }
   
   override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return (section == 0 ? unpaidAmounts : paidAmounts)?.count ?? 0
+    return section == 2 ? 1 : (section == 0 ? unpaidAmounts : paidAmounts)?.count ?? 0
   }
   
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let row = tableView.dequeueReusableCell(withIdentifier: "amountRow", for: indexPath)
-    let amount = (indexPath.section == 0 ? unpaidAmounts : paidAmounts)?[indexPath.row]
-    let diff = amount!.paymentsTotal - amount!.value
-    
-    row.accessoryType = amount?.paid == true ? .checkmark : .detailButton
-    row.accessoryView?.backgroundColor = .red
-    
-    row.textLabel?.font = UIFont.boldSystemFont(ofSize: 16.0)
-    row.textLabel?.text = amount?.moneyValue
-    
-    row.detailTextLabel?.textColor = diff == 0 ? UIColor.secondaryLabel : diff > 0 ? UIColor.adaTeal : UIColor.adaOrange
-    row.detailTextLabel?.text = amount?.detailText
-    
-    return row
+    if indexPath.section == 2 {
+      let row = tableView.dequeueReusableCell(withIdentifier: "chartRow", for: indexPath)
+      let chartView = row.contentView.subviews.first as! DVPieChart
+      customizeChart(chartView: chartView)
+      return row
+    }
+    else {
+      let row = tableView.dequeueReusableCell(withIdentifier: "amountRow", for: indexPath)
+      let amount = (indexPath.section == 0 ? unpaidAmounts : paidAmounts)?[indexPath.row]
+      let diff = amount!.paymentsTotal - amount!.value
+      
+      row.accessoryType = amount?.paid == true ? .checkmark : .detailButton
+      row.accessoryView?.backgroundColor = .red
+      
+      row.textLabel?.font = UIFont.boldSystemFont(ofSize: 16.0)
+      row.textLabel?.text = amount?.moneyValue
+      
+      row.detailTextLabel?.textColor = diff == 0 ? UIColor.secondaryLabel : diff > 0 ? UIColor.adaTeal : UIColor.adaOrange
+      row.detailTextLabel?.text = amount?.detailText
+      
+      return row
+    }
   }
   
   override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -216,6 +229,10 @@ extension AmountTableViewController {
 // MARK: Tableview row swipe action methods
 extension AmountTableViewController {
   override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+    if indexPath.section == 2 {
+      return nil
+    }
+    
     let amount = (indexPath.section == 0 ? unpaidAmounts : paidAmounts)![indexPath.row]
     let actionTitle = amount.paid ? "unpaid" : "paid"
     let paidToggleAction = UIContextualAction(style: .normal, title: actionTitle) { _, _, isActionSuccessful in
@@ -242,6 +259,10 @@ extension AmountTableViewController {
   }
   
   override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+    if indexPath.section == 2 {
+      return nil
+    }
+    
     let amount = (indexPath.section == 0 ? unpaidAmounts : paidAmounts)![indexPath.row]
     
     if amount.paid {
@@ -311,12 +332,12 @@ extension AmountTableViewController {
 // MARK: - Headers and Footers
 extension AmountTableViewController {
   override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-    return section == 0 ? "unpaid (\(unpaidAmounts?.count ?? 0))" : "paid (\(paidAmounts?.count ?? 0))"
+    return section == 2 ? nil : section == 0 ? "unpaid (\(unpaidAmounts?.count ?? 0))" : "paid (\(paidAmounts?.count ?? 0))"
   }
   
   override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
     let totalMoney = (section == 0 ? selectedPerson?.totalUnpaid : selectedPerson?.totalPaid) ?? 0.0
-    return "total \(totalMoney.moneyFormattedString())"
+    return section == 2 ? "Distribution Chart" : "total \(totalMoney.moneyFormattedString())"
   }
   
   override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
@@ -378,5 +399,47 @@ extension AmountTableViewController : UISearchBarDelegate {
       }
     }
   }
+  
+  // MARK: - Chart datasource
+  func customizeChart(chartView: DVPieChart) {
+    let paidTotal = paidAmounts?.reduce(0.0) {
+      $0 + abs($1.value)
+    } ?? 0.0
+    
+    let youOweMeTotal = unpaidAmounts?.filter{$0.value > 0.0}.reduce(0.0) {
+      $0 + $1.value
+    } ?? 0.0
+    
+    let iOweYouTotal = unpaidAmounts?.filter{$0.value < 0.0}.reduce(0.0) {
+      $0 + abs($1.value)
+    } ?? 0.0
+    
+    let amountsTotal = paidTotal + youOweMeTotal + iOweYouTotal
+    
+    let paidSlice = DVPieSliceModel()
+    paidSlice.name = "Paid (All)"
+    paidSlice.value = paidTotal
+    paidSlice.rate = paidTotal/amountsTotal
+    
+    let iouSlice = DVPieSliceModel()
+    iouSlice.name = "Unpaid (IOU)"
+    iouSlice.value = iOweYouTotal
+    iouSlice.rate = iOweYouTotal/amountsTotal
+    
+    let uomSlice = DVPieSliceModel()
+    uomSlice.name = "Unpaid (YOMe)"
+    uomSlice.value = youOweMeTotal
+    uomSlice.rate = youOweMeTotal/amountsTotal
+    
+    chartView.sliceNameColor = UIColor.adaAccentColor
+    chartView.pieCenterCirclePercentage = 1.2
+    chartView.dataArray = [paidSlice, iouSlice, uomSlice]
+    chartView.clipsToBounds = true
+    chartView.sizeToFit()
+    chartView.title = amountsTotal > 0 ? "μ°" : "press + to add an amount"
+    chartView.draw()
+    
+  }
+  
 }
 

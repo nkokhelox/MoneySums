@@ -83,11 +83,14 @@ class PeopleTableViewController: UITableViewController {
   @objc func loadPeople() {
     people = realm.objects(Person.self).sorted(byKeyPath: "name", ascending: true)
     tableView.reloadData(completion: self.updateLoadTime)
+    if people?.count ?? 0 <= 0 {
+      AuthorizationOverlay.shared.hideOverlayView()
+    }
   }
   
   // MARK: - Table view data source
   override func numberOfSections(in tableView: UITableView) -> Int {
-    return people?.isEmpty ?? true ? 0 : 2
+    return 2
   }
   
   override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
@@ -266,7 +269,7 @@ extension PeopleTableViewController : UISearchBarDelegate {
       chartView.dataArray = dataEntries
       chartView.clipsToBounds = true
       chartView.sizeToFit()
-      chartView.title = "μ°"
+      chartView.title = self.people?.count ?? 0 > 0 ? (dataEntries.count > 0 ? "μ°" : "press a persons name to manage their amounts") : "press + to add a person"
       chartView.draw()
       
     }
