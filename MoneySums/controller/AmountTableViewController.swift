@@ -432,6 +432,8 @@ extension AmountTableViewController : UISearchBarDelegate {
       dataEntries.append(uomSlice)
     }
     
+    dataEntries = dataEntries.filter{$0.rate != 0.0}
+    
     chartView.sliceNameColor = UIColor.adaAccentColor
     chartView.pieCenterCirclePercentage = 1.2
     chartView.dataArray = dataEntries
