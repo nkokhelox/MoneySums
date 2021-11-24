@@ -8,9 +8,9 @@
 import Foundation
 
 extension Double {
-  func moneyFormattedString() -> String {
-    let formatter = NumberFormatter()
-    formatter.numberStyle = .currency
-    return formatter.string(from: self as NSNumber) ?? self.description
-  }
+    func moneyFormattedString() -> String {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        return formatter.string(from: self as NSNumber) ?? description
+    }
 }
