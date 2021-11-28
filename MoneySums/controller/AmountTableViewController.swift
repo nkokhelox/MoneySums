@@ -11,15 +11,17 @@ import RealmSwift
 import UIKit
 
 class AmountTableViewController: UITableViewController {
-    let realm = try! Realm(configuration: Realm.Configuration(schemaVersion: 2))
+    private let realm = try! Realm(configuration: Realm.Configuration(schemaVersion: 2))
 
-    var paidAmounts: Results<Amount>?
-    var unpaidAmounts: Results<Amount>?
+    private var paidAmounts: Results<Amount>?
+    private var unpaidAmounts: Results<Amount>?
+    private var sectionExpansionState: [Bool] = [false, true, false]
 
-    var selectedAmountIndexPath: IndexPath?
-    var noteTextField: UITextField?
-    var amountTextField: UITextField?
-    var paymentTextField: UITextField?
+    private var selectedAmountIndexPath: IndexPath?
+    private var noteTextField: UITextField?
+    private var amountTextField: UITextField?
+    private var paymentTextField: UITextField?
+
     @IBOutlet var lastDataLoadTime: UILabel!
 
     var selectedPerson: Person? {
@@ -182,11 +184,11 @@ extension AmountTableViewController {
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 3
+        return sectionExpansionState.count
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return section == 2 ? 1 : (section == 0 ? unpaidAmounts : paidAmounts)?.count ?? 0
+        return sectionExpansionState[section] ? 0 : section == 2 ? 1 : (section == 0 ? unpaidAmounts : paidAmounts)?.count ?? 0
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -338,7 +340,10 @@ extension AmountTableViewController {
 
 extension AmountTableViewController {
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return section == 2 ? nil : section == 0 ? "unpaid (\(unpaidAmounts?.count ?? 0))" : "paid (\(paidAmounts?.count ?? 0))"
+      let expansionIndicator = sectionExpansionState[section] ? "⌄" : "›"
+        return section == 2 ?
+                          nil : section == 0 ?
+                                       "unpaid (\(unpaidAmounts?.count ?? 0)) \(expansionIndicator)" : "paid (\(paidAmounts?.count ?? 0)) \(expansionIndicator)"
     }
 
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
@@ -349,12 +354,20 @@ extension AmountTableViewController {
     override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         let header: UITableViewHeaderFooterView = view as! UITableViewHeaderFooterView
         header.textLabel?.textAlignment = .right
+        header.addGestureRecognizer(OnSectionHeaderFooterTap(section: section, target: self, action: #selector(tapHeader(_:))))
     }
 
     override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
         let footer: UITableViewHeaderFooterView = view as! UITableViewHeaderFooterView
         footer.textLabel?.text = footer.textLabel?.text?.uppercased()
         footer.textLabel?.textAlignment = .right
+    }
+
+    @objc func tapHeader(_ sender: UIGestureRecognizer) {
+        if let headerTapEvent = sender as? OnSectionHeaderFooterTap {
+            sectionExpansionState[headerTapEvent.section].toggle()
+            tableView.reloadData()
+        }
     }
 }
 
