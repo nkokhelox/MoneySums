@@ -61,8 +61,8 @@ class AmountTableViewController: UITableViewController {
     }
 
     @objc func loadAmounts() {
-        paidAmounts = selectedPerson?.amounts.sorted(byKeyPath: "dateCreated", ascending: true).sorted(byKeyPath: "value", ascending: true).filter("paid == %@", true)
-        unpaidAmounts = selectedPerson?.amounts.filter("paid == %@", false)
+        unpaidAmounts = selectedPerson?.amounts.elements.filter("paid == %@", false).sorted(byKeyPath: "dateCreated", ascending: true)
+        paidAmounts = selectedPerson?.amounts.elements.filter("paid == %@", true).sorted(byKeyPath: "dateCreated", ascending: false)
         tableView.reloadData(completion: updateLoadTime)
     }
 
@@ -340,10 +340,10 @@ extension AmountTableViewController {
 
 extension AmountTableViewController {
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-      let expansionIndicator = sectionExpansionState[section] ? "⌄" : "›"
+        let expansionIndicator = sectionExpansionState[section] ? "⌄" : "›"
         return section == 2 ?
-                          nil : section == 0 ?
-                                       "unpaid (\(unpaidAmounts?.count ?? 0)) \(expansionIndicator)" : "paid (\(paidAmounts?.count ?? 0)) \(expansionIndicator)"
+            nil : section == 0 ?
+            "unpaid (\(unpaidAmounts?.count ?? 0)) \(expansionIndicator)" : "paid (\(paidAmounts?.count ?? 0)) \(expansionIndicator)"
     }
 
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
@@ -406,7 +406,7 @@ extension AmountTableViewController: UISearchBarDelegate {
                 loadAmounts()
             } else {
                 paidAmounts = paidAmounts?.filter("note CONTAINS[cd] %@", searchText).sorted(byKeyPath: "dateCreated", ascending: false)
-                unpaidAmounts = unpaidAmounts?.filter("note CONTAINS[cd] %@", searchText)
+                unpaidAmounts = unpaidAmounts?.filter("note CONTAINS[cd] %@", searchText).sorted(byKeyPath: "dateCreated", ascending: true)
                 tableView.reloadData(completion: updateLoadTime)
             }
         }
