@@ -253,7 +253,7 @@ extension AmountTableViewController {
         }
 
         paidToggleAction.image = UIImage(systemName: amount.paid ? "xmark" : "checkmark")
-        paidToggleAction.backgroundColor = UIColor(named: amount.paid ? "adaOrange" : "adaTeal")
+      paidToggleAction.backgroundColor = amount.paid ? UIColor.adaOrange : UIColor.adaTeal
 
         var swipeActions: [UIContextualAction] = [paidToggleAction]
 
@@ -265,7 +265,7 @@ extension AmountTableViewController {
             }
 
             addInterestAction.image = UIImage(systemName: "text.badge.plus")
-            addInterestAction.backgroundColor = UIColor(named: "adaTeal")
+          addInterestAction.backgroundColor = UIColor.adaTeal
             swipeActions.append(addInterestAction)
         }
 
@@ -318,7 +318,7 @@ extension AmountTableViewController {
             }
 
             addInterestAction.image = UIImage(systemName: "text.badge.plus")
-            addInterestAction.backgroundColor = UIColor(named: "adaTeal")
+          addInterestAction.backgroundColor = UIColor.adaTeal
 
             let config = UISwipeActionsConfiguration(actions: [addInterestAction])
             config.performsFirstActionWithFullSwipe = false
