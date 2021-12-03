@@ -25,7 +25,7 @@ class PeopleTableViewController: UITableViewController {
         refreshControl = UIRefreshControl()
         refreshControl?.addTarget(self, action: #selector(loadPeople), for: .valueChanged)
 
-        AuthorizationOverlay.shared.showOverlay(isDarkModeEnabled: traitCollection.userInterfaceStyle == .dark)
+      self.showAuthorizationOverlay()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -34,7 +34,6 @@ class PeopleTableViewController: UITableViewController {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        view.hideAllToasts()
     }
 
     func updateLoadTime() {
@@ -151,16 +150,10 @@ class PeopleTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        if indexPath.section == 0 {
+        if indexPath.section == 0 && self.people?[indexPath.row].totalUnpaid == 0 {
             let deletionAction = UIContextualAction(style: .destructive, title: "delete") { _, _, isActionSuccessful in
-                if self.people?[indexPath.row].totalUnpaid != 0 {
-                    isActionSuccessful(false)
-                    tableView.cellForRow(at: indexPath)?.shake()
-                    self.showToast(message: "balance must be zero before deleting the person")
-                } else {
-                    isActionSuccessful(true)
+                isActionSuccessful(true)
                     self.deletePerson(at: indexPath)
-                }
             }
 
             deletionAction.image = UIImage(systemName: "trash")
@@ -182,7 +175,6 @@ class PeopleTableViewController: UITableViewController {
             tableView.endUpdates()
             tableView.reloadData(completion: updateLoadTime)
         } catch {
-            showToast(message: "⚠ failed to delete \((people?[indexPath.row].name)!)")
             print("error deleting person at row: \(indexPath.row), error: \(error)")
         }
     }
@@ -275,17 +267,22 @@ extension PeopleTableViewController: UISearchBarDelegate {
         joined.append(contentsOf: array2[array1.count ..< array2.count])
         return joined
     }
+  
+  private func showAuthorizationOverlay() {
+    AuthorizationOverlay.shared.showOverlay(isDarkModeEnabled: traitCollection.userInterfaceStyle == .dark)
+  }
 
     // MARK: - App info
 
     func showAppInfo() {
         let alert = UIAlertController(
             title: "\(Bundle.main.appName)",
-            message: "Version \(Bundle.main.appVersion) (\(Bundle.main.appBuild))\nUsed frameworks:\n\u{2022}DVPieChart\n\u{2022}Toast",
-            preferredStyle: .alert
+            message: "Version \(Bundle.main.appVersion) (\(Bundle.main.appBuild))\nUsed frameworks:\n\u{2022}DVPieChart\n\u{2022}RealmSwift",
+            preferredStyle: .actionSheet
         )
-
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+      
+      alert.addAction(UIAlertAction(title: "LOCK", style: .cancel, handler: {_ in self.showAuthorizationOverlay()}))
+      alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
 
         present(alert, animated: true)
     }

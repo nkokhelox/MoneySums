@@ -43,7 +43,7 @@ public class AuthorizationOverlay {
         authorizeButton.setImage(UIImage(systemName: "lock.shield"), for: .normal)
         authorizeButton.frame = CGRect(x: 0, y: 0, width: 120, height: 80)
         authorizeButton.backgroundColor = UIColor.blackOrWhite
-        authorizeButton.setTitle("Authorize", for: .normal)
+        authorizeButton.setTitle("Unlock", for: .normal)
         authorizeButton.layer.cornerRadius = 10
         authorizeButton.center = windowCenter
         authorizeButton.clipsToBounds = true
@@ -63,7 +63,7 @@ public class AuthorizationOverlay {
         localAuthenticationContext.localizedFallbackTitle = "Please use your Passcode"
 
         var authorizationError: NSError?
-        let reason = "Authentication required to access the secure data"
+        let reason = "Authentication required to grant you access to the private data"
 
         if localAuthenticationContext.canEvaluatePolicy(.deviceOwnerAuthentication, error: &authorizationError) {
             localAuthenticationContext.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: reason) { success, _ in

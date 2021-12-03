@@ -27,7 +27,6 @@
 		AC9B5A74270ABEE700860429 /* Bundle+util.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC9B5A73270ABEE700860429 /* Bundle+util.swift */; };
 		AC9B5A86270F8EA800860429 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC9B5A85270F8EA800860429 /* NavigationController.swift */; };
 		AC9B5A88270F8EC000860429 /* AuthorizationOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC9B5A87270F8EC000860429 /* AuthorizationOverlay.swift */; };
-		ACABA28D271C00DE003EC16F /* UIViewController+util.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACABA28C271C00DE003EC16F /* UIViewController+util.swift */; };
 		ACE2B85F26C061B900755CF2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACE2B85E26C061B900755CF2 /* AppDelegate.swift */; };
 		ACE2B86126C061B900755CF2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACE2B86026C061B900755CF2 /* SceneDelegate.swift */; };
 		ACE2B86826C061BA00755CF2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ACE2B86726C061BA00755CF2 /* Assets.xcassets */; };
@@ -55,7 +54,6 @@
 		AC9B5A73270ABEE700860429 /* Bundle+util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+util.swift"; sourceTree = "<group>"; };
 		AC9B5A85270F8EA800860429 /* NavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
 		AC9B5A87270F8EC000860429 /* AuthorizationOverlay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthorizationOverlay.swift; sourceTree = "<group>"; };
-		ACABA28C271C00DE003EC16F /* UIViewController+util.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+util.swift"; sourceTree = "<group>"; };
 		ACE0953626F134F6008A67D1 /* MoneySums.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MoneySums.entitlements; sourceTree = "<group>"; };
 		ACE2B85B26C061B900755CF2 /* MoneySums.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MoneySums.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ACE2B85E26C061B900755CF2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -119,7 +117,6 @@
 			isa = PBXGroup;
 			children = (
 				AC98631626EDAB1A008C8DA4 /* String+util.swift */,
-				ACABA28C271C00DE003EC16F /* UIViewController+util.swift */,
 				AC98631726EDAB1A008C8DA4 /* UITextField+util.swift */,
 				AC98631826EDAB1A008C8DA4 /* Double+util.swift */,
 				AC98631926EDAB1A008C8DA4 /* UIView+util.swift */,
@@ -302,7 +299,6 @@
 				AC98631326EDAAF6008C8DA4 /* PaymentTableViewController.swift in Sources */,
 				ACE2B85F26C061B900755CF2 /* AppDelegate.swift in Sources */,
 				AC9B5A86270F8EA800860429 /* NavigationController.swift in Sources */,
-				ACABA28D271C00DE003EC16F /* UIViewController+util.swift in Sources */,
 				AC05AD0B27003DDF006CAEBB /* UITableView+util.swift in Sources */,
 				AC98631226EDAAF6008C8DA4 /* PeopleTableViewController.swift in Sources */,
 				AC98631D26EDAB1A008C8DA4 /* Double+util.swift in Sources */,

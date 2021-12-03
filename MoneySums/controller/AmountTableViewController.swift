@@ -41,7 +41,6 @@ class AmountTableViewController: UITableViewController {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        view.hideAllToasts()
     }
 
     @IBAction func addAmount(_ sender: UIBarButtonItem) {
@@ -61,8 +60,8 @@ class AmountTableViewController: UITableViewController {
     }
 
     @objc func loadAmounts() {
-        unpaidAmounts = selectedPerson?.amounts.elements.filter("paid == %@", false).sorted(byKeyPath: "dateCreated", ascending: true)
-        paidAmounts = selectedPerson?.amounts.elements.filter("paid == %@", true).sorted(byKeyPath: "dateCreated", ascending: false)
+        unpaidAmounts = selectedPerson?.amounts.filter("paid == %@", false).sorted(by: [SortDescriptor(keyPath: "dateCreated", ascending: true), SortDescriptor(keyPath: "value", ascending: false)])
+        paidAmounts = selectedPerson?.amounts.filter("paid == %@", true).sorted(byKeyPath: "dateCreated", ascending: false)
         tableView.reloadData(completion: updateLoadTime)
     }
 
@@ -104,7 +103,6 @@ extension AmountTableViewController {
                     person.amounts.append(amount)
                 }
             } catch {
-                showToast(message: "saving amount for \(person.name) failed")
                 print("error saving the amount for \(person.name): \(error)")
             }
         }
@@ -154,7 +152,6 @@ extension AmountTableViewController {
                     (indexPath.section == 0 ? unpaidAmounts : paidAmounts)![indexPath.row].payments.append(interest)
                 }
             } catch {
-                showToast(message: "saving amount for \(selectedPerson!.name) failed")
                 print("error saving the amount for \(selectedPerson!.name): \(error)")
             }
 
@@ -249,7 +246,6 @@ extension AmountTableViewController {
                     amount.paid = !amount.paid
                 }
             } catch {
-                self.showToast(message: "toggling the paid status for \(amount.moneyValue) failed")
                 print("error toggling the paid status for \(amount.moneyValue)")
             }
 
@@ -259,7 +255,21 @@ extension AmountTableViewController {
         paidToggleAction.image = UIImage(systemName: amount.paid ? "xmark" : "checkmark")
         paidToggleAction.backgroundColor = UIColor(named: amount.paid ? "adaOrange" : "adaTeal")
 
-        let config = UISwipeActionsConfiguration(actions: [paidToggleAction])
+        var swipeActions: [UIContextualAction] = [paidToggleAction]
+
+        if amount.paid {
+            let addInterestAction = UIContextualAction(style: .normal, title: "interest") { _, _, isActionSuccessful in
+                self.selectedAmountIndexPath = indexPath
+                isActionSuccessful(true)
+                self.addPayment()
+            }
+
+            addInterestAction.image = UIImage(systemName: "text.badge.plus")
+            addInterestAction.backgroundColor = UIColor(named: "adaTeal")
+            swipeActions.append(addInterestAction)
+        }
+
+        let config = UISwipeActionsConfiguration(actions: swipeActions)
         config.performsFirstActionWithFullSwipe = false
 
         return config
@@ -330,7 +340,6 @@ extension AmountTableViewController {
             tableView.reloadData()
         } catch {
             tableView.cellForRow(at: indexPath)?.shake()
-            showToast(message: "failed to delete \(amount.moneyValue)")
             print("error deleting amount at row: \(indexPath.row), error: \(error)")
         }
     }
