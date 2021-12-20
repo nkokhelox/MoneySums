@@ -11,6 +11,7 @@ import RealmSwift
 import UIKit
 
 class PeopleTableViewController: UITableViewController {
+    private var pieSliceOrdering = 0
     let realm = try! Realm(configuration: Realm.Configuration(schemaVersion: 2))
     var people: Results<Person>?
     var nameTextField: UITextField?
@@ -23,9 +24,9 @@ class PeopleTableViewController: UITableViewController {
         UITableViewHeaderFooterView.appearance().tintColor = UIColor.adaTeal
 
         refreshControl = UIRefreshControl()
-        refreshControl?.addTarget(self, action: #selector(loadPeople), for: .valueChanged)
+        refreshControl?.addTarget(self, action: #selector(refreshControlAction), for: .valueChanged)
 
-      self.showAuthorizationOverlay()
+        showAuthorizationOverlay()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -36,8 +37,13 @@ class PeopleTableViewController: UITableViewController {
         super.viewWillDisappear(animated)
     }
 
+  @objc func refreshControlAction() {
+        pieSliceOrdering = (pieSliceOrdering + 1) % 3
+        loadPeople()
+    }
+
     func updateLoadTime() {
-        lastDataLoadTime.text = "Last load @ \(Date().hms())"
+        lastDataLoadTime.text = "Last load :\(pieSliceOrdering) @ \(Date().hms())"
         refreshControl?.endRefreshing()
     }
 
@@ -80,7 +86,7 @@ class PeopleTableViewController: UITableViewController {
         nameTextField = textField
     }
 
-    @objc func loadPeople() {
+    func loadPeople() {
         people = realm.objects(Person.self).sorted(byKeyPath: "name", ascending: true)
         tableView.reloadData(completion: updateLoadTime)
         if people?.count ?? 0 <= 0 {
@@ -105,7 +111,7 @@ class PeopleTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return indexPath.section == 0 ? super.tableView(tableView, heightForRowAt: indexPath) : CGFloat(UIScreen.main.bounds.width)
+        return indexPath.section == 0 ? super.tableView(tableView, heightForRowAt: indexPath) : CGFloat(UIScreen.main.bounds.width * 1.2)
     }
 
     override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
@@ -150,10 +156,10 @@ class PeopleTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        if indexPath.section == 0 && self.people?[indexPath.row].totalUnpaid == 0 {
+        if indexPath.section == 0 && people?[indexPath.row].totalUnpaid == 0 {
             let deletionAction = UIContextualAction(style: .destructive, title: "delete") { _, _, isActionSuccessful in
                 isActionSuccessful(true)
-                    self.deletePerson(at: indexPath)
+                self.deletePerson(at: indexPath)
             }
 
             deletionAction.image = UIImage(systemName: "trash")
@@ -221,22 +227,22 @@ extension PeopleTableViewController: UISearchBarDelegate {
                 $0 + abs($1.totalUnpaid)
             }
 
-            var dataEntries1: [DVPieSliceModel] = []
-            var dataEntries2: [DVPieSliceModel] = []
-            for (index, person) in people.enumerated() {
+            var dataEntries: [DVPieSliceModel] = []
+            for person in people {
                 let m = DVPieSliceModel()
                 m.name = person.firstName
                 m.rate = abs(person.totalUnpaid) / amountsSum
-                if index < (people.count / 2) {
-                    dataEntries1.append(m)
-                } else {
-                    dataEntries2.append(m)
-                }
+                dataEntries.append(m)
             }
 
-            dataEntries1.shuffle()
-            dataEntries2.sort { $0.rate < $1.rate }
-            let dataEntries = zipMerge(dataEntries1, dataEntries2)
+            switch pieSliceOrdering {
+            case 0: dataEntries.sort { $0.rate < $1.rate }
+                break
+            case 1: dataEntries.sort { $0.rate > $1.rate }
+                break
+            default:
+                dataEntries.shuffle()
+            }
 
             chartView.sliceNameColor = UIColor.adaAccentColor
             chartView.pieCenterCirclePercentage = 1.2
@@ -252,25 +258,9 @@ extension PeopleTableViewController: UISearchBarDelegate {
         }
     }
 
-    private func zipMerge(_ array1: Array<DVPieSliceModel>, _ array2: Array<DVPieSliceModel>) -> Array<DVPieSliceModel> {
-        if array1.count == array2.count {
-            return Array(zip(array1, array2).flatMap({ [$0, $1] }))
-        }
-
-        if array1.count > array2.count {
-            var joined = Array(zip(array1[0 ... array2.count], array2).flatMap({ [$0, $1] }))
-            joined.append(contentsOf: array1[array2.count ..< array1.count])
-            return joined
-        }
-
-        var joined = zip(array2[0 ... array1.count], array1).flatMap({ [$0, $1] })
-        joined.append(contentsOf: array2[array1.count ..< array2.count])
-        return joined
+    private func showAuthorizationOverlay() {
+        AuthorizationOverlay.shared.showOverlay(isDarkModeEnabled: traitCollection.userInterfaceStyle == .dark)
     }
-  
-  private func showAuthorizationOverlay() {
-    AuthorizationOverlay.shared.showOverlay(isDarkModeEnabled: traitCollection.userInterfaceStyle == .dark)
-  }
 
     // MARK: - App info
 
@@ -280,9 +270,9 @@ extension PeopleTableViewController: UISearchBarDelegate {
             message: "Version \(Bundle.main.appVersion) (\(Bundle.main.appBuild))\nUsed frameworks:\n\u{2022}DVPieChart\n\u{2022}RealmSwift",
             preferredStyle: .actionSheet
         )
-      
-      alert.addAction(UIAlertAction(title: "LOCK", style: .cancel, handler: {_ in self.showAuthorizationOverlay()}))
-      alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+
+        alert.addAction(UIAlertAction(title: "LOCK", style: .cancel, handler: { _ in self.showAuthorizationOverlay() }))
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
 
         present(alert, animated: true)
     }
