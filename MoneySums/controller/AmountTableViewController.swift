@@ -39,10 +39,6 @@ class AmountTableViewController: UITableViewController {
         refreshControl?.addTarget(self, action: #selector(loadAmounts), for: .valueChanged)
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-    }
-
     @IBAction func addAmount(_ sender: UIBarButtonItem) {
         let alert = UIAlertController(
             title: "Add Money Record",
@@ -63,6 +59,7 @@ class AmountTableViewController: UITableViewController {
         unpaidAmounts = selectedPerson?.amounts.filter("paid == %@", false).sorted(by: [SortDescriptor(keyPath: "dateCreated", ascending: true), SortDescriptor(keyPath: "value", ascending: false)])
         paidAmounts = selectedPerson?.amounts.filter("paid == %@", true).sorted(byKeyPath: "dateCreated", ascending: false)
         tableView.reloadData(completion: updateLoadTime)
+        sectionExpansionState[1] = (paidAmounts?.count ?? 0) > 5
     }
 
     func updateLoadTime() {
