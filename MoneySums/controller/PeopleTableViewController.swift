@@ -47,6 +47,7 @@ class PeopleTableViewController: UITableViewController {
     }
 
     func updateLoadTime() {
+      
         lastDataLoadTime.text = "Last load :\(pieSliceOrdering) @ \(Date().hms())"
         refreshControl?.endRefreshing()
     }
@@ -196,15 +197,6 @@ class PeopleTableViewController: UITableViewController {
         let destinationViewController = segue.destination as! AmountTableViewController
         if let selectedRowIndexPath = tableView.indexPathForSelectedRow {
             destinationViewController.selectedPerson = people?[selectedRowIndexPath.row]
-        }
-    }
-
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        if previousTraitCollection?.userInterfaceStyle != traitCollection.userInterfaceStyle {
-          DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            self.refreshAppIcon()
-          }
         }
     }
 }
