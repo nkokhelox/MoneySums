@@ -198,17 +198,19 @@ class PeopleTableViewController: UITableViewController {
             destinationViewController.selectedPerson = people?[selectedRowIndexPath.row]
         }
     }
-  
-  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-      super.traitCollectionDidChange(previousTraitCollection)
-    if previousTraitCollection?.userInterfaceStyle != self.traitCollection.userInterfaceStyle {
-      refreshAppIcon()
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        if previousTraitCollection?.userInterfaceStyle != traitCollection.userInterfaceStyle {
+          DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            self.refreshAppIcon()
+          }
+        }
     }
-  }
-  
 }
 
 // MARK: SearchBar delegate methods
+
 extension PeopleTableViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchText.isEmpty {
@@ -231,6 +233,7 @@ extension PeopleTableViewController: UISearchBarDelegate {
     }
 
     // MARK: - Chart datasource
+
     func customizeChart(chartView: DVPieChart) {
         if let people = people?.filter({ $0.totalUnpaid != 0.0 }) {
             let amountsSum = people.reduce(0.0) {
@@ -273,6 +276,7 @@ extension PeopleTableViewController: UISearchBarDelegate {
     }
 
     // MARK: - App info
+
     func showAppInfo() {
         let alert = UIAlertController(
             title: "\(Bundle.main.appName)",
@@ -280,28 +284,20 @@ extension PeopleTableViewController: UISearchBarDelegate {
             preferredStyle: .actionSheet
         )
 
-        let darkIconAction = UIAlertAction(title: "Use Dark App Icon", style: .default, handler: { _ in self.setAppIconChoice(0) })
-      let lightIconAction = UIAlertAction(title: "Use Light App Icon", style: .default, handler: { _ in self.setAppIconChoice(1) })
-        let autoIconAction = UIAlertAction(title: "Auto Set App Icon", style: .default, handler: { _ in self.setAppIconChoice(2) })
-
-        let lightImage = UIImage(systemName: "checkmark")
-        switch UserDefaults.standard.integer(forKey: APP_ICON_KEY) {
-        case 0: darkIconAction.setValue(lightImage?.withRenderingMode(.automatic), forKey: "image"); break
-        case 1: lightIconAction.setValue(lightImage?.withRenderingMode(.automatic), forKey: "image"); break
-        default: autoIconAction.setValue(lightImage?.withRenderingMode(.automatic), forKey: "image")
-        }
-
-        alert.addAction(lightIconAction)
-        alert.addAction(darkIconAction)
-        alert.addAction(autoIconAction)
-        alert.addAction(UIAlertAction(title: "LOCK", style: .default, handler: { _ in self.showAuthorizationOverlay() }))
+        alert.addAction(UIAlertAction(title: "Use Dark App Icon", style: .default, handler: { _ in self.setAppIconChoice(0) }))
+        alert.addAction(UIAlertAction(title: "Use Light App Icon", style: .default, handler: { _ in self.setAppIconChoice(1) }))
+        alert.addAction(UIAlertAction(title: "Auto Set App Icon", style: .default, handler: { _ in self.setAppIconChoice(2) }))
+        alert.addAction(UIAlertAction(title: "LOCK APP", style: .destructive, handler: { _ in self.showAuthorizationOverlay() }))
         alert.addAction(UIAlertAction(title: "EXIT", style: .cancel, handler: nil))
 
+        let checkmark = UIImage(systemName: "checkmark")
+        alert.actions[UserDefaults.standard.integer(forKey: APP_ICON_KEY)].setValue(checkmark?.withRenderingMode(.automatic), forKey: "image")
         present(alert, animated: true)
     }
 }
 
 // MARK: App icon settings
+
 extension PeopleTableViewController {
     func setAppIconChoice(_ choice: Int) {
         UserDefaults.standard.set(choice, forKey: APP_ICON_KEY)
