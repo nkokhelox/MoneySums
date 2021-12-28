@@ -8,6 +8,7 @@
 import DVPieChart
 import LocalAuthentication
 import RealmSwift
+import SwiftUI
 import UIKit
 
 class PeopleTableViewController: UITableViewController {
@@ -16,9 +17,12 @@ class PeopleTableViewController: UITableViewController {
     var people: Results<Person>?
     var nameTextField: UITextField?
     @IBOutlet var lastDataLoadTime: UILabel!
+    let APP_ICON_KEY = "AppIcon"
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        refreshAppIcon()
 
         tableView.separatorInset = UIEdgeInsets.zero
         UITableViewHeaderFooterView.appearance().tintColor = UIColor.adaTeal
@@ -37,7 +41,7 @@ class PeopleTableViewController: UITableViewController {
         super.viewWillDisappear(animated)
     }
 
-  @objc func refreshControlAction() {
+    @objc func refreshControlAction() {
         pieSliceOrdering = (pieSliceOrdering + 1) % 3
         loadPeople()
     }
@@ -194,10 +198,17 @@ class PeopleTableViewController: UITableViewController {
             destinationViewController.selectedPerson = people?[selectedRowIndexPath.row]
         }
     }
+  
+  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+      super.traitCollectionDidChange(previousTraitCollection)
+    if previousTraitCollection?.userInterfaceStyle != self.traitCollection.userInterfaceStyle {
+      refreshAppIcon()
+    }
+  }
+  
 }
 
 // MARK: SearchBar delegate methods
-
 extension PeopleTableViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchText.isEmpty {
@@ -220,7 +231,6 @@ extension PeopleTableViewController: UISearchBarDelegate {
     }
 
     // MARK: - Chart datasource
-
     func customizeChart(chartView: DVPieChart) {
         if let people = people?.filter({ $0.totalUnpaid != 0.0 }) {
             let amountsSum = people.reduce(0.0) {
@@ -263,7 +273,6 @@ extension PeopleTableViewController: UISearchBarDelegate {
     }
 
     // MARK: - App info
-
     func showAppInfo() {
         let alert = UIAlertController(
             title: "\(Bundle.main.appName)",
@@ -271,9 +280,71 @@ extension PeopleTableViewController: UISearchBarDelegate {
             preferredStyle: .actionSheet
         )
 
-        alert.addAction(UIAlertAction(title: "LOCK", style: .cancel, handler: { _ in self.showAuthorizationOverlay() }))
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        let darkIconAction = UIAlertAction(title: "Use Dark App Icon", style: .default, handler: { _ in self.setAppIconChoice(0) })
+      let lightIconAction = UIAlertAction(title: "Use Light App Icon", style: .default, handler: { _ in self.setAppIconChoice(1) })
+        let autoIconAction = UIAlertAction(title: "Auto Set App Icon", style: .default, handler: { _ in self.setAppIconChoice(2) })
+
+        let lightImage = UIImage(systemName: "checkmark")
+        switch UserDefaults.standard.integer(forKey: APP_ICON_KEY) {
+        case 0: darkIconAction.setValue(lightImage?.withRenderingMode(.automatic), forKey: "image"); break
+        case 1: lightIconAction.setValue(lightImage?.withRenderingMode(.automatic), forKey: "image"); break
+        default: autoIconAction.setValue(lightImage?.withRenderingMode(.automatic), forKey: "image")
+        }
+
+        alert.addAction(lightIconAction)
+        alert.addAction(darkIconAction)
+        alert.addAction(autoIconAction)
+        alert.addAction(UIAlertAction(title: "LOCK", style: .default, handler: { _ in self.showAuthorizationOverlay() }))
+        alert.addAction(UIAlertAction(title: "EXIT", style: .cancel, handler: nil))
 
         present(alert, animated: true)
+    }
+}
+
+// MARK: App icon settings
+extension PeopleTableViewController {
+    func setAppIconChoice(_ choice: Int) {
+        UserDefaults.standard.set(choice, forKey: APP_ICON_KEY)
+        refreshAppIcon()
+    }
+
+    func refreshAppIcon() {
+        if #available(iOS 13, *) {
+            switch UserDefaults.standard.integer(forKey: APP_ICON_KEY) {
+            case 0: self.clearAltIcon(); break
+            case 1: self.setLightIcon(); break
+            default: self.autoSetIconForCurrentUiTrait()
+            }
+        }
+    }
+
+    func autoSetIconForCurrentUiTrait() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            if self.traitCollection.userInterfaceStyle == .dark {
+                self.clearAltIcon()
+            } else if UIApplication.shared.alternateIconName != "lightMode" {
+                self.setLightIcon()
+            }
+        }
+    }
+
+    func setLightIcon() {
+        if UIApplication.shared.alternateIconName != "lightMode" {
+            UIApplication.shared.setAlternateIconName("lightMode") { error in
+                if let clearError = error {
+                    print("Failed to set the alternative app icon name: \(clearError)")
+                }
+            }
+        }
+    }
+
+    func clearAltIcon() {
+        if UIApplication.shared.alternateIconName != nil {
+            UIApplication.shared.setAlternateIconName(nil) { error in
+                if let clearError = error {
+                    print("Failed to clear the alternative app icon name: \(clearError)")
+                }
+            }
+        }
     }
 }
