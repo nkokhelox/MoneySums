@@ -47,8 +47,13 @@ class PeopleTableViewController: UITableViewController {
     }
 
     func updateLoadTime() {
-      
-        lastDataLoadTime.text = "Last load :\(pieSliceOrdering) @ \(Date().hms())"
+      var sliceOrder = "a"
+      switch pieSliceOrdering {
+      case 0: sliceOrder = "a"; break
+      case 1: sliceOrder = "d"; break
+      default: sliceOrder = "s"
+      }
+        lastDataLoadTime.text = "Last load :\(sliceOrder) @ \(Date().hms())"
         refreshControl?.endRefreshing()
     }
 
@@ -276,11 +281,11 @@ extension PeopleTableViewController: UISearchBarDelegate {
             preferredStyle: .actionSheet
         )
 
-        alert.addAction(UIAlertAction(title: "Use Dark App Icon", style: .default, handler: { _ in self.setAppIconChoice(0) }))
-        alert.addAction(UIAlertAction(title: "Use Light App Icon", style: .default, handler: { _ in self.setAppIconChoice(1) }))
-        alert.addAction(UIAlertAction(title: "Auto Set App Icon", style: .default, handler: { _ in self.setAppIconChoice(2) }))
-        alert.addAction(UIAlertAction(title: "LOCK APP", style: .destructive, handler: { _ in self.showAuthorizationOverlay() }))
-        alert.addAction(UIAlertAction(title: "EXIT", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Dark App Icon", style: .default, handler: { _ in self.setAppIconChoice(0) }))
+        alert.addAction(UIAlertAction(title: "Light App Icon", style: .default, handler: { _ in self.setAppIconChoice(1) }))
+        alert.addAction(UIAlertAction(title: "AutoSet App Icon", style: .default, handler: { _ in self.setAppIconChoice(2) }))
+        alert.addAction(UIAlertAction(title: "Lock App", style: .destructive, handler: { _ in self.showAuthorizationOverlay() }))
+        alert.addAction(UIAlertAction(title: "Dismiss", style: .cancel, handler: nil))
 
         let checkmark = UIImage(systemName: "checkmark")
         alert.actions[UserDefaults.standard.integer(forKey: APP_ICON_KEY)].setValue(checkmark?.withRenderingMode(.automatic), forKey: "image")
