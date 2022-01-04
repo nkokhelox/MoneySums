@@ -108,7 +108,7 @@ extension AmountTableViewController {
     }
 }
 
-// MARK: Payment alert methods
+// MARK: Add payment alert methods
 
 extension AmountTableViewController {
     func addPayment() {
