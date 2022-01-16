@@ -250,7 +250,7 @@ extension AmountTableViewController {
         }
 
         paidToggleAction.image = UIImage(systemName: amount.paid ? "xmark" : "checkmark")
-      paidToggleAction.backgroundColor = amount.paid ? UIColor.adaOrange : UIColor.adaTeal
+        paidToggleAction.backgroundColor = amount.paid ? UIColor.adaOrange : UIColor.adaTeal
 
         var swipeActions: [UIContextualAction] = [paidToggleAction]
 
@@ -262,7 +262,7 @@ extension AmountTableViewController {
             }
 
             addInterestAction.image = UIImage(systemName: "text.badge.plus")
-          addInterestAction.backgroundColor = UIColor.adaTeal
+            addInterestAction.backgroundColor = UIColor.adaTeal
             swipeActions.append(addInterestAction)
         }
 
@@ -315,7 +315,7 @@ extension AmountTableViewController {
             }
 
             addInterestAction.image = UIImage(systemName: "text.badge.plus")
-          addInterestAction.backgroundColor = UIColor.adaTeal
+            addInterestAction.backgroundColor = UIColor.adaTeal
 
             let config = UISwipeActionsConfiguration(actions: [addInterestAction])
             config.performsFirstActionWithFullSwipe = false
@@ -421,10 +421,6 @@ extension AmountTableViewController: UISearchBarDelegate {
     // MARK: - Chart datasource
 
     func customizeChart(chartView: DVPieChart) {
-        let paidTotal = paidAmounts?.reduce(0.0) {
-            $0 + abs($1.value)
-        } ?? 0.0
-
         let youOweMeTotal = unpaidAmounts?.filter { $0.value > 0.0 }.reduce(0.0) {
             $0 + $1.value
         } ?? 0.0
@@ -433,25 +429,19 @@ extension AmountTableViewController: UISearchBarDelegate {
             $0 + abs($1.value)
         } ?? 0.0
 
-        let amountsTotal = paidTotal + youOweMeTotal + iOweYouTotal
+        let amountsTotal = youOweMeTotal + iOweYouTotal
 
         var dataEntries: [DVPieSliceModel] = []
 
         if amountsTotal > 0 {
-            let paidSlice = DVPieSliceModel()
-            paidSlice.name = "Paid (All)"
-            paidSlice.value = paidTotal
-            paidSlice.rate = paidTotal / amountsTotal
-            dataEntries.append(paidSlice)
-
             let iouSlice = DVPieSliceModel()
-            iouSlice.name = "Unpaid (IOU)"
+            iouSlice.name = "I.O.U"
             iouSlice.value = iOweYouTotal
             iouSlice.rate = iOweYouTotal / amountsTotal
             dataEntries.append(iouSlice)
 
             let uomSlice = DVPieSliceModel()
-            uomSlice.name = "Unpaid (YOMe)"
+            uomSlice.name = "U.O.Me"
             uomSlice.value = youOweMeTotal
             uomSlice.rate = youOweMeTotal / amountsTotal
             dataEntries.append(uomSlice)
