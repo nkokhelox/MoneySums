@@ -203,7 +203,7 @@ extension AmountTableViewController {
             row.textLabel?.text = amount?.moneyValue
 
             row.detailTextLabel?.textColor = diff == 0 ? UIColor.secondaryLabel : diff > 0 ? UIColor.adaTeal : UIColor.adaOrange
-            row.detailTextLabel?.text = amount?.detailText
+            row.detailTextLabel?.text = amount?.fullDetailText
 
             return row
         }

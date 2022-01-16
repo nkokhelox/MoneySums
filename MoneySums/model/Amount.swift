@@ -43,6 +43,11 @@ class Amount: Object {
         return String(format: diff < 0 ? "deficit: %@" : diff > 0 ? "profit: %@" : "squince", abs(diff).moneyFormattedString()).capitalized
     }
 
+    var fullDetailText: String {
+      let noteText = note.isEmpty ? "" : String(format: ", %@", note)
+      return note.isEmpty ? detailText : String(format: "%@ - %@%@", dateCreated.niceDescription(), paymentsDetailText, noteText)
+    }
+
     var paymentsDifference: Double {
         paymentsTotal - value
     }
