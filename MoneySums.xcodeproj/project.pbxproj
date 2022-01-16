@@ -468,7 +468,7 @@
 				CODE_SIGN_ENTITLEMENTS = MoneySums/MoneySums.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = YUGBBJAY76;
+				DEVELOPMENT_TEAM = R2Y59K9E8K;
 				INFOPLIST_FILE = MoneySums/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -493,7 +493,7 @@
 				CODE_SIGN_ENTITLEMENTS = MoneySums/MoneySums.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = R2Y59K9E8K;
 				INFOPLIST_FILE = MoneySums/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
