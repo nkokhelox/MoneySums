@@ -21,9 +21,6 @@ class PeopleTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        refreshAppIcon()
-
         tableView.separatorInset = UIEdgeInsets.zero
         UITableViewHeaderFooterView.appearance().tintColor = UIColor.adaTeal
 
@@ -42,7 +39,7 @@ class PeopleTableViewController: UITableViewController {
     }
 
     @objc func refreshControlAction() {
-        pieSliceOrdering = (pieSliceOrdering + 1) % 3
+        pieSliceOrdering = (pieSliceOrdering + 1) % 5
         loadPeople()
     }
 
@@ -51,7 +48,7 @@ class PeopleTableViewController: UITableViewController {
         switch pieSliceOrdering {
         case 0: sliceOrder = "a"; break
         case 1: sliceOrder = "d"; break
-        default: sliceOrder = "s"
+        default: sliceOrder = String(format: "s%d", pieSliceOrdering - 1)
         }
         lastDataLoadTime.text = "Last load :\(sliceOrder) @ \(Date().hms())"
         refreshControl?.endRefreshing()
@@ -111,15 +108,15 @@ class PeopleTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-      switch section {
-      case 0:
-          let total = people?.reduce(0.0) { $0 + $1.totalUnpaid }
-          return "total: \((total ?? 0.0).moneyFormattedString())"
-      case 1:
-        return "Distribution Chart"
-      default:
-        return nil
-      }
+        switch section {
+        case 0:
+            let total = people?.reduce(0.0) { $0 + $1.totalUnpaid }
+            return "total: \((total ?? 0.0).moneyFormattedString())"
+        case 1:
+            return "Distribution Chart"
+        default:
+            return nil
+        }
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
