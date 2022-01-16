@@ -39,18 +39,12 @@ class PeopleTableViewController: UITableViewController {
     }
 
     @objc func refreshControlAction() {
-        pieSliceOrdering = (pieSliceOrdering + 1) % 5
+        pieSliceOrdering = 0
         loadPeople()
     }
 
     func updateLoadTime() {
-        var sliceOrder = "a"
-        switch pieSliceOrdering {
-        case 0: sliceOrder = "a"; break
-        case 1: sliceOrder = "d"; break
-        default: sliceOrder = String(format: "s%d", pieSliceOrdering - 1)
-        }
-        lastDataLoadTime.text = "Last load :\(sliceOrder) @ \(Date().hms())"
+        lastDataLoadTime.text = "Last load @ \(Date().hms())"
         refreshControl?.endRefreshing()
     }
 
@@ -161,6 +155,11 @@ class PeopleTableViewController: UITableViewController {
             } else {
                 tableView.deselectRow(at: indexPath, animated: true)
             }
+        } else {
+            updateChartSliceOrdering()
+            tableView.beginUpdates()
+            tableView.reloadRows(at: [indexPath], with: .automatic)
+            tableView.endUpdates()
         }
     }
 
@@ -229,6 +228,10 @@ extension PeopleTableViewController: UISearchBarDelegate {
     }
 
     // MARK: - Chart datasource
+
+    func updateChartSliceOrdering() {
+        pieSliceOrdering = (pieSliceOrdering + 1) % 5
+    }
 
     func customizeChart(chartView: DVPieChart) {
         if let people = people?.filter({ $0.totalUnpaid != 0.0 }) {
