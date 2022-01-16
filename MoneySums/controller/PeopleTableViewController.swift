@@ -47,12 +47,12 @@ class PeopleTableViewController: UITableViewController {
     }
 
     func updateLoadTime() {
-      var sliceOrder = "a"
-      switch pieSliceOrdering {
-      case 0: sliceOrder = "a"; break
-      case 1: sliceOrder = "d"; break
-      default: sliceOrder = "s"
-      }
+        var sliceOrder = "a"
+        switch pieSliceOrdering {
+        case 0: sliceOrder = "a"; break
+        case 1: sliceOrder = "d"; break
+        default: sliceOrder = "s"
+        }
         lastDataLoadTime.text = "Last load :\(sliceOrder) @ \(Date().hms())"
         refreshControl?.endRefreshing()
     }
@@ -111,13 +111,15 @@ class PeopleTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        if section == 0 {
-            let total = people?.reduce(0.0) {
-                $0 + $1.totalUnpaid
-            }
-            return "total: \((total ?? 0.0).moneyFormattedString())"
-        }
+      switch section {
+      case 0:
+          let total = people?.reduce(0.0) { $0 + $1.totalUnpaid }
+          return "total: \((total ?? 0.0).moneyFormattedString())"
+      case 1:
+        return "Distribution Chart"
+      default:
         return nil
+      }
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -283,7 +285,7 @@ extension PeopleTableViewController: UISearchBarDelegate {
 
         alert.addAction(UIAlertAction(title: "Dark App Icon", style: .default, handler: { _ in self.setAppIconChoice(0) }))
         alert.addAction(UIAlertAction(title: "Light App Icon", style: .default, handler: { _ in self.setAppIconChoice(1) }))
-        alert.addAction(UIAlertAction(title: "AutoSet App Icon", style: .default, handler: { _ in self.setAppIconChoice(2) }))
+//        alert.addAction(UIAlertAction(title: "AutoSet App Icon", style: .default, handler: { _ in self.setAppIconChoice(2) }))
         alert.addAction(UIAlertAction(title: "Lock App", style: .destructive, handler: { _ in self.showAuthorizationOverlay() }))
         alert.addAction(UIAlertAction(title: "Dismiss", style: .cancel, handler: nil))
 
