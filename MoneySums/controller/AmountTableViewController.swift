@@ -250,21 +250,19 @@ extension AmountTableViewController {
         }
 
         paidToggleAction.image = UIImage(systemName: amount.paid ? "xmark" : "checkmark")
-        paidToggleAction.backgroundColor = amount.paid ? UIColor.adaOrange : UIColor.adaTeal
+        paidToggleAction.backgroundColor = UIColor.adaOrange
 
         var swipeActions: [UIContextualAction] = [paidToggleAction]
 
-        if amount.paid {
-            let addInterestAction = UIContextualAction(style: .normal, title: "interest") { _, _, isActionSuccessful in
-                self.selectedAmountIndexPath = indexPath
-                isActionSuccessful(true)
-                self.addPayment()
-            }
-
-            addInterestAction.image = UIImage(systemName: "text.badge.plus")
-            addInterestAction.backgroundColor = UIColor.adaTeal
-            swipeActions.append(addInterestAction)
+        let addInterestAction = UIContextualAction(style: .normal, title: "interest") { _, _, isActionSuccessful in
+            self.selectedAmountIndexPath = indexPath
+            isActionSuccessful(true)
+            self.addPayment()
         }
+
+        addInterestAction.image = UIImage(systemName: "text.badge.plus")
+        addInterestAction.backgroundColor = UIColor.adaTeal
+        swipeActions.append(addInterestAction)
 
         let config = UISwipeActionsConfiguration(actions: swipeActions)
         config.performsFirstActionWithFullSwipe = false
@@ -279,49 +277,46 @@ extension AmountTableViewController {
 
         let amount = (indexPath.section == 0 ? unpaidAmounts : paidAmounts)![indexPath.row]
 
-        if amount.paid {
-            let deletionAction = UIContextualAction(style: .destructive, title: "delete") { _, _, isActionSuccessful in
-                let localAuthenticationContext = LAContext()
-                localAuthenticationContext.localizedFallbackTitle = "Please use your Passcode"
+        let deletionAction = UIContextualAction(style: .destructive, title: "delete") { _, _, isActionSuccessful in
 
-                var authorizationError: NSError?
-                let reason = "Authentication required to delete this amount."
+            let alert = UIAlertController(
+                title: "Confirm",
+                message: "You really want to delete \(amount.moneyValue)",
+                preferredStyle: .alert
+            )
 
-                if localAuthenticationContext.canEvaluatePolicy(.deviceOwnerAuthentication, error: &authorizationError) {
-                    localAuthenticationContext.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: reason) { success, _ in
-                        if success {
-                            DispatchQueue.main.async {
-                                isActionSuccessful(true)
-                                self.deleteAmount(at: indexPath)
-                            }
-                        } else {
-                            isActionSuccessful(false)
+            alert.addAction(
+                UIAlertAction(
+                    title: "Yes",
+                    style: .destructive,
+                    handler: { _ in
+                        DispatchQueue.main.async {
+                            isActionSuccessful(true)
+                            self.deleteAmount(at: indexPath)
                         }
                     }
-                }
-            }
+                )
+            )
+            alert.addAction(
+                UIAlertAction(
+                    title: "Cancel",
+                    style: .cancel,
+                    handler: { _ in
+                        isActionSuccessful(false)
+                        self.tableView.cellForRow(at: indexPath)?.shake()
+                    }
+                )
+            )
 
-            deletionAction.image = UIImage(systemName: "trash.fill")
-
-            let config = UISwipeActionsConfiguration(actions: [deletionAction])
-            config.performsFirstActionWithFullSwipe = false
-
-            return config
-        } else {
-            let addInterestAction = UIContextualAction(style: .normal, title: "interest") { _, _, isActionSuccessful in
-                self.selectedAmountIndexPath = indexPath
-                isActionSuccessful(true)
-                self.addPayment()
-            }
-
-            addInterestAction.image = UIImage(systemName: "text.badge.plus")
-            addInterestAction.backgroundColor = UIColor.adaTeal
-
-            let config = UISwipeActionsConfiguration(actions: [addInterestAction])
-            config.performsFirstActionWithFullSwipe = false
-
-            return config
+            self.present(alert, animated: true)
         }
+
+        deletionAction.image = UIImage(systemName: "trash.fill")
+
+        let config = UISwipeActionsConfiguration(actions: [deletionAction])
+        config.performsFirstActionWithFullSwipe = true
+
+        return config
     }
 
     func deleteAmount(at indexPath: IndexPath) {

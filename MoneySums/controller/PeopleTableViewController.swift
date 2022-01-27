@@ -163,19 +163,50 @@ class PeopleTableViewController: UITableViewController {
         }
     }
 
-    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        if indexPath.section == 0 && people?[indexPath.row].totalUnpaid == 0 {
+    override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let person = people?[indexPath.row]
+        if indexPath.section == 0 && person?.totalUnpaid == 0 {
             let deletionAction = UIContextualAction(style: .destructive, title: "delete") { _, _, isActionSuccessful in
-                isActionSuccessful(true)
-                self.deletePerson(at: indexPath)
+                let alert = UIAlertController(
+                    title: "Confirm",
+                    message: "You really want to delete `\(person?.name ?? "this person")`",
+                    preferredStyle: .alert
+                )
+
+                alert.addAction(
+                    UIAlertAction(
+                        title: "Yes",
+                        style: .destructive,
+                        handler: { _ in
+                            DispatchQueue.main.async {
+                                isActionSuccessful(true)
+                                self.deletePerson(at: indexPath)
+                            }
+                        }
+                    )
+                )
+                alert.addAction(
+                    UIAlertAction(
+                        title: "Cancel",
+                        style: .cancel,
+                        handler: { _ in
+                            isActionSuccessful(false)
+                            self.tableView.cellForRow(at: indexPath)?.shake()
+                        }
+                    )
+                )
+
+                self.present(alert, animated: true)
             }
 
             deletionAction.image = UIImage(systemName: "trash")
             let config = UISwipeActionsConfiguration(actions: [deletionAction])
+            config.performsFirstActionWithFullSwipe = true
 
-            config.performsFirstActionWithFullSwipe = people?[indexPath.row].totalUnpaid == 0
             return config
         }
+
+        self.tableView.cellForRow(at: indexPath)?.shake()
         return nil
     }
 

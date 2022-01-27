@@ -86,37 +86,45 @@ class PaymentTableViewController: UITableViewController {
         footer.textLabel?.textAlignment = .right
     }
 
-    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+    override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         if let payment = payments?[indexPath.row] {
-            print(payment.value)
-            print(indexPath.row)
             let deletionAction = UIContextualAction(style: .destructive, title: "delete") { _, _, isActionSuccessful in
-                do {
-                    let localAuthenticationContext = LAContext()
-                    localAuthenticationContext.localizedFallbackTitle = "Please use your Passcode"
+                let alert = UIAlertController(
+                    title: "Confirm",
+                    message: "You really want to delete \(payment.moneyValue)",
+                    preferredStyle: .alert
+                )
 
-                    var authorizationError: NSError?
-                    let reason = "Authentication required to delete this payment"
-
-                    if localAuthenticationContext.canEvaluatePolicy(.deviceOwnerAuthentication, error: &authorizationError) {
-                        localAuthenticationContext.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: reason) { success, _ in
-                            if success {
-                                DispatchQueue.main.async {
-                                    isActionSuccessful(true)
-                                    self.deletePayment(at: indexPath)
-                                }
-                            } else {
-                                isActionSuccessful(false)
+                alert.addAction(
+                    UIAlertAction(
+                        title: "Yes",
+                        style: .destructive,
+                        handler: { _ in
+                            DispatchQueue.main.async {
+                                isActionSuccessful(true)
+                                self.deletePayment(at: indexPath)
                             }
                         }
-                    }
-                }
+                    )
+                )
+                alert.addAction(
+                    UIAlertAction(
+                        title: "Cancel",
+                        style: .cancel,
+                        handler: { _ in
+                            isActionSuccessful(false)
+                            self.tableView.cellForRow(at: indexPath)?.shake()
+                        }
+                    )
+                )
+
+                self.present(alert, animated: true)
             }
 
             deletionAction.image = UIImage(systemName: "trash.fill")
 
             let config = UISwipeActionsConfiguration(actions: [deletionAction])
-            config.performsFirstActionWithFullSwipe = false
+            config.performsFirstActionWithFullSwipe = true
             return config
         } else {
             return nil
