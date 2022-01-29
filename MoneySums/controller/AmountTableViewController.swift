@@ -282,7 +282,7 @@ extension AmountTableViewController {
         swipeActions.append(addInterestAction)
 
         let config = UISwipeActionsConfiguration(actions: swipeActions)
-        config.performsFirstActionWithFullSwipe = false
+        config.performsFirstActionWithFullSwipe = true
 
         return config
     }
@@ -298,7 +298,7 @@ extension AmountTableViewController {
 
             let alert = UIAlertController(
                 title: "Confirm",
-                message: "You really want to delete \(amount.moneyValue)",
+                message: "You really want to delete \(amount.moneyValue)?",
                 preferredStyle: .alert
             )
 

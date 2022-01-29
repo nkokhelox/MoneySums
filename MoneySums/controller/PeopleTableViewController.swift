@@ -184,7 +184,7 @@ class PeopleTableViewController: UITableViewController {
                 let deletionAction = UIContextualAction(style: .destructive, title: "delete") { _, _, isActionSuccessful in
                     let alert = UIAlertController(
                         title: "Confirm",
-                        message: "You really want to delete `\(person.name)`",
+                        message: "You really want to delete \(person.name)?",
                         preferredStyle: .alert
                     )
 

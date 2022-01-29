@@ -91,7 +91,7 @@ class PaymentTableViewController: UITableViewController {
             let deletionAction = UIContextualAction(style: .destructive, title: "delete") { _, _, isActionSuccessful in
                 let alert = UIAlertController(
                     title: "Confirm",
-                    message: "You really want to delete \(payment.moneyValue)",
+                    message: "You really want to delete \(payment.moneyValue)?",
                     preferredStyle: .alert
                 )
 
