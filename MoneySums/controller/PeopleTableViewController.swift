@@ -62,14 +62,13 @@ class PeopleTableViewController: UITableViewController {
         alert.addTextField(configurationHandler: nameTextField)
         alert.addAction(UIAlertAction(title: "save", style: .default, handler: savePerson))
         alert.addAction(UIAlertAction(title: "cancel", style: .cancel, handler: nil))
-
+        alert.applyNoEmptyValidation()
         present(alert, animated: true)
     }
 
     func savePerson(_ uiAlertAction: UIAlertAction) {
         let person = Person()
         person.name = nameTextField!.text!
-
         do {
             try realm.write {
                 realm.add(person)
@@ -81,6 +80,7 @@ class PeopleTableViewController: UITableViewController {
     }
 
     func nameTextField(_ textField: UITextField) {
+        textField.accessibilityIdentifier = "person\(UIAlertController.ValidationIdFlag.nonEmpty)"
         textField.autocapitalizationType = .words
         textField.autocorrectionType = .default
         textField.textContentType = .givenName
@@ -98,19 +98,22 @@ class PeopleTableViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        return (people?.count ?? 0) > 0 ? 2 : 1
     }
 
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        switch section {
-        case 0:
-            let total = people?.reduce(0.0) { $0 + $1.totalUnpaid }
-            return "total: \((total ?? 0.0).moneyFormattedString())"
-        case 1:
-            return "Distribution Chart"
-        default:
-            return nil
+        if (people?.count ?? 0) > 0 {
+            switch section {
+            case 0:
+                let total = people?.reduce(0.0) { $0 + $1.totalUnpaid }
+                return "total: \((total ?? 0.0).moneyFormattedString())"
+            case 1:
+                return "Distribution Chart"
+            default:
+                return nil
+            }
         }
+        return nil
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -126,15 +129,25 @@ class PeopleTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
             let row = tableView.dequeueReusableCell(withIdentifier: "personRow", for: indexPath)
-            let person = people?[indexPath.row]
 
-            row.accessoryType = .disclosureIndicator
-            row.textLabel?.text = person?.name.capitalized
-            row.textLabel?.font = UIFont.boldSystemFont(ofSize: 16.0)
+            if (people?.count ?? 0) > 0 {
+                let person = people?[indexPath.row]
 
-            row.detailTextLabel?.text = person?.totalUnpaid.moneyFormattedString()
-            row.detailTextLabel?.textColor = (person?.totalUnpaid ?? 0) == 0 ? UIColor.adaAccentColor : (person?.totalUnpaid ?? 0 > 0) ? UIColor.adaTeal : UIColor.adaOrange
+                row.accessoryType = .disclosureIndicator
+                row.textLabel?.text = person?.name.capitalized
+                row.textLabel?.font = UIFont.boldSystemFont(ofSize: 16.0)
 
+                row.detailTextLabel?.text = abs(person?.totalUnpaid ?? 0).moneyFormattedString()
+                row.detailTextLabel?.textColor = (person?.totalUnpaid ?? 0) == 0 ? UIColor.adaAccentColor : (person?.totalUnpaid ?? 0 > 0) ? UIColor.adaTeal : UIColor.adaOrange
+            } else {
+                row.accessoryType = .none
+                row.textLabel?.text = "press + to add a person"
+                row.textLabel?.textColor = UIColor.label
+                row.textLabel?.font = UIFont.systemFont(ofSize: 16.0)
+
+                row.detailTextLabel?.text = "swipe right to delete the person"
+                row.detailTextLabel?.textColor = UIColor.secondaryLabel
+            }
             return row
         } else {
             let row = tableView.dequeueReusableCell(withIdentifier: "chartRow", for: indexPath)
@@ -145,7 +158,8 @@ class PeopleTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return section == 1 ? 1 : people?.count ?? 0
+        let peopleCount = people?.count ?? 0
+        return (section == 1) ? 1 : (peopleCount > 0) ? peopleCount : 1
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -154,6 +168,7 @@ class PeopleTableViewController: UITableViewController {
                 performSegue(withIdentifier: "showAmounts", sender: self)
             } else {
                 tableView.deselectRow(at: indexPath, animated: true)
+                tableView.cellForRow(at: indexPath)?.shake()
             }
         } else {
             updateChartSliceOrdering()
@@ -164,59 +179,65 @@ class PeopleTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let person = people?[indexPath.row]
-        if indexPath.section == 0 && person?.totalUnpaid == 0 {
-            let deletionAction = UIContextualAction(style: .destructive, title: "delete") { _, _, isActionSuccessful in
-                let alert = UIAlertController(
-                    title: "Confirm",
-                    message: "You really want to delete `\(person?.name ?? "this person")`",
-                    preferredStyle: .alert
-                )
+        if people?.count ?? 0 > 0, let person = people?[indexPath.row] {
+            if indexPath.section == 0 && person.totalUnpaid == 0 {
+                let deletionAction = UIContextualAction(style: .destructive, title: "delete") { _, _, isActionSuccessful in
+                    let alert = UIAlertController(
+                        title: "Confirm",
+                        message: "You really want to delete `\(person.name)`",
+                        preferredStyle: .alert
+                    )
 
-                alert.addAction(
-                    UIAlertAction(
-                        title: "Yes",
-                        style: .destructive,
-                        handler: { _ in
-                            DispatchQueue.main.async {
-                                isActionSuccessful(true)
-                                self.deletePerson(at: indexPath)
+                    alert.addAction(
+                        UIAlertAction(
+                            title: "Yes",
+                            style: .destructive,
+                            handler: { _ in
+                                DispatchQueue.main.async {
+                                    isActionSuccessful(true)
+                                    self.deletePerson(at: indexPath)
+                                }
                             }
-                        }
+                        )
                     )
-                )
-                alert.addAction(
-                    UIAlertAction(
-                        title: "Cancel",
-                        style: .cancel,
-                        handler: { _ in
-                            isActionSuccessful(false)
-                            self.tableView.cellForRow(at: indexPath)?.shake()
-                        }
+                    alert.addAction(
+                        UIAlertAction(
+                            title: "Cancel",
+                            style: .cancel,
+                            handler: { _ in
+                                isActionSuccessful(false)
+                                self.tableView.cellForRow(at: indexPath)?.shake()
+                            }
+                        )
                     )
-                )
 
-                self.present(alert, animated: true)
+                    self.present(alert, animated: true)
+                }
+
+                deletionAction.image = UIImage(systemName: "trash")
+                let config = UISwipeActionsConfiguration(actions: [deletionAction])
+                config.performsFirstActionWithFullSwipe = true
+
+                return config
             }
-
-            deletionAction.image = UIImage(systemName: "trash")
-            let config = UISwipeActionsConfiguration(actions: [deletionAction])
-            config.performsFirstActionWithFullSwipe = true
-
-            return config
         }
-
         self.tableView.cellForRow(at: indexPath)?.shake()
         return nil
     }
 
     func deletePerson(at indexPath: IndexPath) {
         do {
+            let wasLastPerson = people?.count == 1
             try realm.write {
                 self.realm.delete(self.people![indexPath.row].amounts)
                 self.realm.delete(self.people![indexPath.row])
             }
-            tableView.deleteRows(at: [indexPath], with: .automatic)
+
+            if wasLastPerson {
+                tableView.deleteSections([1], with: .fade)
+            } else {
+                tableView.deleteRows(at: [indexPath], with: .automatic)
+            }
             tableView.endUpdates()
             tableView.reloadData(completion: updateLoadTime)
         } catch {

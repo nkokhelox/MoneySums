@@ -10,6 +10,7 @@
 		6C560AEA47F11B37B91072D2 /* Pods_MoneySums.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73AC4140A0767481DA214FE5 /* Pods_MoneySums.framework */; };
 		AC05AD0827000BCF006CAEBB /* Date+util.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC05AD0727000BCF006CAEBB /* Date+util.swift */; };
 		AC05AD0B27003DDF006CAEBB /* UITableView+util.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC05AD0A27003DDF006CAEBB /* UITableView+util.swift */; };
+		AC0CE59327A4849000EFDE78 /* UIAlertController+util.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0CE59227A4849000EFDE78 /* UIAlertController+util.swift */; };
 		AC57A402275422FE00BCE5C5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AC57A3FE275422FE00BCE5C5 /* LaunchScreen.storyboard */; };
 		AC57A403275422FE00BCE5C5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AC57A400275422FE00BCE5C5 /* Main.storyboard */; };
 		AC57A4052754297C00BCE5C5 /* OnSectionHeaderFooterTap.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC57A4042754297C00BCE5C5 /* OnSectionHeaderFooterTap.swift */; };
@@ -38,6 +39,7 @@
 		73AC4140A0767481DA214FE5 /* Pods_MoneySums.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MoneySums.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AC05AD0727000BCF006CAEBB /* Date+util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+util.swift"; sourceTree = "<group>"; };
 		AC05AD0A27003DDF006CAEBB /* UITableView+util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+util.swift"; sourceTree = "<group>"; };
+		AC0CE59227A4849000EFDE78 /* UIAlertController+util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIAlertController+util.swift"; sourceTree = "<group>"; };
 		AC57A3FF275422FE00BCE5C5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		AC57A401275422FE00BCE5C5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		AC57A4042754297C00BCE5C5 /* OnSectionHeaderFooterTap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnSectionHeaderFooterTap.swift; sourceTree = "<group>"; };
@@ -127,6 +129,7 @@
 				AC05AD0A27003DDF006CAEBB /* UITableView+util.swift */,
 				AC9B5A73270ABEE700860429 /* Bundle+util.swift */,
 				AC57A4042754297C00BCE5C5 /* OnSectionHeaderFooterTap.swift */,
+				AC0CE59227A4849000EFDE78 /* UIAlertController+util.swift */,
 			);
 			path = extension;
 			sourceTree = "<group>";
@@ -304,6 +307,7 @@
 				AC98631126EDAAF6008C8DA4 /* AmountTableViewController.swift in Sources */,
 				AC05AD0827000BCF006CAEBB /* Date+util.swift in Sources */,
 				AC98631C26EDAB1A008C8DA4 /* UITextField+util.swift in Sources */,
+				AC0CE59327A4849000EFDE78 /* UIAlertController+util.swift in Sources */,
 				AC98632526EDAB28008C8DA4 /* Payment.swift in Sources */,
 				AC98631B26EDAB1A008C8DA4 /* String+util.swift in Sources */,
 				AC98632326EDAB28008C8DA4 /* Amount.swift in Sources */,

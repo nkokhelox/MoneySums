@@ -51,7 +51,7 @@ class AmountTableViewController: UITableViewController {
 
         alert.addAction(UIAlertAction(title: "Save", style: .default, handler: saveAmount))
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-
+        alert.applyIsNumberValidation()
         present(alert, animated: true)
     }
 
@@ -73,6 +73,7 @@ class AmountTableViewController: UITableViewController {
 extension AmountTableViewController {
     func amountTextField(textField: UITextField) {
         amountTextField = textField
+        textField.accessibilityIdentifier = "amount\(UIAlertController.ValidationIdFlag.isNumber)"
         textField.keyboardType = .decimalPad
         textField.returnKeyType = .next
         textField.placeholder = 0.0.moneyFormattedString()
@@ -127,6 +128,7 @@ extension AmountTableViewController {
 
             alert.addAction(UIAlertAction(title: "save", style: .default, handler: savePayment))
             alert.addAction(UIAlertAction(title: "cancel", style: .cancel, handler: nil))
+            alert.applyIsNumberValidation()
 
             present(alert, animated: true)
         }
@@ -138,6 +140,7 @@ extension AmountTableViewController {
         textField.returnKeyType = .done
         textField.placeholder = 0.0.moneyFormattedString()
         textField.addNumericAccessory(addPlusMinus: true)
+        textField.accessibilityIdentifier = "payment\(UIAlertController.ValidationIdFlag.isNumber)"
     }
 
     func savePayment(action: UIAlertAction) {
@@ -178,11 +181,13 @@ extension AmountTableViewController {
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return sectionExpansionState.count
+        return ((selectedPerson?.amounts.count ?? 0) == 0) ? 1 : sectionExpansionState.count
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return sectionExpansionState[section] ? 0 : section == 2 ? 1 : (section == 0 ? unpaidAmounts : paidAmounts)?.count ?? 0
+        return ((selectedPerson?.amounts.count ?? 0) == 0) ? 1 :
+            sectionExpansionState[section] ? 0 : section == 2 ? 1 :
+            (section == 0 ? unpaidAmounts : paidAmounts)?.count ?? 0
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -193,29 +198,41 @@ extension AmountTableViewController {
             return row
         } else {
             let row = tableView.dequeueReusableCell(withIdentifier: "amountRow", for: indexPath)
-            let amount = (indexPath.section == 0 ? unpaidAmounts : paidAmounts)?[indexPath.row]
-            let diff = amount!.paymentsTotal - amount!.value
+            if (selectedPerson?.amounts.count ?? 0) == 0 {
+                row.textLabel?.text = "press + to add amount"
+                row.textLabel?.textColor = UIColor.label
+                row.textLabel?.font = UIFont.systemFont(ofSize: 16.0)
 
-            row.accessoryType = amount?.paid == true ? .checkmark : .detailButton
-            row.accessoryView?.backgroundColor = .red
+                row.detailTextLabel?.text = "swipe left or right to do more with the amount"
+                row.detailTextLabel?.textColor = UIColor.secondaryLabel
+            } else {
+                let amount = (indexPath.section == 0 ? unpaidAmounts : paidAmounts)?[indexPath.row]
+                let diff = amount!.paymentsTotal - amount!.value
 
-            row.textLabel?.font = UIFont.boldSystemFont(ofSize: 16.0)
-            row.textLabel?.text = amount?.moneyValue
+                row.accessoryType = amount?.paid == true ? .checkmark : .detailButton
+                row.accessoryView?.backgroundColor = .red
 
-            row.detailTextLabel?.textColor = diff == 0 ? UIColor.secondaryLabel : diff > 0 ? UIColor.adaTeal : UIColor.adaOrange
-            row.detailTextLabel?.text = amount?.fullDetailText
+                row.textLabel?.font = UIFont.boldSystemFont(ofSize: 16.0)
+                row.textLabel?.text = amount?.moneyValue
 
+                row.detailTextLabel?.textColor = diff == 0 ? UIColor.secondaryLabel : diff > 0 ? UIColor.adaTeal : UIColor.adaOrange
+                row.detailTextLabel?.text = amount?.fullDetailText
+            }
             return row
         }
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section < 2 {
-            let amounts = (indexPath.section == 0 ? unpaidAmounts : paidAmounts)
-            if amounts?[indexPath.row].payments.count == 0 {
-                showAmountInfo(indexPath)
+            if (selectedPerson?.amounts.count ?? 0) == 0 {
+                tableView.cellForRow(at: indexPath)?.shake()
             } else {
-                performSegue(withIdentifier: "showPayments", sender: self)
+                let amounts = (indexPath.section == 0 ? unpaidAmounts : paidAmounts)
+                if amounts?[indexPath.row].payments.count == 0 {
+                    showAmountInfo(indexPath)
+                } else {
+                    performSegue(withIdentifier: "showPayments", sender: self)
+                }
             }
         }
         tableView.deselectRow(at: indexPath, animated: true)
@@ -230,7 +247,7 @@ extension AmountTableViewController {
 
 extension AmountTableViewController {
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        if indexPath.section == 2 {
+        if indexPath.section == 2 || (selectedPerson?.amounts.count ?? 0) == 0 {
             return nil
         }
 
@@ -271,7 +288,7 @@ extension AmountTableViewController {
     }
 
     override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        if indexPath.section == 2 {
+        if indexPath.section == 2 || (selectedPerson?.amounts.count ?? 0) == 0 {
             return nil
         }
 
@@ -321,13 +338,18 @@ extension AmountTableViewController {
 
     func deleteAmount(at indexPath: IndexPath) {
         let amount = (indexPath.section == 0 ? unpaidAmounts : paidAmounts)![indexPath.row]
-
+        let wasLastAmount = selectedPerson?.amounts.count == 1
         do {
             try realm.write {
                 self.realm.delete(amount.payments)
                 self.realm.delete(amount)
             }
-            tableView.deleteRows(at: [indexPath], with: .automatic)
+            if wasLastAmount {
+                tableView.deleteSections([1], with: .fade)
+                tableView.deleteSections([2], with: .fade)
+            } else {
+                tableView.deleteRows(at: [indexPath], with: .automatic)
+            }
             tableView.endUpdates()
             tableView.reloadData()
         } catch {
@@ -341,6 +363,10 @@ extension AmountTableViewController {
 
 extension AmountTableViewController {
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if (selectedPerson?.amounts.count ?? 0) == 0 {
+            return nil
+        }
+
         let expansionIndicator = sectionExpansionState[section] ? "⌄" : "›"
         return section == 2 ?
             nil : section == 0 ?
@@ -348,6 +374,10 @@ extension AmountTableViewController {
     }
 
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        if (selectedPerson?.amounts.count ?? 0) == 0 {
+            return nil
+        }
+
         let totalMoney = (section == 0 ? selectedPerson?.totalUnpaid : selectedPerson?.totalPaid) ?? 0.0
         return section == 2 ? "Distribution Chart" : "total \(totalMoney.moneyFormattedString())"
     }

@@ -25,7 +25,7 @@ class Person: Object {
 
     var totalUnpaid: Double {
         amounts.reduce(0.0) { sum, amount in
-            sum + (amount.paid ? 0.0 : amount.value)
+          sum + (amount.paid ? 0.0 : amount.paymentsDifference)
         }
     }
 
