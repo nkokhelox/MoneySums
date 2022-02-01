@@ -185,9 +185,15 @@ extension AmountTableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return ((selectedPerson?.amounts.count ?? 0) == 0) ? 1 :
-            sectionExpansionState[section] ? 0 : section == 2 ? 1 :
-            (section == 0 ? unpaidAmounts : paidAmounts)?.count ?? 0
+        switch section {
+        case 0: return ((selectedPerson?.amounts.count ?? 0) == 0) ? 1 : sectionExpansionState[section] ? 0 : (unpaidAmounts?.count ?? 1)
+        case 1: return sectionExpansionState[section] ? 0 : paidAmounts?.count ?? 0
+        default: return 1
+        }
+
+//      ((selectedPerson?.amounts.count ?? 0) == 0) ? 1 :
+//            sectionExpansionState[section] ? 0 : section == 2 ? 1 :
+//            (section == 0 ? unpaidAmounts : paidAmounts)?.count ?? 0
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -339,14 +345,20 @@ extension AmountTableViewController {
     func deleteAmount(at indexPath: IndexPath) {
         let amount = (indexPath.section == 0 ? unpaidAmounts : paidAmounts)![indexPath.row]
         let wasLastAmount = selectedPerson?.amounts.count == 1
+        let wasPaid = amount.paid
+
         do {
             try realm.write {
                 self.realm.delete(amount.payments)
                 self.realm.delete(amount)
             }
+
+            tableView.beginUpdates()
             if wasLastAmount {
-                tableView.deleteSections([1], with: .fade)
-                tableView.deleteSections([2], with: .fade)
+                tableView.deleteSections([1, 2], with: .fade)
+                if wasPaid {
+                    tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .none)
+                }
             } else {
                 tableView.deleteRows(at: [indexPath], with: .automatic)
             }
@@ -479,7 +491,7 @@ extension AmountTableViewController: UISearchBarDelegate {
         chartView.dataArray = dataEntries
         chartView.clipsToBounds = true
         chartView.sizeToFit()
-        chartView.title = dataEntries.count > 0 ? "μ°" : " press + to add an amount for \(selectedPerson?.firstName ?? "a person") "
+        chartView.title = dataEntries.count > 0 ? "μ°" : "Everything is paid up for `\(selectedPerson!.firstName)`."
         chartView.draw()
     }
 }
