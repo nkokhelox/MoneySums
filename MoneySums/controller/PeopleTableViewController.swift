@@ -137,8 +137,8 @@ class PeopleTableViewController: UITableViewController {
                 row.textLabel?.text = person?.name.capitalized
                 row.textLabel?.font = UIFont.boldSystemFont(ofSize: 16.0)
 
-                row.detailTextLabel?.text = abs(person?.totalUnpaid ?? 0).moneyFormattedString()
-                row.detailTextLabel?.textColor = (person?.totalUnpaid ?? 0) == 0 ? UIColor.adaAccentColor : (person?.totalUnpaid ?? 0 > 0) ? UIColor.adaTeal : UIColor.adaOrange
+                row.detailTextLabel?.text = person?.moneyDescription
+                row.detailTextLabel?.textColor = (person?.totalUnpaid ?? 0) == 0 ? UIColor.adaAccentColor : (person?.totalUnpaid ?? 0 > 0) ? UIColor.adaOrange : UIColor.adaTeal
             } else {
                 row.accessoryType = .none
                 row.textLabel?.text = "press + to add a person"

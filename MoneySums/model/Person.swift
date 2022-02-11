@@ -33,4 +33,8 @@ class Person: Object {
         self.init()
         self.name = name
     }
+  
+  var moneyDescription: String {
+   return String(format: (totalUnpaid <= 0 ? "%@" : "%@ (iou)"), abs(totalUnpaid).moneyFormattedString())
+  }
 }

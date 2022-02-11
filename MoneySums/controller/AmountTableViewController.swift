@@ -221,7 +221,7 @@ extension AmountTableViewController {
                 row.textLabel?.font = UIFont.boldSystemFont(ofSize: 16.0)
                 row.textLabel?.text = amount?.moneyValue
 
-                row.detailTextLabel?.textColor = diff == 0 ? UIColor.secondaryLabel : diff > 0 ? UIColor.adaTeal : UIColor.adaOrange
+                row.detailTextLabel?.textColor = diff == 0 ? UIColor.secondaryLabel : diff > 0 ? UIColor.adaOrange : UIColor.adaTeal
                 row.detailTextLabel?.text = amount?.fullDetailText
             }
             return row
