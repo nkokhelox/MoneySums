@@ -27,7 +27,7 @@
                             </connections>
                         </searchBar>
                         <label key="tableFooterView" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="last data load time" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="zx7-K3-3me">
-                            <rect key="frame" x="0.0" y="1131" width="414" height="44"/>
+                            <rect key="frame" x="0.0" y="757.5" width="414" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="8"/>
                             <color key="textColor" systemColor="tertiaryLabelColor"/>
@@ -101,7 +101,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ldW-ZN-2jG" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1989.8550724637682" y="65.625"/>
+            <point key="canvasLocation" x="1587" y="66"/>
         </scene>
         <!--Interest-->
         <scene sceneID="pUW-47-asx">
@@ -167,7 +167,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="w4Y-HU-V6y" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2881" y="79"/>
+            <point key="canvasLocation" x="2364" y="66"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="7TB-CW-xe9">
@@ -299,7 +299,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nde-SS-xQp" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="979.71014492753636" y="65.625"/>
+            <point key="canvasLocation" x="806" y="66"/>
         </scene>
     </scenes>
     <resources>
