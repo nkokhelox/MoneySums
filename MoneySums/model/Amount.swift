@@ -40,7 +40,7 @@ class Amount: Object {
 
     var paymentsDetailText: String {
         let diff = paymentsDifference
-        return String(format: diff <= 0 ? "%@" : "%@ (iou)", abs(diff).moneyFormattedString()).capitalized
+        return String(format: diff <= 0 ? "%@" : "%@ (iou)", abs(diff).moneyFormattedString())
     }
 
     var fullDetailText: String {

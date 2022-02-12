@@ -27,14 +27,9 @@ class PaymentTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        footNote.text = selectedAmount?.paymentsDetailText.uppercased()
-        footNote.alpha = (selectedAmount?.paymentsDifference ?? 0) == 0 ? 0.3 : 0.5
-        footNote.textColor = (selectedAmount?.paymentsDifference ?? 0) == 0 ? UIColor.adaAccentColor :
-            (selectedAmount?.paymentsTotal ?? 0 > 0) ? UIColor.adaOrange : UIColor.adaTeal
-
         dragPill.backgroundColor = (selectedAmount?.paymentsTotal ?? 0 > 0) ? UIColor.adaOrange : UIColor.adaTeal
-
         tableView.separatorInset = UIEdgeInsets.zero
+        updateFootNote()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -44,7 +39,13 @@ class PaymentTableViewController: UITableViewController {
 
     func loadPayments() {
         payments = selectedAmount?.payments
-        tableView.reloadData()
+        tableView.reloadData(completion: { self.updateFootNote() })
+    }
+
+    func updateFootNote() {
+        footNote.text = selectedAmount?.paymentsDetailText.uppercased()
+        footNote.alpha = (selectedAmount?.paymentsDifference ?? 0) == 0 ? 0.3 : 0.5
+        footNote.textColor = (selectedAmount?.paymentsDifference ?? 0) == 0 ? UIColor.adaAccentColor : (selectedAmount?.paymentsTotal ?? 0 > 0) ? UIColor.adaOrange : UIColor.adaTeal
     }
 
     // MARK: - Table view data source
@@ -143,7 +144,7 @@ class PaymentTableViewController: UITableViewController {
                 tableView.cellForRow(at: indexPath)?.shake()
                 print("error deleting amount at row: \(indexPath.row), error: \(error)")
             }
-            tableView.reloadData()
+            tableView.reloadData(completion: { self.updateFootNote() })
         }
     }
 }
