@@ -41,8 +41,8 @@ class AmountTableViewController: UITableViewController {
 
     @IBAction func addAmount(_ sender: UIBarButtonItem) {
         let alert = UIAlertController(
-            title: "Add Money Record",
-            message: "Negative amount if you owe them.",
+            title: "Add a money record",
+            message: "negative amount if you owe them.",
             preferredStyle: .alert
         )
 

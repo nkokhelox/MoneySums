@@ -54,7 +54,7 @@ class PeopleTableViewController: UITableViewController {
 
     @IBAction func addPerson(_ sender: UIBarButtonItem) {
         let alert = UIAlertController(
-            title: "add a person",
+            title: "Add a person",
             message: "someone you have money relationship with.",
             preferredStyle: .alert
         )
