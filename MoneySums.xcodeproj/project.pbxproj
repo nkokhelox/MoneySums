@@ -15,6 +15,9 @@
 		AC57A403275422FE00BCE5C5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AC57A400275422FE00BCE5C5 /* Main.storyboard */; };
 		AC57A4052754297C00BCE5C5 /* OnSectionHeaderFooterTap.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC57A4042754297C00BCE5C5 /* OnSectionHeaderFooterTap.swift */; };
 		AC6F1A3126F68DA1003EE04E /* UIColor+util.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC6F1A3026F68DA1003EE04E /* UIColor+util.swift */; };
+		AC92900127B7FB8700136BBE /* lightMode@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AC928FFE27B7FB8600136BBE /* lightMode@2x.png */; };
+		AC92900227B7FB8700136BBE /* lightMode.png in Resources */ = {isa = PBXBuildFile; fileRef = AC928FFF27B7FB8700136BBE /* lightMode.png */; };
+		AC92900327B7FB8700136BBE /* lightMode@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = AC92900027B7FB8700136BBE /* lightMode@3x.png */; };
 		AC98631126EDAAF6008C8DA4 /* AmountTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC98630E26EDAAF6008C8DA4 /* AmountTableViewController.swift */; };
 		AC98631226EDAAF6008C8DA4 /* PeopleTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC98630F26EDAAF6008C8DA4 /* PeopleTableViewController.swift */; };
 		AC98631326EDAAF6008C8DA4 /* PaymentTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC98631026EDAAF6008C8DA4 /* PaymentTableViewController.swift */; };
@@ -28,7 +31,6 @@
 		AC9B5A74270ABEE700860429 /* Bundle+util.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC9B5A73270ABEE700860429 /* Bundle+util.swift */; };
 		AC9B5A86270F8EA800860429 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC9B5A85270F8EA800860429 /* NavigationController.swift */; };
 		AC9B5A88270F8EC000860429 /* AuthorizationOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC9B5A87270F8EC000860429 /* AuthorizationOverlay.swift */; };
-		ACB8F474277A2264009D9840 /* lightMode.png in Resources */ = {isa = PBXBuildFile; fileRef = ACB8F473277A2264009D9840 /* lightMode.png */; };
 		ACE2B85F26C061B900755CF2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACE2B85E26C061B900755CF2 /* AppDelegate.swift */; };
 		ACE2B86126C061B900755CF2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACE2B86026C061B900755CF2 /* SceneDelegate.swift */; };
 		ACE2B86826C061BA00755CF2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ACE2B86726C061BA00755CF2 /* Assets.xcassets */; };
@@ -44,6 +46,9 @@
 		AC57A401275422FE00BCE5C5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		AC57A4042754297C00BCE5C5 /* OnSectionHeaderFooterTap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnSectionHeaderFooterTap.swift; sourceTree = "<group>"; };
 		AC6F1A3026F68DA1003EE04E /* UIColor+util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+util.swift"; sourceTree = "<group>"; };
+		AC928FFE27B7FB8600136BBE /* lightMode@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lightMode@2x.png"; sourceTree = "<group>"; };
+		AC928FFF27B7FB8700136BBE /* lightMode.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lightMode.png; sourceTree = "<group>"; };
+		AC92900027B7FB8700136BBE /* lightMode@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lightMode@3x.png"; sourceTree = "<group>"; };
 		AC98630E26EDAAF6008C8DA4 /* AmountTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AmountTableViewController.swift; sourceTree = "<group>"; };
 		AC98630F26EDAAF6008C8DA4 /* PeopleTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeopleTableViewController.swift; sourceTree = "<group>"; };
 		AC98631026EDAAF6008C8DA4 /* PaymentTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaymentTableViewController.swift; sourceTree = "<group>"; };
@@ -57,7 +62,6 @@
 		AC9B5A73270ABEE700860429 /* Bundle+util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+util.swift"; sourceTree = "<group>"; };
 		AC9B5A85270F8EA800860429 /* NavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
 		AC9B5A87270F8EC000860429 /* AuthorizationOverlay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthorizationOverlay.swift; sourceTree = "<group>"; };
-		ACB8F473277A2264009D9840 /* lightMode.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lightMode.png; sourceTree = "<group>"; };
 		ACE0953626F134F6008A67D1 /* MoneySums.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MoneySums.entitlements; sourceTree = "<group>"; };
 		ACE2B85B26C061B900755CF2 /* MoneySums.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MoneySums.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ACE2B85E26C061B900755CF2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -147,7 +151,9 @@
 		ACB8F475277B30E4009D9840 /* altIcons */ = {
 			isa = PBXGroup;
 			children = (
-				ACB8F473277A2264009D9840 /* lightMode.png */,
+				AC928FFF27B7FB8700136BBE /* lightMode.png */,
+				AC928FFE27B7FB8600136BBE /* lightMode@2x.png */,
+				AC92900027B7FB8700136BBE /* lightMode@3x.png */,
 			);
 			path = altIcons;
 			sourceTree = "<group>";
@@ -247,9 +253,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				AC57A403275422FE00BCE5C5 /* Main.storyboard in Resources */,
-				ACB8F474277A2264009D9840 /* lightMode.png in Resources */,
 				ACE2B86826C061BA00755CF2 /* Assets.xcassets in Resources */,
+				AC92900127B7FB8700136BBE /* lightMode@2x.png in Resources */,
+				AC92900227B7FB8700136BBE /* lightMode.png in Resources */,
 				AC57A402275422FE00BCE5C5 /* LaunchScreen.storyboard in Resources */,
+				AC92900327B7FB8700136BBE /* lightMode@3x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
