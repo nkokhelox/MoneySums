@@ -211,6 +211,8 @@ extension AmountTableViewController {
 
                 row.detailTextLabel?.text = "swipe left or right to do more with the amount"
                 row.detailTextLabel?.textColor = UIColor.secondaryLabel
+              
+                row.accessoryType = .none
             } else {
                 let amount = (indexPath.section == 0 ? unpaidAmounts : paidAmounts)?[indexPath.row]
                 let diff = amount!.paymentsTotal - amount!.value
