@@ -290,7 +290,7 @@ extension AmountTableViewController {
         swipeActions.append(addInterestAction)
 
         let config = UISwipeActionsConfiguration(actions: swipeActions)
-        config.performsFirstActionWithFullSwipe = true
+        config.performsFirstActionWithFullSwipe = false
 
         return config
     }
