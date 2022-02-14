@@ -211,7 +211,7 @@ extension AmountTableViewController {
 
                 row.detailTextLabel?.text = "swipe left or right to do more with the amount"
                 row.detailTextLabel?.textColor = UIColor.secondaryLabel
-              
+
                 row.accessoryType = .none
             } else {
                 let amount = (indexPath.section == 0 ? unpaidAmounts : paidAmounts)?[indexPath.row]
@@ -279,15 +279,15 @@ extension AmountTableViewController {
 
         var swipeActions: [UIContextualAction] = [paidToggleAction]
 
-        let addInterestAction = UIContextualAction(style: .normal, title: "interest") { _, _, isActionSuccessful in
+        let addPaymentAction = UIContextualAction(style: .normal, title: "payment") { _, _, isActionSuccessful in
             self.selectedAmountIndexPath = indexPath
             isActionSuccessful(true)
             self.addPayment()
         }
 
-        addInterestAction.image = UIImage(systemName: "text.badge.plus")
-        addInterestAction.backgroundColor = UIColor.adaTeal
-        swipeActions.append(addInterestAction)
+        addPaymentAction.image = UIImage(systemName: "text.badge.plus")
+        addPaymentAction.backgroundColor = UIColor.adaTeal
+        swipeActions.append(addPaymentAction)
 
         let config = UISwipeActionsConfiguration(actions: swipeActions)
         config.performsFirstActionWithFullSwipe = false
