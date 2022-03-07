@@ -186,14 +186,13 @@ extension AmountTableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
-        case 0: return ((selectedPerson?.amounts.count ?? 0) == 0) ? 1 : sectionExpansionState[section] ? 0 : (unpaidAmounts?.count ?? 1)
-        case 1: return sectionExpansionState[section] ? 0 : paidAmounts?.count ?? 0
-        default: return 1
+        case 0:
+            return ((selectedPerson?.amounts.count ?? 0) == 0) ? 1 : sectionExpansionState[section] ? 0 : (unpaidAmounts?.count ?? 1)
+        case 1:
+            return sectionExpansionState[section] ? 0 : paidAmounts?.count ?? 0
+        default:
+            return 1
         }
-
-//      ((selectedPerson?.amounts.count ?? 0) == 0) ? 1 :
-//            sectionExpansionState[section] ? 0 : section == 2 ? 1 :
-//            (section == 0 ? unpaidAmounts : paidAmounts)?.count ?? 0
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -460,12 +459,12 @@ extension AmountTableViewController: UISearchBarDelegate {
     // MARK: - Chart datasource
 
     func customizeChart(chartView: DVPieChart) {
-        let youOweMeTotal = unpaidAmounts?.filter { $0.value > 0.0 }.reduce(0.0) {
-            $0 + $1.value
+        let youOweMeTotal = unpaidAmounts?.filter { $0.paymentsDifference < 0.0 }.reduce(0.0) {
+            $0 + abs($1.paymentsDifference)
         } ?? 0.0
 
-        let iOweYouTotal = unpaidAmounts?.filter { $0.value < 0.0 }.reduce(0.0) {
-            $0 + abs($1.value)
+        let iOweYouTotal = unpaidAmounts?.filter { $0.paymentsDifference > 0.0 }.reduce(0.0) {
+            $0 + abs($1.paymentsDifference)
         } ?? 0.0
 
         let amountsTotal = youOweMeTotal + iOweYouTotal
@@ -474,13 +473,13 @@ extension AmountTableViewController: UISearchBarDelegate {
 
         if amountsTotal > 0 {
             let iouSlice = DVPieSliceModel()
-            iouSlice.name = "I.O.U"
+            iouSlice.name = "I.O.U (\(iOweYouTotal.moneyFormattedString()))"
             iouSlice.value = iOweYouTotal
             iouSlice.rate = iOweYouTotal / amountsTotal
             dataEntries.append(iouSlice)
 
             let uomSlice = DVPieSliceModel()
-            uomSlice.name = "U.O.Me"
+            uomSlice.name = "U.O.Me (\(youOweMeTotal.moneyFormattedString()))"
             uomSlice.value = youOweMeTotal
             uomSlice.rate = youOweMeTotal / amountsTotal
             dataEntries.append(uomSlice)
