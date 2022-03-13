@@ -10,7 +10,7 @@ import RealmSwift
 import UIKit
 
 class PaymentTableViewController: UITableViewController {
-    let realm = try! Realm(configuration: Realm.Configuration(schemaVersion: 2))
+    let realm = UIApplication.getRealm()
 
     var onDismiss: (() -> Void)?
 
@@ -58,12 +58,19 @@ class PaymentTableViewController: UITableViewController {
         let row = tableView.dequeueReusableCell(withIdentifier: "interestRow", for: indexPath)
         row.textLabel?.font = UIFont.boldSystemFont(ofSize: 16.0)
         row.textLabel?.text = selectedAmount?.payments[indexPath.row].moneyValue
-        row.detailTextLabel?.text = selectedAmount?.payments[indexPath.row].paidDate.niceDescription()
+        row.detailTextLabel?.text = selectedAmount?.payments[indexPath.row].niceDescription(" - ")
         return row
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+
+        guard let payment = payments?[indexPath.row] else { return }
+        let alert = UIAlertController(title: payment.moneyValue, message: payment.niceDescription("\n"), preferredStyle: .alert)
+
+        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+
+        present(alert, animated: true)
     }
 
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {

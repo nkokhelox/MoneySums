@@ -19,13 +19,13 @@ class Person: Object {
 
     var totalPaid: Double {
         amounts.reduce(0.0) { sum, amount in
-            sum + (amount.paid ? amount.value : 0.0)
+            sum + (amount.isPaid ? amount.value : 0.0)
         }
     }
 
     var totalUnpaid: Double {
         amounts.reduce(0.0) { sum, amount in
-          sum + (amount.paid ? 0.0 : amount.paymentsDifference)
+          sum + (amount.isPaid ? 0.0 : amount.paymentsDifference)
         }
     }
 

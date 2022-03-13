@@ -13,7 +13,8 @@ import UIKit
 
 class PeopleTableViewController: UITableViewController {
     private var pieSliceOrdering = 0
-    let realm = try! Realm(configuration: Realm.Configuration(schemaVersion: 2))
+    let realm = UIApplication.getRealm()
+
     var people: Results<Person>?
     var nameTextField: UITextField?
     @IBOutlet var lastDataLoadTime: UILabel!
@@ -141,7 +142,7 @@ class PeopleTableViewController: UITableViewController {
                 row.detailTextLabel?.textColor = (person?.totalUnpaid ?? 0) == 0 ? UIColor.adaAccentColor : (person?.totalUnpaid ?? 0 > 0) ? UIColor.adaOrange : UIColor.adaTeal
             } else {
                 row.accessoryType = .none
-              
+
                 row.textLabel?.text = "press + to add a person"
                 row.textLabel?.textColor = UIColor.label
                 row.textLabel?.font = UIFont.systemFont(ofSize: 16.0)

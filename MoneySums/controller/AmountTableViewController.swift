@@ -11,7 +11,7 @@ import RealmSwift
 import UIKit
 
 class AmountTableViewController: UITableViewController {
-    private let realm = try! Realm(configuration: Realm.Configuration(schemaVersion: 2))
+    private let realm = UIApplication.getRealm()
 
     private var paidAmounts: Results<Amount>?
     private var unpaidAmounts: Results<Amount>?
@@ -21,6 +21,7 @@ class AmountTableViewController: UITableViewController {
     private var noteTextField: UITextField?
     private var amountTextField: UITextField?
     private var paymentTextField: UITextField?
+    private var paymentNoteTextField: UITextField?
 
     @IBOutlet var lastDataLoadTime: UILabel!
 
@@ -56,8 +57,8 @@ class AmountTableViewController: UITableViewController {
     }
 
     @objc func loadAmounts() {
-        unpaidAmounts = selectedPerson?.amounts.filter("paid == %@", false).sorted(by: [SortDescriptor(keyPath: "dateCreated", ascending: true), SortDescriptor(keyPath: "value", ascending: false)])
-        paidAmounts = selectedPerson?.amounts.filter("paid == %@", true).sorted(byKeyPath: "dateCreated", ascending: false)
+        unpaidAmounts = selectedPerson?.amounts.filter("datePaid == nil").sorted(by: [SortDescriptor(keyPath: "dateCreated", ascending: true), SortDescriptor(keyPath: "value", ascending: false)])
+        paidAmounts = selectedPerson?.amounts.filter("datePaid != nil").sorted(byKeyPath: "dateCreated", ascending: false)
         tableView.reloadData(completion: updateLoadTime)
         sectionExpansionState[1] = (paidAmounts?.count ?? 0) > 5
     }
@@ -91,8 +92,7 @@ extension AmountTableViewController {
     func saveAmount(action: UIAlertAction) {
         let amount = Amount(
             value: amountTextField!.text!.trimmingCharacters(in: .whitespaces).toDoubleOption()!,
-            note: noteTextField!.text!.trimmingCharacters(in: .whitespaces),
-            paid: false
+            note: noteTextField!.text!.trimmingCharacters(in: .whitespaces)
         )
 
         if let person = selectedPerson {
@@ -125,6 +125,7 @@ extension AmountTableViewController {
             )
 
             alert.addTextField(configurationHandler: paymentTextField)
+            alert.addTextField(configurationHandler: paymentNoteTextField)
 
             alert.addAction(UIAlertAction(title: "save", style: .default, handler: savePayment))
             alert.addAction(UIAlertAction(title: "cancel", style: .cancel, handler: nil))
@@ -143,9 +144,20 @@ extension AmountTableViewController {
         textField.accessibilityIdentifier = "payment\(UIAlertController.ValidationIdFlag.isNumber)"
     }
 
+    func paymentNoteTextField(textField: UITextField) {
+        paymentNoteTextField = textField
+        textField.placeholder = "add some note about this amount"
+        textField.autocapitalizationType = .sentences
+        textField.autocorrectionType = .default
+        textField.textContentType = .givenName
+    }
+
     func savePayment(action: UIAlertAction) {
         if let indexPath = selectedAmountIndexPath {
-            let interest = Payment(value: paymentTextField!.text!.toDoubleOption()!)
+            let interest = Payment(
+                value: paymentTextField!.text!.toDoubleOption()!,
+                note: paymentNoteTextField?.text ?? ""
+            )
 
             do {
                 try realm.write {
@@ -216,7 +228,7 @@ extension AmountTableViewController {
                 let amount = (indexPath.section == 0 ? unpaidAmounts : paidAmounts)?[indexPath.row]
                 let diff = amount!.paymentsTotal - amount!.value
 
-                row.accessoryType = amount?.paid == true ? .checkmark : .detailButton
+                row.accessoryType = amount?.isPaid == true ? .checkmark : .detailButton
                 row.accessoryView?.backgroundColor = .red
 
                 row.textLabel?.font = UIFont.boldSystemFont(ofSize: 16.0)
@@ -259,12 +271,12 @@ extension AmountTableViewController {
         }
 
         let amount = (indexPath.section == 0 ? unpaidAmounts : paidAmounts)![indexPath.row]
-        let actionTitle = amount.paid ? "unpaid" : "paid"
+        let actionTitle = amount.isPaid ? "unpaid" : "paid"
         let paidToggleAction = UIContextualAction(style: .normal, title: actionTitle) { _, _, isActionSuccessful in
             isActionSuccessful(true)
             do {
                 try self.realm.write {
-                    amount.paid = !amount.paid
+                    amount.datePaid = amount.isPaid ? nil : Date()
                 }
             } catch {
                 print("error toggling the paid status for \(amount.moneyValue)")
@@ -273,7 +285,7 @@ extension AmountTableViewController {
             tableView.reloadData(completion: self.updateLoadTime)
         }
 
-        paidToggleAction.image = UIImage(systemName: amount.paid ? "xmark" : "checkmark")
+        paidToggleAction.image = UIImage(systemName: amount.isPaid ? "xmark" : "checkmark")
         paidToggleAction.backgroundColor = UIColor.adaOrange
 
         var swipeActions: [UIContextualAction] = [paidToggleAction]
@@ -346,7 +358,7 @@ extension AmountTableViewController {
     func deleteAmount(at indexPath: IndexPath) {
         let amount = (indexPath.section == 0 ? unpaidAmounts : paidAmounts)![indexPath.row]
         let wasLastAmount = selectedPerson?.amounts.count == 1
-        let wasPaid = amount.paid
+        let wasPaid = amount.isPaid
 
         do {
             try realm.write {

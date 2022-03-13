@@ -16,7 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        print(Realm.Configuration.defaultConfiguration.fileURL)
 
         do {
-            _ = try Realm(configuration: Realm.Configuration(schemaVersion: 2))
+          _ = try UIApplication.initRealm()
         } catch {
             print("Error initialising RealmSwift: \(error)")
         }

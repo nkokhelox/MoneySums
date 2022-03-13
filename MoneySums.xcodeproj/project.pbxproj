@@ -14,6 +14,7 @@
 		AC57A402275422FE00BCE5C5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AC57A3FE275422FE00BCE5C5 /* LaunchScreen.storyboard */; };
 		AC57A403275422FE00BCE5C5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AC57A400275422FE00BCE5C5 /* Main.storyboard */; };
 		AC57A4052754297C00BCE5C5 /* OnSectionHeaderFooterTap.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC57A4042754297C00BCE5C5 /* OnSectionHeaderFooterTap.swift */; };
+		AC6DEA2927DDF28A005EFCB7 /* UIApplication+util.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC6DEA2827DDF28A005EFCB7 /* UIApplication+util.swift */; };
 		AC6F1A3126F68DA1003EE04E /* UIColor+util.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC6F1A3026F68DA1003EE04E /* UIColor+util.swift */; };
 		AC92900127B7FB8700136BBE /* lightMode@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AC928FFE27B7FB8600136BBE /* lightMode@2x.png */; };
 		AC92900227B7FB8700136BBE /* lightMode.png in Resources */ = {isa = PBXBuildFile; fileRef = AC928FFF27B7FB8700136BBE /* lightMode.png */; };
@@ -45,6 +46,7 @@
 		AC57A3FF275422FE00BCE5C5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		AC57A401275422FE00BCE5C5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		AC57A4042754297C00BCE5C5 /* OnSectionHeaderFooterTap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnSectionHeaderFooterTap.swift; sourceTree = "<group>"; };
+		AC6DEA2827DDF28A005EFCB7 /* UIApplication+util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+util.swift"; sourceTree = "<group>"; };
 		AC6F1A3026F68DA1003EE04E /* UIColor+util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+util.swift"; sourceTree = "<group>"; };
 		AC928FFE27B7FB8600136BBE /* lightMode@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lightMode@2x.png"; sourceTree = "<group>"; };
 		AC928FFF27B7FB8700136BBE /* lightMode.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lightMode.png; sourceTree = "<group>"; };
@@ -134,6 +136,7 @@
 				AC9B5A73270ABEE700860429 /* Bundle+util.swift */,
 				AC57A4042754297C00BCE5C5 /* OnSectionHeaderFooterTap.swift */,
 				AC0CE59227A4849000EFDE78 /* UIAlertController+util.swift */,
+				AC6DEA2827DDF28A005EFCB7 /* UIApplication+util.swift */,
 			);
 			path = extension;
 			sourceTree = "<group>";
@@ -312,6 +315,7 @@
 			files = (
 				AC98632426EDAB28008C8DA4 /* Person.swift in Sources */,
 				AC98631E26EDAB1A008C8DA4 /* UIView+util.swift in Sources */,
+				AC6DEA2927DDF28A005EFCB7 /* UIApplication+util.swift in Sources */,
 				AC98631126EDAAF6008C8DA4 /* AmountTableViewController.swift in Sources */,
 				AC05AD0827000BCF006CAEBB /* Date+util.swift in Sources */,
 				AC98631C26EDAB1A008C8DA4 /* UITextField+util.swift in Sources */,
