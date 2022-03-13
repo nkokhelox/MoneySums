@@ -15,3 +15,12 @@ class OnSectionHeaderFooterTap: UITapGestureRecognizer {
     super.init(target: target, action: action)
   }
 }
+
+class RowLongPress: UILongPressGestureRecognizer {
+  private(set) var indexPath: IndexPath
+  
+  required init(indexPath: IndexPath, target: Any?, action: Selector?) {
+    self.indexPath = indexPath
+    super.init(target: target, action: action)
+  }
+}

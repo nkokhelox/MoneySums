@@ -175,7 +175,7 @@ extension AmountTableViewController {
         let amount = (indexPath.section == 0 ? unpaidAmounts : paidAmounts)![indexPath.row]
         let alert = UIAlertController(
             title: amount.value.moneyFormattedString(),
-            message: amount.detailText,
+            message: amount.fullDetailText,
             preferredStyle: .alert
         )
 
@@ -215,6 +215,10 @@ extension AmountTableViewController {
             return row
         } else {
             let row = tableView.dequeueReusableCell(withIdentifier: "amountRow", for: indexPath)
+
+            let longPress = RowLongPress(indexPath: indexPath, target: self, action: #selector(onRowLongPress(_:)))
+            row.addGestureRecognizer(longPress)
+
             if (selectedPerson?.amounts.count ?? 0) == 0 {
                 row.textLabel?.text = "press + to add amount"
                 row.textLabel?.textColor = UIColor.label
@@ -235,7 +239,7 @@ extension AmountTableViewController {
                 row.textLabel?.text = amount?.moneyValue
 
                 row.detailTextLabel?.textColor = diff == 0 ? UIColor.secondaryLabel : diff > 0 ? UIColor.adaOrange : UIColor.adaTeal
-                row.detailTextLabel?.text = amount?.fullDetailText
+                row.detailTextLabel?.text = amount?.detailText
             }
             return row
         }
@@ -418,11 +422,27 @@ extension AmountTableViewController {
         footer.textLabel?.text = footer.textLabel?.text?.uppercased()
         footer.textLabel?.textAlignment = .right
     }
+}
 
+// MARK: - Gesture recogniser
+
+extension AmountTableViewController {
     @objc func tapHeader(_ sender: UIGestureRecognizer) {
         if let headerTapEvent = sender as? OnSectionHeaderFooterTap {
             sectionExpansionState[headerTapEvent.section].toggle()
             tableView.reloadData()
+        }
+    }
+
+    @objc func onRowLongPress(_ sender: UILongPressGestureRecognizer) {
+        if let event = sender as? RowLongPress {
+            tableView.deselectRow(at: event.indexPath, animated: true)
+            switch event.indexPath.section {
+            case 0, 1:
+                showAmountInfo(event.indexPath)
+            default:
+                return
+            }
         }
     }
 }

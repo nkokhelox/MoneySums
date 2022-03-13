@@ -19,6 +19,7 @@ class PeopleTableViewController: UITableViewController {
     var nameTextField: UITextField?
     @IBOutlet var lastDataLoadTime: UILabel!
     let APP_ICON_KEY = "AppIcon"
+    let PAID_AMOUNT_RETENTION_MONTHS = "PaidAmountsRetentionInMonths"
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -90,9 +91,33 @@ class PeopleTableViewController: UITableViewController {
 
     func loadPeople() {
         people = realm.objects(Person.self).sorted(byKeyPath: "name", ascending: true)
+        cleanOldPaidAmounts()
         tableView.reloadData(completion: updateLoadTime)
         if people?.count ?? 0 <= 0 {
             AuthorizationOverlay.shared.hideOverlayView()
+        }
+    }
+
+    func cleanOldPaidAmounts() {
+        let retentionMonths = 1 // UserDefaults.standard.integer(forKey: PAID_AMOUNT_RETENTION_MONTHS)
+        if retentionMonths > 0 {
+          DispatchQueue.main.async {
+            self.people?.flatMap { $0.amounts }
+           .filter { $0.wasPaidMoreThan(monthsAgo: retentionMonths) }
+                .forEach { amount in
+                  print("Value \(amount.moneyValue) note: \(amount.note) isPaid: \(amount.isPaid)")
+                  do {
+                    try self.realm.write {
+                          self.realm.delete(amount.payments)
+                          self.realm.delete(amount)
+                      }
+
+                    self.tableView.reloadData()
+                  } catch {
+                      print("auto-deleting an amount failed, error: \(error)")
+                  }
+                }
+                }
         }
     }
 
@@ -349,7 +374,7 @@ extension PeopleTableViewController: UISearchBarDelegate {
     }
 }
 
-// MARK: App icon settings
+// MARK: - App icon settings
 
 extension PeopleTableViewController {
     func setAppIconChoice(_ choice: Int) {

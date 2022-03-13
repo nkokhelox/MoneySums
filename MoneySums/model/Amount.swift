@@ -11,14 +11,14 @@ import RealmSwift
 class Amount: Object {
     @objc dynamic var value: Double = 0.0
     @objc dynamic var note: String = ""
-    @objc dynamic var datePaid: Date? = nil
+    @objc dynamic var datePaid: Date?
     @objc dynamic var dateCreated: Date = Date()
 
     let payments = List<Payment>()
-  
-  var isPaid: Bool {
-    return datePaid != nil
-  }
+
+    var isPaid: Bool {
+        return datePaid != nil
+    }
 
     var moneyValue: String {
         return value.moneyFormattedString()
@@ -48,8 +48,12 @@ class Amount: Object {
     }
 
     var fullDetailText: String {
-        let noteText = note.isEmpty ? "" : String(format: ", %@", note)
-        return note.isEmpty ? detailText : String(format: "%@ - %@%@", dateCreated.niceDescription(), paymentsDetailText, noteText)
+        return
+            """
+                Created \(dateCreated.niceDescription())
+                \(isPaid ? "Fully paid \(datePaid!.niceDescription())" : "NOT fully paid")
+                Note: \(note.isEmpty ? "N/A" : note)
+            """
     }
 
     var paymentsDifference: Double {
@@ -58,9 +62,13 @@ class Amount: Object {
 
     var person = LinkingObjects(fromType: Person.self, property: "amounts")
 
-  convenience init(value: Double, note: String) {
+    convenience init(value: Double, note: String) {
         self.init()
         self.value = value
         self.note = note
+    }
+
+    func wasPaidMoreThan(monthsAgo: Int) -> Bool {
+        return (datePaid?.monthsFromNow() ?? 0) > monthsAgo
     }
 }

@@ -51,4 +51,12 @@ extension Date {
     func get(_ component: Calendar.Component, calendar: Calendar = Calendar.current) -> Int {
         return calendar.component(component, from: self)
     }
+
+  func monthsFrom(_ date: Date) -> Int {
+        return Calendar.current.dateComponents([.month], from: self, to: date).month ?? 0
+    }
+  
+  func monthsFromNow() -> Int {
+        return monthsFrom(Date())
+    }
 }

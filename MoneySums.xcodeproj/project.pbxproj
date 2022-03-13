@@ -13,7 +13,7 @@
 		AC0CE59327A4849000EFDE78 /* UIAlertController+util.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0CE59227A4849000EFDE78 /* UIAlertController+util.swift */; };
 		AC57A402275422FE00BCE5C5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AC57A3FE275422FE00BCE5C5 /* LaunchScreen.storyboard */; };
 		AC57A403275422FE00BCE5C5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AC57A400275422FE00BCE5C5 /* Main.storyboard */; };
-		AC57A4052754297C00BCE5C5 /* OnSectionHeaderFooterTap.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC57A4042754297C00BCE5C5 /* OnSectionHeaderFooterTap.swift */; };
+		AC57A4052754297C00BCE5C5 /* GestureRecognizers.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC57A4042754297C00BCE5C5 /* GestureRecognizers.swift */; };
 		AC6DEA2927DDF28A005EFCB7 /* UIApplication+util.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC6DEA2827DDF28A005EFCB7 /* UIApplication+util.swift */; };
 		AC6F1A3126F68DA1003EE04E /* UIColor+util.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC6F1A3026F68DA1003EE04E /* UIColor+util.swift */; };
 		AC92900127B7FB8700136BBE /* lightMode@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AC928FFE27B7FB8600136BBE /* lightMode@2x.png */; };
@@ -45,7 +45,7 @@
 		AC0CE59227A4849000EFDE78 /* UIAlertController+util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIAlertController+util.swift"; sourceTree = "<group>"; };
 		AC57A3FF275422FE00BCE5C5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		AC57A401275422FE00BCE5C5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		AC57A4042754297C00BCE5C5 /* OnSectionHeaderFooterTap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnSectionHeaderFooterTap.swift; sourceTree = "<group>"; };
+		AC57A4042754297C00BCE5C5 /* GestureRecognizers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureRecognizers.swift; sourceTree = "<group>"; };
 		AC6DEA2827DDF28A005EFCB7 /* UIApplication+util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+util.swift"; sourceTree = "<group>"; };
 		AC6F1A3026F68DA1003EE04E /* UIColor+util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+util.swift"; sourceTree = "<group>"; };
 		AC928FFE27B7FB8600136BBE /* lightMode@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lightMode@2x.png"; sourceTree = "<group>"; };
@@ -134,7 +134,7 @@
 				AC05AD0727000BCF006CAEBB /* Date+util.swift */,
 				AC05AD0A27003DDF006CAEBB /* UITableView+util.swift */,
 				AC9B5A73270ABEE700860429 /* Bundle+util.swift */,
-				AC57A4042754297C00BCE5C5 /* OnSectionHeaderFooterTap.swift */,
+				AC57A4042754297C00BCE5C5 /* GestureRecognizers.swift */,
 				AC0CE59227A4849000EFDE78 /* UIAlertController+util.swift */,
 				AC6DEA2827DDF28A005EFCB7 /* UIApplication+util.swift */,
 			);
@@ -331,7 +331,7 @@
 				AC98631226EDAAF6008C8DA4 /* PeopleTableViewController.swift in Sources */,
 				AC98631D26EDAB1A008C8DA4 /* Double+util.swift in Sources */,
 				AC9B5A88270F8EC000860429 /* AuthorizationOverlay.swift in Sources */,
-				AC57A4052754297C00BCE5C5 /* OnSectionHeaderFooterTap.swift in Sources */,
+				AC57A4052754297C00BCE5C5 /* GestureRecognizers.swift in Sources */,
 				AC9B5A74270ABEE700860429 /* Bundle+util.swift in Sources */,
 				ACE2B86126C061B900755CF2 /* SceneDelegate.swift in Sources */,
 			);
