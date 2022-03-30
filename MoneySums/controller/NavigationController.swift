@@ -8,8 +8,6 @@
 import UIKit
 
 class NavigationController: UINavigationController {
-    var isLoggedIn: Bool = false
-
     override func viewDidLoad() {
         super.viewDidLoad()
         let appearance = UINavigationBarAppearance()

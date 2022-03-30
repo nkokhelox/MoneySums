@@ -15,7 +15,6 @@ class PaymentTableViewController: UITableViewController {
     var onDismiss: (() -> Void)?
 
     @IBOutlet var footNote: UILabel!
-    @IBOutlet var dragPill: UIImageView!
 
     var payments: List<Payment>?
 
@@ -27,7 +26,6 @@ class PaymentTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        dragPill.backgroundColor = (selectedAmount?.paymentsTotal ?? 0 > 0) ? UIColor.adaOrange : UIColor.adaTeal
         tableView.separatorInset = UIEdgeInsets.zero
         updateFootNote()
     }

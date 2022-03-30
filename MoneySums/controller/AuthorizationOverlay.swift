@@ -18,7 +18,7 @@ public class AuthorizationOverlay {
         return Static.instance
     }
 
-    public func showOverlay(isDarkModeEnabled: Bool) {
+  public func showOverlay(isDarkModeEnabled: Bool, doAuthPrompt: Bool = false) {
         guard let window = (UIApplication.shared.connectedScenes.first as? UIWindowScene)?.windows.first
         else {
             return
@@ -37,7 +37,7 @@ public class AuthorizationOverlay {
         overlayView.addSubview(blurView)
 
         let authorizeUserAction = UIAction { action in
-            self.authorize(action)
+            self.authorizeDeviceOwner()
         }
         let authorizeButton = UIButton(type: .system, primaryAction: authorizeUserAction)
         authorizeButton.setImage(UIImage(systemName: "lock.shield"), for: .normal)
@@ -50,6 +50,10 @@ public class AuthorizationOverlay {
 
         overlayView.addSubview(authorizeButton)
         window.addSubview(overlayView)
+    
+    if (doAuthPrompt) {
+      self.authorizeDeviceOwner()
+    }
     }
 
     public func hideOverlayView() {
@@ -58,7 +62,7 @@ public class AuthorizationOverlay {
         }
     }
 
-    func authorize(_ action: UIAction) {
+    func authorizeDeviceOwner() {
         let localAuthenticationContext = LAContext()
         localAuthenticationContext.localizedFallbackTitle = "Please use your Passcode"
 
@@ -69,8 +73,6 @@ public class AuthorizationOverlay {
             localAuthenticationContext.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: reason) { success, _ in
                 if success {
                     self.hideOverlayView()
-                } else {
-                    (action.sender as? UIButton)?.imageView?.shake()
                 }
             }
         }

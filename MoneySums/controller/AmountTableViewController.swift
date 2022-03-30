@@ -38,6 +38,8 @@ class AmountTableViewController: UITableViewController {
 
         refreshControl = UIRefreshControl()
         refreshControl?.addTarget(self, action: #selector(loadAmounts), for: .valueChanged)
+
+        hideKeyboardWhenTappedAround()
     }
 
     @IBAction func addAmount(_ sender: UIBarButtonItem) {
@@ -453,13 +455,23 @@ extension AmountTableViewController {
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let indexPath = tableView.indexPathForSelectedRow {
-            let destinationViewController = segue.destination as! PaymentTableViewController
-            let amounts = (indexPath.section == 0 ? unpaidAmounts : paidAmounts)
+            if let destinationViewController = segue.destination as? PaymentTableViewController {
+                let amounts = (indexPath.section == 0 ? unpaidAmounts : paidAmounts)
 
-            destinationViewController.onDismiss = { [weak self] in self?.tableView.reloadData(completion: self!.updateLoadTime) }
-            destinationViewController.selectedAmount = amounts![indexPath.row]
+                destinationViewController.onDismiss = { [weak self] in self?.tableView.reloadData(completion: self!.updateLoadTime) }
+                destinationViewController.selectedAmount = amounts![indexPath.row]
 
-            tableView.deselectRow(at: indexPath, animated: true)
+                tableView.deselectRow(at: indexPath, animated: true)
+
+                if let sheet = destinationViewController.sheetPresentationController {
+                    sheet.detents = [.large()]
+                    sheet.largestUndimmedDetentIdentifier = .none
+                    sheet.prefersGrabberVisible = true
+                    sheet.prefersEdgeAttachedInCompactHeight = true
+                    sheet.prefersScrollingExpandsWhenScrolledToEdge = false
+                    sheet.widthFollowsPreferredContentSizeWhenEdgeAttached = true
+                }
+            }
         }
     }
 }

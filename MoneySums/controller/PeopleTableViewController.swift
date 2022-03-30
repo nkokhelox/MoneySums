@@ -29,15 +29,15 @@ class PeopleTableViewController: UITableViewController {
         refreshControl = UIRefreshControl()
         refreshControl?.addTarget(self, action: #selector(refreshControlAction), for: .valueChanged)
 
-        showAuthorizationOverlay()
+        hideKeyboardWhenTappedAround()
+
+        #if RELEASE
+            showAuthorizationOverlay(promptUserAuth: true)
+        #endif
     }
 
     override func viewWillAppear(_ animated: Bool) {
         loadPeople()
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
     }
 
     @objc func refreshControlAction() {
@@ -101,23 +101,23 @@ class PeopleTableViewController: UITableViewController {
     func cleanOldPaidAmounts() {
         let retentionMonths = 1 // UserDefaults.standard.integer(forKey: PAID_AMOUNT_RETENTION_MONTHS)
         if retentionMonths > 0 {
-          DispatchQueue.main.async {
-            self.people?.flatMap { $0.amounts }
-           .filter { $0.wasPaidMoreThan(monthsAgo: retentionMonths) }
-                .forEach { amount in
-                  print("Value \(amount.moneyValue) note: \(amount.note) isPaid: \(amount.isPaid)")
-                  do {
-                    try self.realm.write {
-                          self.realm.delete(amount.payments)
-                          self.realm.delete(amount)
-                      }
+            DispatchQueue.main.async {
+                self.people?.flatMap { $0.amounts }
+                    .filter { $0.wasPaidMoreThan(monthsAgo: retentionMonths) }
+                    .forEach { amount in
+                        print("Value \(amount.moneyValue) note: \(amount.note) isPaid: \(amount.isPaid)")
+                        do {
+                            try self.realm.write {
+                                self.realm.delete(amount.payments)
+                                self.realm.delete(amount)
+                            }
 
-                    self.tableView.reloadData()
-                  } catch {
-                      print("auto-deleting an amount failed, error: \(error)")
-                  }
-                }
-                }
+                            self.tableView.reloadData()
+                        } catch {
+                            print("auto-deleting an amount failed, error: \(error)")
+                        }
+                    }
+            }
         }
     }
 
@@ -276,9 +276,22 @@ class PeopleTableViewController: UITableViewController {
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let destinationViewController = segue.destination as! AmountTableViewController
-        if let selectedRowIndexPath = tableView.indexPathForSelectedRow {
-            destinationViewController.selectedPerson = people?[selectedRowIndexPath.row]
+        if let destinationViewController = segue.destination as? AmountTableViewController {
+            if let selectedRowIndexPath = tableView.indexPathForSelectedRow {
+                destinationViewController.selectedPerson = people?[selectedRowIndexPath.row]
+            }
+        }
+
+        if let appConfigController = segue.destination as? AppConfigViewController {
+            appConfigController.appLockDelegate = self
+            if let sheet = appConfigController.sheetPresentationController {
+                sheet.detents = [.medium(), .large()]
+                sheet.largestUndimmedDetentIdentifier = .none
+                sheet.prefersEdgeAttachedInCompactHeight = true
+                sheet.prefersScrollingExpandsWhenScrolledToEdge = false
+                sheet.widthFollowsPreferredContentSizeWhenEdgeAttached = true
+              sheet.prefersGrabberVisible = true
+            }
         }
     }
 }
@@ -349,11 +362,17 @@ extension PeopleTableViewController: UISearchBarDelegate {
         }
     }
 
-    private func showAuthorizationOverlay() {
-        AuthorizationOverlay.shared.showOverlay(isDarkModeEnabled: traitCollection.userInterfaceStyle == .dark)
+    private func showAuthorizationOverlay(promptUserAuth: Bool = false) {
+        AuthorizationOverlay.shared.showOverlay(isDarkModeEnabled: traitCollection.userInterfaceStyle == .dark, doAuthPrompt: promptUserAuth)
     }
+}
 
-    // MARK: - App info
+// MARK: - App info
+
+extension PeopleTableViewController: AppLockDelegate {
+    func lockNow() {
+        showAuthorizationOverlay()
+    }
 
     func showAppInfo() {
         let alert = UIAlertController(
@@ -364,7 +383,6 @@ extension PeopleTableViewController: UISearchBarDelegate {
 
         alert.addAction(UIAlertAction(title: "Dark App Icon", style: .default, handler: { _ in self.setAppIconChoice(0) }))
         alert.addAction(UIAlertAction(title: "Light App Icon", style: .default, handler: { _ in self.setAppIconChoice(1) }))
-//        alert.addAction(UIAlertAction(title: "AutoSet App Icon", style: .default, handler: { _ in self.setAppIconChoice(2) }))
         alert.addAction(UIAlertAction(title: "Lock App", style: .destructive, handler: { _ in self.showAuthorizationOverlay() }))
         alert.addAction(UIAlertAction(title: "Dismiss", style: .cancel, handler: nil))
 
@@ -378,26 +396,15 @@ extension PeopleTableViewController: UISearchBarDelegate {
 
 extension PeopleTableViewController {
     func setAppIconChoice(_ choice: Int) {
-        UserDefaults.standard.set(choice, forKey: APP_ICON_KEY)
+        UserDefaults.standard.set(choice, forKey: UserDefaults.APP_ICON_KEY)
         refreshAppIcon()
     }
 
     func refreshAppIcon() {
         if #available(iOS 13, *) {
-            switch UserDefaults.standard.integer(forKey: APP_ICON_KEY) {
+            switch UserDefaults.standard.integer(forKey: UserDefaults.APP_ICON_KEY) {
             case 0: self.clearAltIcon(); break
-            case 1: self.setLightIcon(); break
-            default: self.autoSetIconForCurrentUiTrait()
-            }
-        }
-    }
-
-    func autoSetIconForCurrentUiTrait() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            if self.traitCollection.userInterfaceStyle == .dark {
-                self.clearAltIcon()
-            } else if UIApplication.shared.alternateIconName != "lightMode" {
-                self.setLightIcon()
+            default: self.setLightIcon(); break
             }
         }
     }
