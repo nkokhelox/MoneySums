@@ -9,21 +9,21 @@ import Foundation
 
 extension UserDefaults {
   static let APP_ICON_KEY = "AppIcon"
-  static let PAID_AMOUNT_RETENTION_MONTHS_KEY = "PaidAmountsRetention"
+  static let PAID_AMOUNT_RETENTION_OPTION = "PaidAmountsRetention"
   
   func getPaidAmountRetentionMonths() -> Int {
-    return integer(forKey: UserDefaults.PAID_AMOUNT_RETENTION_MONTHS_KEY)
+    return integer(forKey: UserDefaults.PAID_AMOUNT_RETENTION_OPTION)
   }
   
   func getCurrentAppIcon() -> Int {
     return integer(forKey: UserDefaults.APP_ICON_KEY)
   }
   
-  func setPaidAmountRetention(months: Int) {
-    set(months, forKey: UserDefaults.PAID_AMOUNT_RETENTION_MONTHS_KEY)
+  func setPaidAmountRetention(option: Int) {
+    set(option, forKey: UserDefaults.PAID_AMOUNT_RETENTION_OPTION)
   }
   
-  func setCurrentAppIcon(choiceNumber: Int) {
-    set(choiceNumber, forKey: UserDefaults.APP_ICON_KEY)
+  func setCurrentAppIcon(option: Int) {
+    set(option, forKey: UserDefaults.APP_ICON_KEY)
   }
 }

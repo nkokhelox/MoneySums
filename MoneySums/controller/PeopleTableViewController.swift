@@ -18,8 +18,6 @@ class PeopleTableViewController: UITableViewController {
     var people: Results<Person>?
     var nameTextField: UITextField?
     @IBOutlet var lastDataLoadTime: UILabel!
-    let APP_ICON_KEY = "AppIcon"
-    let PAID_AMOUNT_RETENTION_MONTHS = "PaidAmountsRetentionInMonths"
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,10 +46,6 @@ class PeopleTableViewController: UITableViewController {
     func updateLoadTime() {
         lastDataLoadTime.text = "Last load @ \(Date().hms())"
         refreshControl?.endRefreshing()
-    }
-
-    @IBAction func showAppInfoPressed(_ sender: UIBarButtonItem) {
-        showAppInfo()
     }
 
     @IBAction func addPerson(_ sender: UIBarButtonItem) {
@@ -290,7 +284,7 @@ class PeopleTableViewController: UITableViewController {
                 sheet.prefersEdgeAttachedInCompactHeight = true
                 sheet.prefersScrollingExpandsWhenScrolledToEdge = false
                 sheet.widthFollowsPreferredContentSizeWhenEdgeAttached = true
-              sheet.prefersGrabberVisible = true
+                sheet.prefersGrabberVisible = true
             }
         }
     }
@@ -361,10 +355,6 @@ extension PeopleTableViewController: UISearchBarDelegate {
             chartView.draw()
         }
     }
-
-    private func showAuthorizationOverlay(promptUserAuth: Bool = false) {
-        AuthorizationOverlay.shared.showOverlay(isDarkModeEnabled: traitCollection.userInterfaceStyle == .dark, doAuthPrompt: promptUserAuth)
-    }
 }
 
 // MARK: - App info
@@ -373,59 +363,9 @@ extension PeopleTableViewController: AppLockDelegate {
     func lockNow() {
         showAuthorizationOverlay()
     }
-
-    func showAppInfo() {
-        let alert = UIAlertController(
-            title: "\(Bundle.main.appName)",
-            message: "Version \(Bundle.main.appVersion) (\(Bundle.main.appBuild))\nUsed frameworks:\n\u{2022}DVPieChart\n\u{2022}RealmSwift",
-            preferredStyle: .actionSheet
-        )
-
-        alert.addAction(UIAlertAction(title: "Dark App Icon", style: .default, handler: { _ in self.setAppIconChoice(0) }))
-        alert.addAction(UIAlertAction(title: "Light App Icon", style: .default, handler: { _ in self.setAppIconChoice(1) }))
-        alert.addAction(UIAlertAction(title: "Lock App", style: .destructive, handler: { _ in self.showAuthorizationOverlay() }))
-        alert.addAction(UIAlertAction(title: "Dismiss", style: .cancel, handler: nil))
-
-        let checkmark = UIImage(systemName: "checkmark")
-        alert.actions[UserDefaults.standard.integer(forKey: APP_ICON_KEY)].setValue(checkmark?.withRenderingMode(.automatic), forKey: "image")
-        present(alert, animated: true)
-    }
+  
+  private func showAuthorizationOverlay(promptUserAuth: Bool = false) {
+      AuthorizationOverlay.shared.showOverlay(isDarkModeEnabled: traitCollection.userInterfaceStyle == .dark, doAuthPrompt: promptUserAuth)
+  }
 }
 
-// MARK: - App icon settings
-
-extension PeopleTableViewController {
-    func setAppIconChoice(_ choice: Int) {
-        UserDefaults.standard.set(choice, forKey: UserDefaults.APP_ICON_KEY)
-        refreshAppIcon()
-    }
-
-    func refreshAppIcon() {
-        if #available(iOS 13, *) {
-            switch UserDefaults.standard.integer(forKey: UserDefaults.APP_ICON_KEY) {
-            case 0: self.clearAltIcon(); break
-            default: self.setLightIcon(); break
-            }
-        }
-    }
-
-    func setLightIcon() {
-        if UIApplication.shared.alternateIconName != "lightMode" {
-            UIApplication.shared.setAlternateIconName("lightMode") { error in
-                if let clearError = error {
-                    print("Failed to set the alternative app icon name: \(clearError)")
-                }
-            }
-        }
-    }
-
-    func clearAltIcon() {
-        if UIApplication.shared.alternateIconName != nil {
-            UIApplication.shared.setAlternateIconName(nil) { error in
-                if let clearError = error {
-                    print("Failed to clear the alternative app icon name: \(clearError)")
-                }
-            }
-        }
-    }
-}

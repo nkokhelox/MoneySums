@@ -198,7 +198,7 @@
                             </connections>
                         </searchBar>
                         <label key="tableFooterView" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="last data load time" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Ln8-S9-DCa">
-                            <rect key="frame" x="0.0" y="1109" width="414" height="44"/>
+                            <rect key="frame" x="0.0" y="766.5" width="414" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="8"/>
                             <color key="textColor" systemColor="tertiaryLabelColor"/>
@@ -271,21 +271,14 @@
                         <barButtonItem key="leftBarButtonItem" title="about" style="plain" id="kFR-QU-khl">
                             <imageReference key="image" image="gear.badge.questionmark" catalog="system" symbolScale="large"/>
                             <connections>
-                                <action selector="showAppInfoPressed:" destination="Vzt-Ja-SBP" id="wg5-IA-fZM"/>
+                                <segue destination="5Oz-3y-zPN" kind="presentation" id="ZdT-xm-Ybb"/>
                             </connections>
                         </barButtonItem>
-                        <rightBarButtonItems>
-                            <barButtonItem style="plain" systemItem="add" id="8BQ-rq-Agq">
-                                <connections>
-                                    <action selector="addPerson:" destination="Vzt-Ja-SBP" id="Pgt-Lj-URF"/>
-                                </connections>
-                            </barButtonItem>
-                            <barButtonItem title="FOOO" image="square.and.arrow.up.on.square" catalog="system" id="szx-d6-4wQ">
-                                <connections>
-                                    <segue destination="5Oz-3y-zPN" kind="presentation" id="kxK-oJ-ydk"/>
-                                </connections>
-                            </barButtonItem>
-                        </rightBarButtonItems>
+                        <barButtonItem key="rightBarButtonItem" style="plain" systemItem="add" id="8BQ-rq-Agq">
+                            <connections>
+                                <action selector="addPerson:" destination="Vzt-Ja-SBP" id="Pgt-Lj-URF"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
@@ -306,7 +299,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MoneySums" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RxP-FL-Upm">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MoneySums" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RxP-FL-Upm">
                                 <rect key="frame" x="0.0" y="64" width="414" height="30"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
@@ -315,79 +308,133 @@
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select the app icon you like to for this app" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="37q-fk-ilN">
-                                <rect key="frame" x="0.0" y="114" width="414" height="17"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hga-4E-SlS" userLabel="divider">
+                                <rect key="frame" x="0.0" y="114" width="414" height="1"/>
+                                <color key="backgroundColor" systemColor="separatorColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" id="9Ri-wA-8JU"/>
+                                </constraints>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select the app icon you like to for this app" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="37q-fk-ilN">
+                                <rect key="frame" x="0.0" y="135" width="414" height="17"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <color key="textColor" systemColor="secondaryLabelColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Automatically remove paid amounts after" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CMV-S5-67p">
-                                <rect key="frame" x="0.0" y="185" width="414" height="17"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Q7p-km-07b" userLabel="divider">
+                                <rect key="frame" x="0.0" y="218" width="414" height="1"/>
+                                <color key="backgroundColor" systemColor="separatorColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" id="KX5-JY-mGQ"/>
+                                </constraints>
+                            </view>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="DXF-56-DEM">
+                                <rect key="frame" x="5" y="162" width="404" height="32"/>
+                                <segments>
+                                    <segment title="dark icon"/>
+                                    <segment title="light icon"/>
+                                </segments>
+                                <color key="selectedSegmentTintColor" name="adaTeal"/>
+                                <connections>
+                                    <action selector="appIconChanged:" destination="5Oz-3y-zPN" eventType="valueChanged" id="GO1-mD-RVp"/>
+                                </connections>
+                            </segmentedControl>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Automatically remove paid amounts after" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CMV-S5-67p">
+                                <rect key="frame" x="0.0" y="239" width="414" height="17"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <color key="textColor" systemColor="secondaryLabelColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bordered" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="xs2-gm-dBi">
-                                <rect key="frame" x="5" y="205" width="404" height="32"/>
+                                <rect key="frame" x="5" y="266" width="404" height="32"/>
                                 <segments>
-                                    <segment title="3 months"/>
-                                    <segment title="6 Months"/>
-                                    <segment title="12 Months"/>
                                     <segment title="Never"/>
+                                    <segment title="12 Months"/>
+                                    <segment title="6 Months"/>
+                                    <segment title="3 months"/>
                                 </segments>
                                 <color key="selectedSegmentTintColor" name="adaTeal"/>
-                            </segmentedControl>
-                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="DXF-56-DEM">
-                                <rect key="frame" x="5" y="134" width="404" height="32"/>
-                                <segments>
-                                    <segment title="dark icon"/>
-                                    <segment title="light icon"/>
-                                </segments>
-                                <color key="selectedSegmentTintColor" name="adaTeal"/>
+                                <connections>
+                                    <action selector="deleteAmountChanged:" destination="5Oz-3y-zPN" eventType="valueChanged" id="x8V-fO-nJG"/>
+                                </connections>
                             </segmentedControl>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wBP-vN-db6" userLabel="divider">
-                                <rect key="frame" x="0.0" y="256" width="414" height="1"/>
+                                <rect key="frame" x="0.0" y="317" width="414" height="1"/>
                                 <color key="backgroundColor" systemColor="separatorColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="TB6-qP-MGa"/>
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="i9Z-9S-Qbq">
-                                <rect key="frame" x="5" y="277" width="404" height="31"/>
+                                <rect key="frame" x="5" y="338" width="404" height="31"/>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="tinted" image="lock.shield.fill" catalog="system" title="Lock app">
+                                <buttonConfiguration key="configuration" style="tinted" image="lock.shield.fill" catalog="system" imagePlacement="leading" title="Lock app" titleAlignment="center">
                                     <color key="baseBackgroundColor" name="adaOrange"/>
                                 </buttonConfiguration>
+                                <connections>
+                                    <action selector="lockApp:" destination="5Oz-3y-zPN" eventType="touchUpInside" id="kyH-91-GcH"/>
+                                </connections>
                             </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TGj-y8-Jwy" userLabel="divider">
+                                <rect key="frame" x="0.0" y="394" width="414" height="1"/>
+                                <color key="backgroundColor" systemColor="separatorColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" id="SYi-fU-wOZ"/>
+                                </constraints>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="version &amp; used libraries" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="keQ-Fg-bNv">
+                                <rect key="frame" x="3" y="420" width="408" height="14.5"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                <color key="textColor" systemColor="secondaryLabelColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="C5m-qR-Zkb"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="CMV-S5-67p" secondAttribute="trailing" id="6Kn-ir-vmP"/>
                             <constraint firstItem="i9Z-9S-Qbq" firstAttribute="top" secondItem="wBP-vN-db6" secondAttribute="bottom" constant="20" id="7YH-8K-ySW"/>
+                            <constraint firstAttribute="trailing" secondItem="Q7p-km-07b" secondAttribute="trailing" id="8iI-Pw-R1y"/>
                             <constraint firstItem="wBP-vN-db6" firstAttribute="top" secondItem="xs2-gm-dBi" secondAttribute="bottom" constant="20" id="A1r-6C-tbr"/>
+                            <constraint firstItem="CMV-S5-67p" firstAttribute="top" secondItem="Q7p-km-07b" secondAttribute="bottom" constant="20" id="IeJ-1S-eCY"/>
+                            <constraint firstItem="Q7p-km-07b" firstAttribute="leading" secondItem="ub6-nY-4KM" secondAttribute="leading" id="NGg-iD-aRr"/>
+                            <constraint firstItem="37q-fk-ilN" firstAttribute="top" secondItem="hga-4E-SlS" secondAttribute="bottom" constant="20" id="P2I-ma-Gbs"/>
                             <constraint firstItem="i9Z-9S-Qbq" firstAttribute="leading" secondItem="C5m-qR-Zkb" secondAttribute="leading" constant="5" id="Q20-d6-vAc"/>
                             <constraint firstItem="CMV-S5-67p" firstAttribute="leading" secondItem="C5m-qR-Zkb" secondAttribute="leading" id="Rtg-2A-sCZ"/>
                             <constraint firstItem="C5m-qR-Zkb" firstAttribute="trailing" secondItem="37q-fk-ilN" secondAttribute="trailing" id="SHY-ku-mgs"/>
+                            <constraint firstItem="C5m-qR-Zkb" firstAttribute="trailing" secondItem="keQ-Fg-bNv" secondAttribute="trailing" constant="3" id="TBl-R4-h9z"/>
+                            <constraint firstItem="Q7p-km-07b" firstAttribute="top" secondItem="DXF-56-DEM" secondAttribute="bottom" constant="25" id="ToH-la-2Wh"/>
+                            <constraint firstItem="TGj-y8-Jwy" firstAttribute="top" secondItem="i9Z-9S-Qbq" secondAttribute="bottom" constant="25" id="U9d-Nt-GhR"/>
+                            <constraint firstItem="TGj-y8-Jwy" firstAttribute="leading" secondItem="ub6-nY-4KM" secondAttribute="leading" id="Xjg-WN-GUY"/>
+                            <constraint firstAttribute="trailing" secondItem="TGj-y8-Jwy" secondAttribute="trailing" id="ZbQ-7J-dxF"/>
                             <constraint firstItem="RxP-FL-Upm" firstAttribute="trailing" secondItem="C5m-qR-Zkb" secondAttribute="trailing" id="bcw-n3-hkf"/>
                             <constraint firstItem="xs2-gm-dBi" firstAttribute="leading" secondItem="C5m-qR-Zkb" secondAttribute="leading" constant="5" id="c9g-aU-JwF"/>
                             <constraint firstItem="C5m-qR-Zkb" firstAttribute="trailing" secondItem="wBP-vN-db6" secondAttribute="trailing" id="dD7-u8-ALv"/>
                             <constraint firstItem="RxP-FL-Upm" firstAttribute="leading" secondItem="C5m-qR-Zkb" secondAttribute="leading" id="dhl-tU-WXL"/>
-                            <constraint firstItem="37q-fk-ilN" firstAttribute="top" secondItem="RxP-FL-Upm" secondAttribute="bottom" constant="20" id="dwg-mo-8aK"/>
                             <constraint firstItem="DXF-56-DEM" firstAttribute="leading" secondItem="C5m-qR-Zkb" secondAttribute="leading" constant="5" id="fG0-4s-wW8"/>
                             <constraint firstItem="C5m-qR-Zkb" firstAttribute="trailing" secondItem="i9Z-9S-Qbq" secondAttribute="trailing" constant="5" id="l3W-du-prT"/>
-                            <constraint firstItem="CMV-S5-67p" firstAttribute="top" secondItem="DXF-56-DEM" secondAttribute="bottom" constant="20" id="p1S-oW-bVK"/>
+                            <constraint firstItem="keQ-Fg-bNv" firstAttribute="top" secondItem="TGj-y8-Jwy" secondAttribute="bottom" constant="25" id="m19-59-Anv"/>
+                            <constraint firstItem="hga-4E-SlS" firstAttribute="top" secondItem="RxP-FL-Upm" secondAttribute="bottom" constant="20" id="mJN-ly-h47"/>
+                            <constraint firstItem="hga-4E-SlS" firstAttribute="leading" secondItem="ub6-nY-4KM" secondAttribute="leading" id="n1s-Zy-g8w"/>
                             <constraint firstItem="RxP-FL-Upm" firstAttribute="top" secondItem="C5m-qR-Zkb" secondAttribute="top" constant="20" id="qKA-Hz-AMj"/>
-                            <constraint firstItem="DXF-56-DEM" firstAttribute="top" secondItem="37q-fk-ilN" secondAttribute="bottom" constant="3" id="vZF-dY-SFf"/>
+                            <constraint firstItem="keQ-Fg-bNv" firstAttribute="leading" secondItem="ub6-nY-4KM" secondAttribute="leading" constant="3" id="snu-s2-duh"/>
+                            <constraint firstItem="DXF-56-DEM" firstAttribute="top" secondItem="37q-fk-ilN" secondAttribute="bottom" constant="10" id="vZF-dY-SFf"/>
                             <constraint firstItem="C5m-qR-Zkb" firstAttribute="trailing" secondItem="DXF-56-DEM" secondAttribute="trailing" constant="5" id="vij-Nj-DDy"/>
                             <constraint firstItem="wBP-vN-db6" firstAttribute="leading" secondItem="C5m-qR-Zkb" secondAttribute="leading" id="xdw-kn-Y2S"/>
-                            <constraint firstItem="xs2-gm-dBi" firstAttribute="top" secondItem="CMV-S5-67p" secondAttribute="bottom" constant="3" id="zdc-SJ-B9t"/>
+                            <constraint firstAttribute="trailing" secondItem="hga-4E-SlS" secondAttribute="trailing" id="zUG-K9-N2J"/>
+                            <constraint firstItem="xs2-gm-dBi" firstAttribute="top" secondItem="CMV-S5-67p" secondAttribute="bottom" constant="10" id="zdc-SJ-B9t"/>
                             <constraint firstItem="C5m-qR-Zkb" firstAttribute="trailing" secondItem="xs2-gm-dBi" secondAttribute="trailing" constant="5" id="zpf-Lc-Bg4"/>
                             <constraint firstItem="37q-fk-ilN" firstAttribute="leading" secondItem="C5m-qR-Zkb" secondAttribute="leading" id="zu8-ey-Og7"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="appIconSegment" destination="DXF-56-DEM" id="Pa9-44-hs8"/>
+                        <outlet property="autoDeleteAmountPeriod" destination="xs2-gm-dBi" id="0I5-3G-aHC"/>
+                        <outlet property="thirdPartyComponents" destination="keQ-Fg-bNv" id="EDJ-Qb-7cF"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JQG-OG-ddW" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -398,7 +445,6 @@
         <image name="gear.badge.questionmark" catalog="system" width="128" height="111"/>
         <image name="lock.shield.fill" catalog="system" width="128" height="118"/>
         <image name="plus" catalog="system" width="128" height="113"/>
-        <image name="square.and.arrow.up.on.square" catalog="system" width="117" height="128"/>
         <namedColor name="AccentColor">
             <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
