@@ -12,13 +12,17 @@ extension UserDefaults {
     static let PAID_AMOUNT_RETENTION_OPTION = "PaidAmountsRetention"
 
     func getPaidAmountRetentionMonths() -> Int {
-        switch integer(forKey: UserDefaults.PAID_AMOUNT_RETENTION_OPTION) {
+        switch paidAmountRetentionOption() {
         case 1: return 12
         case 2: return 6
         case 3: return 3
         default: return 0
         }
     }
+  
+  func paidAmountRetentionOption() -> Int {
+    return integer(forKey: UserDefaults.PAID_AMOUNT_RETENTION_OPTION)
+  }
 
     func getCurrentAppIcon() -> Int {
         return integer(forKey: UserDefaults.APP_ICON_KEY)

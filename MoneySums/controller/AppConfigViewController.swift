@@ -49,7 +49,7 @@ class AppConfigViewController: UIViewController {
         super.viewDidLoad()
 
         appIconSegment.selectedSegmentIndex = UserDefaults.standard.getCurrentAppIcon()
-        autoDeleteAmountPeriod.selectedSegmentIndex = UserDefaults.standard.getPaidAmountRetentionMonths()
+        autoDeleteAmountPeriod.selectedSegmentIndex = UserDefaults.standard.paidAmountRetentionOption()
         thirdPartyComponents.text = "Version \(Bundle.main.appVersion) (\(Bundle.main.appBuild))\nUsed frameworks:\n\u{2022}DVPieChart\n\u{2022}RealmSwift"
     }
 
