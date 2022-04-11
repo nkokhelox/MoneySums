@@ -93,7 +93,7 @@ class PeopleTableViewController: UITableViewController {
     }
 
     func cleanOldPaidAmounts() {
-        let retentionMonths = 1 // UserDefaults.standard.integer(forKey: PAID_AMOUNT_RETENTION_MONTHS)
+        let retentionMonths = UserDefaults.standard.getPaidAmountRetentionMonths()
         if retentionMonths > 0 {
             DispatchQueue.main.async {
                 self.people?.flatMap { $0.amounts }
