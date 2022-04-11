@@ -80,5 +80,10 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>UIAppFonts</key>
+	<array>
+		<string>JetBrainsMono.ttf</string>
+		<string>JetBrainsMono-Italic.ttf</string>
+	</array>
 </dict>
 </plist>

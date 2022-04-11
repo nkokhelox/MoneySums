@@ -9,6 +9,12 @@
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="JetBrainsMono.ttf">
+            <string>JetBrainsMono-Regular</string>
+            <string>JetBrainsMonoRoman-Bold</string>
+        </array>
+    </customFonts>
     <scenes>
         <!--Amounts-->
         <scene sceneID="9Qi-iw-K1X">
@@ -27,9 +33,9 @@
                             </connections>
                         </searchBar>
                         <label key="tableFooterView" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="last data load time" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="zx7-K3-3me">
-                            <rect key="frame" x="0.0" y="757.5" width="414" height="44"/>
+                            <rect key="frame" x="0.0" y="1131" width="414" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="8"/>
+                            <fontDescription key="fontDescription" name="JetBrainsMono-Regular" family="JetBrains Mono" pointSize="8"/>
                             <color key="textColor" systemColor="tertiaryLabelColor"/>
                             <nil key="highlightedColor"/>
                         </label>
@@ -114,7 +120,7 @@
                         <label key="tableFooterView" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="difference" textAlignment="center" lineBreakMode="characterWrap" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="8" id="98d-dD-Ksl">
                             <rect key="frame" x="0.0" y="111" width="414" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
+                            <fontDescription key="fontDescription" name="JetBrainsMonoRoman-Bold" family="JetBrains Mono" pointSize="16"/>
                             <color key="textColor" systemColor="tertiaryLabelColor"/>
                             <nil key="highlightedColor"/>
                         </label>
@@ -198,9 +204,9 @@
                             </connections>
                         </searchBar>
                         <label key="tableFooterView" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="last data load time" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Ln8-S9-DCa">
-                            <rect key="frame" x="0.0" y="766.5" width="414" height="44"/>
+                            <rect key="frame" x="0.0" y="1109" width="414" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="8"/>
+                            <fontDescription key="fontDescription" name="JetBrainsMono-Regular" family="JetBrains Mono" pointSize="8"/>
                             <color key="textColor" systemColor="tertiaryLabelColor"/>
                             <nil key="highlightedColor"/>
                         </label>
@@ -305,7 +311,7 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="Mst-Ka-55J"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
+                                <fontDescription key="fontDescription" name="JetBrainsMono-Regular" family="JetBrains Mono" pointSize="28"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hga-4E-SlS" userLabel="divider">
@@ -316,24 +322,24 @@
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select the app icon you like to for this app" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="37q-fk-ilN">
-                                <rect key="frame" x="0.0" y="135" width="414" height="17"/>
+                                <rect key="frame" x="0.0" y="135" width="414" height="17.5"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                <fontDescription key="fontDescription" name="JetBrainsMono-Regular" family="JetBrains Mono" pointSize="13"/>
                                 <color key="textColor" systemColor="secondaryLabelColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Q7p-km-07b" userLabel="divider">
-                                <rect key="frame" x="0.0" y="218" width="414" height="1"/>
+                                <rect key="frame" x="0.0" y="218.5" width="414" height="1"/>
                                 <color key="backgroundColor" systemColor="separatorColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="KX5-JY-mGQ"/>
                                 </constraints>
                             </view>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="DXF-56-DEM">
-                                <rect key="frame" x="5" y="162" width="404" height="32"/>
+                                <rect key="frame" x="5" y="162.5" width="404" height="32"/>
                                 <segments>
-                                    <segment title="dark icon"/>
-                                    <segment title="light icon"/>
+                                    <segment title="Dark icon"/>
+                                    <segment title="Light icon"/>
                                 </segments>
                                 <color key="selectedSegmentTintColor" name="adaTeal"/>
                                 <connections>
@@ -341,14 +347,14 @@
                                 </connections>
                             </segmentedControl>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Automatically remove paid amounts after" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CMV-S5-67p">
-                                <rect key="frame" x="0.0" y="239" width="414" height="17"/>
+                                <rect key="frame" x="0.0" y="239.5" width="414" height="17.5"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                <fontDescription key="fontDescription" name="JetBrainsMono-Regular" family="JetBrains Mono" pointSize="13"/>
                                 <color key="textColor" systemColor="secondaryLabelColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bordered" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="xs2-gm-dBi">
-                                <rect key="frame" x="5" y="266" width="404" height="32"/>
+                                <rect key="frame" x="5" y="267" width="404" height="32"/>
                                 <segments>
                                     <segment title="Never"/>
                                     <segment title="12 Months"/>
@@ -361,16 +367,17 @@
                                 </connections>
                             </segmentedControl>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wBP-vN-db6" userLabel="divider">
-                                <rect key="frame" x="0.0" y="317" width="414" height="1"/>
+                                <rect key="frame" x="0.0" y="318" width="414" height="1"/>
                                 <color key="backgroundColor" systemColor="separatorColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="TB6-qP-MGa"/>
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="i9Z-9S-Qbq">
-                                <rect key="frame" x="5" y="338" width="404" height="31"/>
+                                <rect key="frame" x="5" y="339" width="404" height="31"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="tinted" image="lock.shield.fill" catalog="system" imagePlacement="leading" title="Lock app" titleAlignment="center">
+                                    <fontDescription key="titleFontDescription" type="system" pointSize="0.0"/>
                                     <color key="baseBackgroundColor" name="adaOrange"/>
                                 </buttonConfiguration>
                                 <connections>
@@ -378,16 +385,16 @@
                                 </connections>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TGj-y8-Jwy" userLabel="divider">
-                                <rect key="frame" x="0.0" y="394" width="414" height="1"/>
+                                <rect key="frame" x="0.0" y="395" width="414" height="1"/>
                                 <color key="backgroundColor" systemColor="separatorColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="SYi-fU-wOZ"/>
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="version &amp; used libraries" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="keQ-Fg-bNv">
-                                <rect key="frame" x="3" y="420" width="408" height="14.5"/>
+                                <rect key="frame" x="3" y="421" width="408" height="13.5"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                <fontDescription key="fontDescription" name="JetBrainsMono-Regular" family="JetBrains Mono" pointSize="10"/>
                                 <color key="textColor" systemColor="secondaryLabelColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
