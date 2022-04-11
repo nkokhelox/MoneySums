@@ -29,9 +29,7 @@ class PeopleTableViewController: UITableViewController {
 
         hideKeyboardWhenTappedAround()
 
-        #if RELEASE
-            showAuthorizationOverlay(promptUserAuth: true)
-        #endif
+        showAuthorizationOverlay(promptUserAuth: true)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -363,9 +361,8 @@ extension PeopleTableViewController: AppLockDelegate {
     func lockNow() {
         showAuthorizationOverlay()
     }
-  
-  private func showAuthorizationOverlay(promptUserAuth: Bool = false) {
-      AuthorizationOverlay.shared.showOverlay(isDarkModeEnabled: traitCollection.userInterfaceStyle == .dark, doAuthPrompt: promptUserAuth)
-  }
-}
 
+    private func showAuthorizationOverlay(promptUserAuth: Bool = false) {
+        AuthorizationOverlay.shared.showOverlay(isDarkModeEnabled: traitCollection.userInterfaceStyle == .dark, doAuthPrompt: promptUserAuth)
+    }
+}
