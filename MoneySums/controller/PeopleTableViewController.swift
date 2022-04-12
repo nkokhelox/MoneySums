@@ -153,7 +153,7 @@ class PeopleTableViewController: UITableViewController {
 
                 row.accessoryType = .disclosureIndicator
                 row.textLabel?.text = person?.name.capitalized
-                row.textLabel?.font = UIFont.boldSystemFont(ofSize: 16.0)
+//                row.textLabel?.font = UIFont.boldSystemFont(ofSize: 16.0)
 
                 row.detailTextLabel?.text = person?.moneyDescription
                 row.detailTextLabel?.textColor = (person?.totalUnpaid ?? 0) == 0 ? UIColor.adaAccentColor : (person?.totalUnpaid ?? 0 > 0) ? UIColor.adaOrange : UIColor.adaTeal
