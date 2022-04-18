@@ -37,7 +37,7 @@ class AppConfigViewController: UIViewController {
     }
 
   private func showAuthorizationOverlay(promptUserAuth: Bool = false) {
-      AuthorizationOverlay.shared.showOverlay(isDarkModeEnabled: traitCollection.userInterfaceStyle == .dark, doAuthPrompt: promptUserAuth)
+      AuthorizationOverlay.shared.showOverlay(doAuthPrompt: promptUserAuth)
   }
   
     @IBAction func lockApp(_ sender: Any) {

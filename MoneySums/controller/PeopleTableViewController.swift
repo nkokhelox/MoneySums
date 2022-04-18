@@ -28,12 +28,10 @@ class PeopleTableViewController: UITableViewController {
         refreshControl?.addTarget(self, action: #selector(refreshControlAction), for: .valueChanged)
 
         hideKeyboardWhenTappedAround()
-
-        showAuthorizationOverlay(promptUserAuth: true)
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        loadPeople()
+        loadPeople(isLocked: true)
     }
 
     @objc func refreshControlAction() {
@@ -81,12 +79,14 @@ class PeopleTableViewController: UITableViewController {
         nameTextField = textField
     }
 
-    func loadPeople() {
+    func loadPeople(isLocked: Bool = false) {
         people = realm.objects(Person.self).sorted(byKeyPath: "name", ascending: true)
         cleanOldPaidAmounts()
         tableView.reloadData(completion: updateLoadTime)
         if people?.count ?? 0 <= 0 {
             AuthorizationOverlay.shared.hideOverlayView()
+        } else if isLocked {
+            showAuthorizationOverlay(promptUserAuth: true)
         }
     }
 
@@ -153,7 +153,6 @@ class PeopleTableViewController: UITableViewController {
 
                 row.accessoryType = .disclosureIndicator
                 row.textLabel?.text = person?.name.capitalized
-//                row.textLabel?.font = UIFont.boldSystemFont(ofSize: 16.0)
 
                 row.detailTextLabel?.text = person?.moneyDescription
                 row.detailTextLabel?.textColor = (person?.totalUnpaid ?? 0) == 0 ? UIColor.adaAccentColor : (person?.totalUnpaid ?? 0 > 0) ? UIColor.adaOrange : UIColor.adaTeal
@@ -363,6 +362,6 @@ extension PeopleTableViewController: AppLockDelegate {
     }
 
     private func showAuthorizationOverlay(promptUserAuth: Bool = false) {
-        AuthorizationOverlay.shared.showOverlay(isDarkModeEnabled: traitCollection.userInterfaceStyle == .dark, doAuthPrompt: promptUserAuth)
+        AuthorizationOverlay.shared.showOverlay(doAuthPrompt: promptUserAuth)
     }
 }
