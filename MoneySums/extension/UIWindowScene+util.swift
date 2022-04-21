@@ -11,11 +11,13 @@ import UIKit
 // MARK: - App lock
 
 extension UIWindowScene: AppLockDelegate {
-  func lockApp(authorizeNow: Bool = false, isManuallyLocked: Bool = false) {
-    UserDefaults.standard.set(isManuallyLocked, forKey: UserDefaults.APP_LOCKED_MANUALLY)
-    
+    func lockApp(authorizeNow: Bool = false, isManuallyLocked: Bool = false) {
         windows.forEach { window in
             if window.viewWithTag(Int.min) == nil {
+                if isManuallyLocked {
+                    UserDefaults.standard.appIsManuallyLocked()
+                }
+
                 let blurEffect: UIBlurEffect
                 if #available(iOS 13.0, *) {
                     blurEffect = UIBlurEffect(style: .systemUltraThinMaterial)
@@ -63,15 +65,15 @@ extension UIWindowScene: AppLockDelegate {
     }
 
     func willEnterForeground() {
-            if UserDefaults.standard.remainLocked() {
-                return
-            } else {
-                unlockApp()
-            }
+        if UserDefaults.standard.remainLocked() {
+            return
+        } else {
+            unlockApp()
+        }
     }
 
     func unlockApp() {
-      UserDefaults.standard.unlockApp()
+        UserDefaults.standard.unlockApp()
         windows.forEach { window in
             if let blurView = window.viewWithTag(Int.min) {
                 blurView.removeFromSuperview()

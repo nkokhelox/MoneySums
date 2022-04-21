@@ -47,6 +47,10 @@ extension UserDefaults {
         set(false, forKey: UserDefaults.APP_LOCKED_MANUALLY)
     }
 
+    func appIsManuallyLocked() {
+        set(true, forKey: UserDefaults.APP_LOCKED_MANUALLY)
+    }
+
     func remainLocked() -> Bool {
         let isLockedManually = bool(forKey: UserDefaults.APP_LOCKED_MANUALLY)
         if isLockedManually {
@@ -56,6 +60,7 @@ extension UserDefaults {
         if let interval = (object(forKey: UserDefaults.APP_ENTERED_BACKGROUND_TIME) as? Date)?.timeIntervalSinceNow {
             return abs(interval) > 5 // 30 minutes
         }
+
         return false
     }
 }
