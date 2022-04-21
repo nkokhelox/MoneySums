@@ -8,7 +8,6 @@
 import UIKit
 
 class AppConfigViewController: UIViewController {
-    var appLockDelegate: AppLockDelegate?
     @IBOutlet var thirdPartyComponents: UILabel!
     @IBOutlet var appIconSegment: UISegmentedControl!
     @IBOutlet var autoDeleteAmountPeriod: UISegmentedControl!
@@ -35,14 +34,10 @@ class AppConfigViewController: UIViewController {
         alert?.addAction(UIAlertAction(title: "OK", style: .cancel, handler: { _ in self.dismiss(animated: true) }))
         present(alert!, animated: true)
     }
-
-  private func showAuthorizationOverlay(promptUserAuth: Bool = false) {
-      AuthorizationOverlay.shared.showOverlay(doAuthPrompt: promptUserAuth)
-  }
   
     @IBAction func lockApp(_ sender: Any) {
         dismiss(animated: true)
-        appLockDelegate?.lockNow()
+      (UIApplication.shared.connectedScenes.first as? UIWindowScene)?.lockApp(authorizeNow: false, isManuallyLocked: true)
     }
 
     override func viewDidLoad() {

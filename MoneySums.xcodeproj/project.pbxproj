@@ -36,7 +36,6 @@
 		AC98632526EDAB28008C8DA4 /* Payment.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC98632226EDAB28008C8DA4 /* Payment.swift */; };
 		AC9B5A74270ABEE700860429 /* Bundle+util.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC9B5A73270ABEE700860429 /* Bundle+util.swift */; };
 		AC9B5A86270F8EA800860429 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC9B5A85270F8EA800860429 /* NavigationController.swift */; };
-		AC9B5A88270F8EC000860429 /* AuthorizationOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC9B5A87270F8EC000860429 /* AuthorizationOverlay.swift */; };
 		ACE2B85F26C061B900755CF2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACE2B85E26C061B900755CF2 /* AppDelegate.swift */; };
 		ACE2B86126C061B900755CF2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACE2B86026C061B900755CF2 /* SceneDelegate.swift */; };
 		ACE2B86826C061BA00755CF2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ACE2B86726C061BA00755CF2 /* Assets.xcassets */; };
@@ -73,7 +72,6 @@
 		AC98632226EDAB28008C8DA4 /* Payment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Payment.swift; sourceTree = "<group>"; };
 		AC9B5A73270ABEE700860429 /* Bundle+util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+util.swift"; sourceTree = "<group>"; };
 		AC9B5A85270F8EA800860429 /* NavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
-		AC9B5A87270F8EC000860429 /* AuthorizationOverlay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthorizationOverlay.swift; sourceTree = "<group>"; };
 		ACE0953626F134F6008A67D1 /* MoneySums.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MoneySums.entitlements; sourceTree = "<group>"; };
 		ACE2B85B26C061B900755CF2 /* MoneySums.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MoneySums.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ACE2B85E26C061B900755CF2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -132,7 +130,6 @@
 		AC98630D26EDAAF6008C8DA4 /* controller */ = {
 			isa = PBXGroup;
 			children = (
-				AC9B5A87270F8EC000860429 /* AuthorizationOverlay.swift */,
 				AC9B5A85270F8EA800860429 /* NavigationController.swift */,
 				AC98630E26EDAAF6008C8DA4 /* AmountTableViewController.swift */,
 				AC98630F26EDAAF6008C8DA4 /* PeopleTableViewController.swift */,
@@ -358,7 +355,6 @@
 				AC98631226EDAAF6008C8DA4 /* PeopleTableViewController.swift in Sources */,
 				AC98631D26EDAB1A008C8DA4 /* Double+util.swift in Sources */,
 				AC6DEA2C27DE3CA9005EFCB7 /* AppLockDelegate.swift in Sources */,
-				AC9B5A88270F8EC000860429 /* AuthorizationOverlay.swift in Sources */,
 				AC57A4052754297C00BCE5C5 /* GestureRecognizers.swift in Sources */,
 				AC9B5A74270ABEE700860429 /* Bundle+util.swift in Sources */,
 				ACE2B86126C061B900755CF2 /* SceneDelegate.swift in Sources */,

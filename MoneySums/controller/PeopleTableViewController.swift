@@ -13,9 +13,11 @@ import UIKit
 
 class PeopleTableViewController: UITableViewController {
     private var pieSliceOrdering = 0
+    private var isInitialDataLoad: Bool = true
     let realm = UIApplication.getRealm()
 
     var people: Results<Person>?
+
     var nameTextField: UITextField?
     @IBOutlet var lastDataLoadTime: UILabel!
 
@@ -31,7 +33,7 @@ class PeopleTableViewController: UITableViewController {
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        loadPeople(isLocked: true)
+        loadPeople()
     }
 
     @objc func refreshControlAction() {
@@ -79,15 +81,16 @@ class PeopleTableViewController: UITableViewController {
         nameTextField = textField
     }
 
-    func loadPeople(isLocked: Bool = false) {
+    func loadPeople() {
         people = realm.objects(Person.self).sorted(byKeyPath: "name", ascending: true)
         cleanOldPaidAmounts()
         tableView.reloadData(completion: updateLoadTime)
         if people?.count ?? 0 <= 0 {
-            AuthorizationOverlay.shared.hideOverlayView()
-        } else if isLocked {
-            showAuthorizationOverlay(promptUserAuth: true)
+            (UIApplication.shared.connectedScenes.first as? UIWindowScene)?.unlockApp()
+        } else if isInitialDataLoad {
+            (UIApplication.shared.connectedScenes.first as? UIWindowScene)?.lockApp(authorizeNow: true, isManuallyLocked: true)
         }
+        isInitialDataLoad = false
     }
 
     func cleanOldPaidAmounts() {
@@ -103,7 +106,6 @@ class PeopleTableViewController: UITableViewController {
                                 self.realm.delete(amount.payments)
                                 self.realm.delete(amount)
                             }
-
                             self.tableView.reloadData()
                         } catch {
                             print("auto-deleting an amount failed, error: \(error)")
@@ -274,7 +276,6 @@ class PeopleTableViewController: UITableViewController {
         }
 
         if let appConfigController = segue.destination as? AppConfigViewController {
-            appConfigController.appLockDelegate = self
             if let sheet = appConfigController.sheetPresentationController {
                 sheet.detents = [.medium(), .large()]
                 sheet.largestUndimmedDetentIdentifier = .none
@@ -351,17 +352,5 @@ extension PeopleTableViewController: UISearchBarDelegate {
                 " press + to add a person "
             chartView.draw()
         }
-    }
-}
-
-// MARK: - App info
-
-extension PeopleTableViewController: AppLockDelegate {
-    func lockNow() {
-        showAuthorizationOverlay()
-    }
-
-    private func showAuthorizationOverlay(promptUserAuth: Bool = false) {
-        AuthorizationOverlay.shared.showOverlay(doAuthPrompt: promptUserAuth)
     }
 }

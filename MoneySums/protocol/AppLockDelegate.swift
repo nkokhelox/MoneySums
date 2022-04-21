@@ -8,5 +8,7 @@
 import Foundation
 
 protocol AppLockDelegate {
-  func lockNow()
+    func willEnterForeground()
+
+    func lockApp(authorizeNow: Bool, isManuallyLocked: Bool)
 }

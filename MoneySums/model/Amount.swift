@@ -38,8 +38,8 @@ class Amount: Object {
 
     var detailText: String {
         let detail = note.isEmpty ? paymentsDetailText : note
-        let dateCreated = dateCreated.niceDescription()
-        return String(format: "%@ - %@", dateCreated, detail)
+        let date = (datePaid ?? dateCreated).niceDescription()
+      return String(format: "%@ by %@ - %@", (isPaid ? "paid": "created"), date, detail)
     }
 
     var paymentsDetailText: String {
