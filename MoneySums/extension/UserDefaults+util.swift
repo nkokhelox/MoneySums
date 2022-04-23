@@ -58,7 +58,7 @@ extension UserDefaults {
         }
 
         if let interval = (object(forKey: UserDefaults.APP_ENTERED_BACKGROUND_TIME) as? Date)?.timeIntervalSinceNow {
-            return abs(interval) > 5 // 30 minutes
+          return abs(interval) > (30.0 * 60.0)
         }
 
         return false
